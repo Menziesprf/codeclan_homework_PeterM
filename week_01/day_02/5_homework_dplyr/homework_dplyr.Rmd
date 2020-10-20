@@ -1,0 +1,121 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+#Day 2 Homework
+
+```{r}
+library(tidyverse)
+library(dplyr)
+
+```
+# Q1
+*load in dataset
+```{r}
+drinks_menu <- read_csv("data/starbucks_drinkMenu_expanded.csv")
+view(drinks_menu)
+```
+* 242 obs, 18 variables, character & numeric, 
+* Names = Beverage category, beverage, prep instructions (size/milk type), nutritional information.
+
+# Q2
+* select drinks and calories
+
+```{r}
+drinks_calories <- select(drinks_menu, Beverage_category, Beverage, Beverage_prep, Calories) %>% 
+  filter(!is.na(Calories))
+  
+
+```
+* no NA's
+
+# Q3
+*Calorie difference
+```{r}
+drinks_cal_diff <- mutate(drinks_calories, calorie_diff = 135 - Calories)
+drinks_cal_diff
+```
+
+# Q4 
+* mean calories per category
+```{r}
+
+group_by(drinks_cal_diff, Beverage_category) %>% 
+  summarise(mean(Calories)) 
+
+  
+```
+
+* STUCK!!! - how do you find the mean of a subset of observations? - infact that may be right. - Can't arrange by "mean(Calories)" column
+
+* Most/ least calorific, 
+
+```{r}
+top_3 <- arrange(drinks_calories, desc(Calories)) %>% 
+  head(10) %>% 
+  print()
+bottom_3 <- arrange(drinks_calories, Calories) %>% 
+  head(10) %>% 
+  print()
+
+```
+
+*top: White choc mocha(WCM) w/2%, WCM w/soya, Java Chip w/ Whole
+*bottom: Tazo - short, tall, grande
+
+* or - top: WCM, Java Chop, Green Latte w/ 2%
+* bot:tazo, brewed Coffee, Caffe Americano
+
+*or - mean calorie per category results - see summary
+
+# Summary
+* Using the mean calorie content of each beverage category, the most calorific are Smoothies, Frappuciono blended coffee and signature espresso drinks, respectively. While the least are Coffee, Shaken Iced beverages and Classic espresso drinks, respectively. 
+* When not grouped by beverage category the drinks with the top and bottom 3 calorie contents are different and seem to be affected greatly by the milk used in Beverage_prep
+
+# Q5 
+* average depending on prep type
+
+```{r}
+mean_by_prep_badnames <- group_by(drinks_calories, Beverage_prep) %>% 
+  summarise(mean(Calories)) 
+
+names(mean_by_prep_badnames)
+mean_by_prep <- rename(mean_by_prep_badnames, "mean_calories" = "mean(Calories)")
+
+arrange(mean_by_prep, mean_calories)
+arrange(mean_by_prep, desc(mean_calories))
+```
+
+* this seems like a convoluted way of changing the name of the column in order to arrange by mean calories
+
+# Q6
+*compare with average calories for all drinks
+
+```{r}
+summarise(drinks_calories, mean(Calories))
+
+```
+
+* mean for all drinks = 193.8719
+```{r}
+filter(mean_by_prep, mean_calories > 193.8719)
+```
+
+* drink preps over mean - all the milks!
+
+# Q7
+* which coffee is least caloriefull
+
+```{r}
+least_cal_drink <- filter(drinks_calories, Beverage_category == "Coffee") %>% 
+  arrange(Calories) %>% 
+  head(1) %>% 
+  print()
+
+
+```
+
+
+* Get a short black coffee - they are the best anyway. 
+
+*took me a while to figure out what needs ""
