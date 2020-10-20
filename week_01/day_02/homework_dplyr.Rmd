@@ -12,7 +12,7 @@ library(dplyr)
 # Q1
 *load in dataset
 ```{r}
-drinks_menu <- read_csv("data/starbucks_drinkMenu_expanded.csv")
+drinks_menu <- read_csv("5_homework_dplyr/data/starbucks_drinkMenu_expanded.csv")
 view(drinks_menu)
 ```
 * 242 obs, 18 variables, character & numeric, 
