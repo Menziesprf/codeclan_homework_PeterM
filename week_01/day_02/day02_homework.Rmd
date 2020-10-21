@@ -50,7 +50,7 @@ group_by(drinks_cal_diff, Beverage_category) %>%
   
 ```
 
-* STUCK!!! - how do you find the mean of a subset of observations? - infact that may be right. - Can't arrange by "mean(Calories)" column
+
 
 * Most/ least calorific, 
 
@@ -75,6 +75,26 @@ bottom_3 <- arrange(drinks_calories, Calories) %>%
 # Summary
 * Using the mean calorie content of each beverage category, the most calorific are Smoothies, Frappuciono blended coffee and signature espresso drinks, respectively. While the least are Coffee, Shaken Iced beverages and Classic espresso drinks, respectively. 
 * When not grouped by beverage category the drinks with the top and bottom 3 calorie contents are different and seem to be affected greatly by the milk used in Beverage_prep
+
+*post discussion answer - better formula
+
+```{r}
+cat_group_mean <- group_by(drinks_calories, Beverage_category) %>% 
+  summarise(mean_calories = mean(Calories))
+head(cat_group_mean, 3)
+tail(cat_group_mean, 3)
+```
+*alternate using slice() - I was trying to use slice() to show top and bottom 3 in fell swoop but couldn't figure it out.
+
+```{r}
+cat_group_top_bot <- group_by(drinks_calories, Beverage_category) %>% 
+  summarise(mean_calories = mean(Calories)) %>% 
+  arrange(desc(mean_calories)) %>% 
+  slice_head() %>% 
+  print()
+
+```
+
 
 # Q5 
 * average depending on prep type

@@ -1789,9 +1789,52 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <p>*load in dataset</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZHJpbmtzX21lbnUpXG5cbmBgYCJ9 -->
-<pre class="r"><code>names(drinks_menu)
-</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHJpbmtzX21lbnUgPC0gcmVhZF9jc3YoXCI1X2hvbWV3b3JrX2RwbHlyL2RhdGEvc3RhcmJ1Y2tzX2RyaW5rTWVudV9leHBhbmRlZC5jc3ZcIilcbmBgYCJ9 -->
+<pre class="r"><code>drinks_menu &lt;- read_csv(&quot;5_homework_dplyr/data/starbucks_drinkMenu_expanded.csv&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5jb2xzKFxuICBCZXZlcmFnZV9jYXRlZ29yeSA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgQmV2ZXJhZ2UgPSBjb2xfY2hhcmFjdGVyKCksXG4gIEJldmVyYWdlX3ByZXAgPSBjb2xfY2hhcmFjdGVyKCksXG4gIENhbG9yaWVzID0gY29sX2RvdWJsZSgpLFxuICBgVG90YWwgRmF0IChnKWAgPSBjb2xfY2hhcmFjdGVyKCksXG4gIGBUcmFucyBGYXQgKGcpYCA9IGNvbF9kb3VibGUoKSxcbiAgYFNhdHVyYXRlZCBGYXQgKGcpYCA9IGNvbF9kb3VibGUoKSxcbiAgYFNvZGl1bSAobWcpYCA9IGNvbF9kb3VibGUoKSxcbiAgYFRvdGFsIENhcmJvaHlkcmF0ZXMgKGcpYCA9IGNvbF9kb3VibGUoKSxcbiAgYENob2xlc3Rlcm9sIChtZylgID0gY29sX2RvdWJsZSgpLFxuICBgRGlldGFyeSBGaWJyZSAoZylgID0gY29sX2RvdWJsZSgpLFxuICBgU3VnYXJzIChnKWAgPSBjb2xfZG91YmxlKCksXG4gIGBQcm90ZWluIChnKWAgPSBjb2xfZG91YmxlKCksXG4gIGBWaXRhbWluIEEgKCUgRFYpYCA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgYFZpdGFtaW4gQyAoJSBEVilgID0gY29sX2NoYXJhY3RlcigpLFxuICBgQ2FsY2l1bSAoJSBEVilgID0gY29sX2NoYXJhY3RlcigpLFxuICBgSXJvbiAoJSBEVilgID0gY29sX2NoYXJhY3RlcigpLFxuICBgQ2FmZmVpbmUgKG1nKWAgPSBjb2xfY2hhcmFjdGVyKClcbilcbiJ9 -->
+<pre><code>
+── Column specification ──────────────────────────────────────────────────
+cols(
+  Beverage_category = col_character(),
+  Beverage = col_character(),
+  Beverage_prep = col_character(),
+  Calories = col_double(),
+  `Total Fat (g)` = col_character(),
+  `Trans Fat (g)` = col_double(),
+  `Saturated Fat (g)` = col_double(),
+  `Sodium (mg)` = col_double(),
+  `Total Carbohydrates (g)` = col_double(),
+  `Cholesterol (mg)` = col_double(),
+  `Dietary Fibre (g)` = col_double(),
+  `Sugars (g)` = col_double(),
+  `Protein (g)` = col_double(),
+  `Vitamin A (% DV)` = col_character(),
+  `Vitamin C (% DV)` = col_character(),
+  `Calcium (% DV)` = col_character(),
+  `Iron (% DV)` = col_character(),
+  `Caffeine (mg)` = col_character()
+)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmlldyhkcmlua3NfbWVudSlcbmRpbShkcmlua3NfbWVudSlcbmBgYCJ9 -->
+<pre class="r"><code>view(drinks_menu)
+dim(drinks_menu)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDI0MiAgMThcbiJ9 -->
+<pre><code>[1] 242  18</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChkcmlua3NfbWVudSlcbmBgYCJ9 -->
+<pre class="r"><code>head(drinks_menu)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6MTh9LCJyZGYiOiJINHNJQUFBQUFBQUFBNjFWM1k3U1FCU2VCY3J1Z2lDZ3lYclpHRW53Z29ZZlY3MER0NGd4VWFNTFM5WXJNN1FETkpRT21RNnUzUEVhK2dTK2duY21Qb0l2NENONDdjWGlUTnVwbmVvR2xuaVNjczU4Wjc1enpuRGFNNmVkODJibVBBTUFTSUlVU0lDa3dreWduUFc3MWNjQXBCSnNzY2NjaDF4L1lKdHVNYVBFbmdKNzBvRWpyZVBSQ0tGcnI0NTBHN3F1WmFoUDNUbEJyb3ZWRHJHY3FidkpMV2ZQblJCMGdVeFZDcjB6Q0ZZY3ZLSEQwZWpiWi9VRnBQUUtUS3BCNlUwd29jRWkxWWUyTFE3OGpFREhGTG1VQVhLb0ZTeUtIa2Q5aFowUnBPcEx5NTRHanYxRzJWOENrT2NoMmdmQWszWWgwTGRqK3MzSzEyK0JrR2h0eVpwVzM4VnNhc2VpQXJCQldsOCtjdm5VL2dOdHhZdnp0K1dGSjlma2ZDRis3d3A5K3RYWFoyMkp0ekZmTE02MnZIL0lkdm51eWxyd1d0K2JuclIrK0dEcnA2emJkMlFONURjaFVTdHZaU1hyc3JsYkZObTZWb3hHbUw1Ums4ei9YMG15L3VnNHpQQ3dGcjc4emRCOFVCZG1JdHpLTFhrNEtnNmNJVEdhU3VJVFAwSHZFWUZqOU02QUZJMHhXUWFPQStFSWg1RFl5Q2JkWEd6U29ZMkpoY1E4elBVeGhiYmFaZE9pTXI0ZmdtekF1REd3MklOMFFWaEtNK2JJOXJCcExXWnFaUlpDUjM1VUhaSWhuaXhOem5JampJSSt3VFp5S1NMWWp0S0tIUXRSU0pacTF4b1NGQ0ZrZW9zeEpORVEyZGNFVTJRNTBhZ0RpOElaZzU2b2xiTGFHZnlGNnpLZVozK0Y0UlVlUmJQUENYWmtLTWVITk11Ri9GcmxIaDBTZktHSlB1VjRHMWZzWjcxZS80bzMwK0EzVDlCTUFXWk1TS0UySW96UFZwY3h5ajZlVXdzN2pKVGdWNlFTSSsrUkdIQno0ZkJLektveFdUalRhb01uOE55KzVBSTdIYkZMZnNyRU9naWxpRHNHT1dOMllsRzdEWWRJWEQ5NWRtTHZ3TnFjWFozaWdzb3cxTlVvNzd0QURHd0x4RHNidVB3TnJ6YjdtaGtJQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["Total Fat (g)"],"name":[5],"type":["chr"],"align":["left"]},{"label":["Trans Fat (g)"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["Saturated Fat (g)"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["Sodium (mg)"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["Total Carbohydrates (g)"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["Cholesterol (mg)"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["Dietary Fibre (g)"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["Sugars (g)"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["Protein (g)"],"name":[13],"type":["dbl"],"align":["right"]},{"label":["Vitamin A (% DV)"],"name":[14],"type":["chr"],"align":["left"]},{"label":["Vitamin C (% DV)"],"name":[15],"type":["chr"],"align":["left"]},{"label":["Calcium (% DV)"],"name":[16],"type":["chr"],"align":["left"]},{"label":["Iron (% DV)"],"name":[17],"type":["chr"],"align":["left"]},{"label":["Caffeine (mg)"],"name":[18],"type":["chr"],"align":["left"]}],"data":[{"1":"Coffee","2":"Brewed Coffee","3":"Short","4":"3","5":"0.1","6":"0.0","7":"0.0","8":"0","9":"5","10":"0","11":"0","12":"0","13":"0.3","14":"0%","15":"0%","16":"0%","17":"0%","18":"175"},{"1":"Coffee","2":"Brewed Coffee","3":"Tall","4":"4","5":"0.1","6":"0.0","7":"0.0","8":"0","9":"10","10":"0","11":"0","12":"0","13":"0.5","14":"0%","15":"0%","16":"0%","17":"0%","18":"260"},{"1":"Coffee","2":"Brewed Coffee","3":"Grande","4":"5","5":"0.1","6":"0.0","7":"0.0","8":"0","9":"10","10":"0","11":"0","12":"0","13":"1.0","14":"0%","15":"0%","16":"0%","17":"0%","18":"330"},{"1":"Coffee","2":"Brewed Coffee","3":"Venti","4":"5","5":"0.1","6":"0.0","7":"0.0","8":"0","9":"10","10":"0","11":"0","12":"0","13":"1.0","14":"0%","15":"0%","16":"2%","17":"0%","18":"410"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Short Nonfat Milk","4":"70","5":"0.1","6":"0.1","7":"0.0","8":"5","9":"75","10":"10","11":"0","12":"9","13":"6.0","14":"10%","15":"0%","16":"20%","17":"0%","18":"75"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"2% Milk","4":"100","5":"3.5","6":"2.0","7":"0.1","8":"15","9":"85","10":"10","11":"0","12":"9","13":"6.0","14":"10%","15":"0%","16":"20%","17":"0%","18":"75"}],"options":{"columns":{"min":{},"max":[10],"total":[18]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMoZHJpbmtzX21lbnUpXG5gYGAifQ== -->
+<pre class="r"><code>names(drinks_menu)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiIFsxXSBcIkJldmVyYWdlX2NhdGVnb3J5XCIgICAgICAgXCJCZXZlcmFnZVwiICAgICAgICAgICAgICAgXG4gWzNdIFwiQmV2ZXJhZ2VfcHJlcFwiICAgICAgICAgICBcIkNhbG9yaWVzXCIgICAgICAgICAgICAgICBcbiBbNV0gXCJUb3RhbCBGYXQgKGcpXCIgICAgICAgICAgIFwiVHJhbnMgRmF0IChnKVwiICAgICAgICAgIFxuIFs3XSBcIlNhdHVyYXRlZCBGYXQgKGcpXCIgICAgICAgXCJTb2RpdW0gKG1nKVwiICAgICAgICAgICAgXG4gWzldIFwiVG90YWwgQ2FyYm9oeWRyYXRlcyAoZylcIiBcIkNob2xlc3Rlcm9sIChtZylcIiAgICAgICBcblsxMV0gXCJEaWV0YXJ5IEZpYnJlIChnKVwiICAgICAgIFwiU3VnYXJzIChnKVwiICAgICAgICAgICAgIFxuWzEzXSBcIlByb3RlaW4gKGcpXCIgICAgICAgICAgICAgXCJWaXRhbWluIEEgKCUgRFYpXCIgICAgICAgXG5bMTVdIFwiVml0YW1pbiBDICglIERWKVwiICAgICAgICBcIkNhbGNpdW0gKCUgRFYpXCIgICAgICAgICBcblsxN10gXCJJcm9uICglIERWKVwiICAgICAgICAgICAgIFwiQ2FmZmVpbmUgKG1nKVwiICAgICAgICAgIFxuIn0= -->
 <pre><code> [1] &quot;Beverage_category&quot;       &quot;Beverage&quot;               
@@ -1839,6 +1882,13 @@ x dplyr::lag()    masks stats::lag()</code></pre>
 <pre class="r"><code>drinks_cal_diff &lt;- mutate(drinks_calories, calorie_diff = 135 - Calories)
 drinks_cal_diff</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MjQyLCJuY29sIjo1fSwicmRmIjoiSDRzSUFBQUFBQUFBQSsxZFhYSVRSeERlR052WUtreE1FcElLUlNxYmxFbWdLTHRTQ1EvaFRiYUlDY0g4eERLWS9GVHdlRFdTRnE5Mmx0WEt4aFJWNFFnNUFvODhwWElFVmJoQWpzQVpPQURPU3RQZld0dG1JOW5Zam0yTktkSHE2YTk3dnVudW1kWFBZdWF2M1BzbWR5OW5XZFl4YTlBYXNJNE54VSt0b1RzTHM1UGZXdGJnUUt5OEV4dEdXL0pSREhxL1pZMGY0L0hqRlJtR0M2cGNsbkxiMmtjRlQ5VHJybU4vVnc5Q1dhOHIrMHJvK2l0MVl6Wm1ZelptWXpibW8yLyt1T2hXZkJFMVFta0FCbUFBQm1BQWFZRDF0QVU0dFNBZXE3Ly90QmVrTUFaak1BWmo2R09EUGpSUEY2dGlSZnIyTlVlVzdCbTVLa05Sa2NiWWg4YlJZazJwcU9vZW9BSGR1MmRuUXhFRURjZHgvVllMejNqU0w4WDg2WU5BZ3pFWWd6R1kvc0Y4bnNiTXVaVnFaSkJISDVuVkcrR0w1eldET1hTWTFCZWdZek9oWE5zcytGc082dmxQRkVTNS9PSzVQU2VpcUIvR0ptanNobktxd2o2LzZFWlYxWWpzeGFvYkJPMjhTMUc3WUxCOWdOV2I0dnhkNGJ1ZUozU1QyT2R2aGZhdHFDcERlOVlUcTZvUnh2aTJ4ZUFOUG8zWHZUWk92VFpkazZIckNGL3Qycmpta3lza2w0Y2pOVEtDVDk4ejlEUEZGZGYzMTFHRzZmZ3BWZURDdmlKT0ZVUW9hdEt6YndqSHFib2lVc2FRWlppTVQ5ZzRqWVdxY3BRbjRtZTlITURHeVRqdGd0TzU3MVhVNFdMQUJweUFMK0xBbWc0Q1Q5ckZ3SFVPb1l0K25aRGIvSTdtclVaTzAwaWhLdHoyRno2ZGI1S004YTJNSDVMeGFpaWxiNng3WmoxRDF0bUc1MDNPU1ZFMmlBT0IrR29MWWo0K3hoS1VuYnpIbWxmS1hWYjFDOGJQK08yTG43N3NmcW0vMnU3OE5GUmZkVzNjUWx0Y0R4dkIvc0NuTXVFM1hHL0Yvc0o0SFc0djNhb1hPMitxNkxqTjVvMk5zWjh1bHpKYzVtUk4rYUtVMGJyL2x5L2R3emtqL1BoUHgrdC8zQTJ5YTRDenQwTGhWK0szbnZIZnlpYjBIbUhPRktOUXJDM0xNRnpmUThSTy8vWGM3bWlmOVBJZTNvQjZBMzJLdDQwR3RoZXd6MzRRcTYyandRME1jRitBdlI4alErM3QwVlU1VG9YdVNSMU5hUFl3b0M5ZWs4bHA2OHA2NjVMZi9yYSt5eWMzeHVtZ08rbHFUK0JkdzR3VS9vSEdwdThPR1NwV1ZSaVJNcmdnUERUNDhOWDROVWdwMlVKM3BSKzUrQ3FuN1dQZlZINVpSTzBYc05nalg1OUxxVVcxWHR0VXgxdlJ0KzMxbnVheGJiOVRiY2JiZHpOck81UnJNMzJjZGhzc0tnL2ZzQTVmVVVIZ3FtNnJ6bHBYTnZOTWJrYzVzMlp0aDNOdE96a2h6S25TUC8xaDFuWTQxOWJqdGp4S2Era1J0bFB5KysyWFZacmNZbFY1Y2tjVGRuWE5MRkJYVDhQV3NQMXZ0anQ0d2R5M29RNVhaWGZFMXJKT3hvOVgrUkdyL1pNZkova0JrejgrMWZLbkRIMjVxZVV2Tkw2VTE3TFNUTnNsamZ0VzJzNzlvQVB2RXI1TTR5c2tBN0o3Rk9jaGpUZG9QTFRUUEhsODhFTDhrcFhXRmVFZjVOTjZSUGJncFpiSTB3VEpLWktYU1Y0anVjRDBteVR2RWgva0ZiamZyRFIvemh0MlB2OU41Z2RjS1dNY3VxRDR5RFBtUVoxUU4rUUhla2gyNUFmK3ZHN0lWMzFKeTZSZU5MNU8rRFZieXlja2Z5ZjdFNW9IZFZ4bU9uaWlIN2J3dE5NOFVjYzF3a2ZQdEVRZVVIZndYTld5MjgrVy9LSnV5RDk0UXNjODRNbjdtK2NMNjhYKzRIejV2c0M2a1dmRTQzbCtST1BvUC9RbDcwZk14K3VBZFlFWHJ3ZjQ3WFY4dnE4UUoydGUxQ2VyWHVoZnpJdjRXZnVVOXlQcWhuMkNlcUJPMkJlUXNIUEorVUJIdi9EK1FaMTUzVFAzWi83Ti9IQ2VvajhRTHl2T1F5WVJCL3NMZlllNFhmbm4wL3BqMG5FZVBDWStxQ3MvNy9pNWlUN2gxeStYNmVDQmZQQytnNDcrd3pxeERwNS9uRGRaMXpYeXMzQmRYcUx4SllxRHZvSzhUWEw2NlJ2MUpyOE8wWFdpZVQxdGJ3TC9jejVsNTM3UUV6ek4xNXdsL1E3cDkwa3VOclZjdHJWMG4ybnBMS1Y1OC9qZ2hmaVhtZjRyeFoxdnB2VUt6YlAwVXNkRG5valBsdjFOZlBQWG1VNXg4N1N1SksvQUlhL2d6M2duZGo0LzRzSVA2MFNlMlhoU1I5UU5lWVlmNm9pNklUL1FTOCswUkg3Z3ordEcrV3BLa3FqWEE5S0RQN1NzTFdsWi8wdkx0VURMNkxibUM1N2d6L3NOL2NCNVVqOXNxYU5QL0t0a1J6elVIVHc5TGZOSjNUTWt6eS9xQmdtZTBERVBlUEwrWnZsSzFzdnJoamg4WDJEZHlEUGk4VHdyNG8vK1ExK3lmc1I4dkE3SnVzQ0wxd045dWRmeCtiNUN2S3g1c1MreTZvWCtSVjM1T3ZnKzVmMkkvc0UrUVQxUUord0xTTmk1NUh5Z28xOTQvNkRPdk81Wit4TjhPRCtjcDRyRnk0cUQ5VUlpRHZZWCtnNXh1L0VIRHZyRGY3U2s4NkFaQm0yWjFKV2ZkL3k4Witmamx1c0FkUEJBUG5qZlFVZi9ZWjFZQjg4L3pwdXM2eHI1c1Yvc1ArU0xXdXYzZGJYdldoakNPM3Y4aHJIN2pvaGtSWVhyWkJpQmdmU3hCQmlFRW5mbWpCU0VwOExOWHd0Mnd0SDYvWkpiTHJQcFIwTzFOZ1VLWS9Gam9NVjJZMlBqSk9mcHRHNDZKWjRZekpWRUpLYktyUnVIWXUwMWN6bXVnc2hWZnV3MDBQay9GeVQvcFVISUJ0NXQrQzBtcFVtbjJ2QlhKaSsxSm1pYjljOFlQWC9WOFh4SVR6bXd3Ukk0TFAySzZ5ZWZHbnRpT2JtejZXUzg0dmFDcDRMUTlmSGxWeTRlclU5RktoTEE1UnpsWWFTOU51djF2elhoOWRLd1lRQUEifQ== -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["calorie_diff"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"Coffee","2":"Brewed Coffee","3":"Short","4":"3","5":"132"},{"1":"Coffee","2":"Brewed Coffee","3":"Tall","4":"4","5":"131"},{"1":"Coffee","2":"Brewed Coffee","3":"Grande","4":"5","5":"130"},{"1":"Coffee","2":"Brewed Coffee","3":"Venti","4":"5","5":"130"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Short Nonfat Milk","4":"70","5":"65"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"2% Milk","4":"100","5":"35"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Soymilk","4":"70","5":"65"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Tall Nonfat Milk","4":"100","5":"35"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"2% Milk","4":"150","5":"-15"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Soymilk","4":"110","5":"25"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Grande Nonfat Milk","4":"130","5":"5"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"2% Milk","4":"190","5":"-55"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Soymilk","4":"150","5":"-15"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Venti Nonfat Milk","4":"170","5":"-35"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"2% Milk","4":"240","5":"-105"},{"1":"Classic Espresso Drinks","2":"Caffè Latte","3":"Soymilk","4":"190","5":"-55"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Short Nonfat Milk","4":"110","5":"25"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"2% Milk","4":"130","5":"5"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Soymilk","4":"110","5":"25"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"170","5":"-35"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"2% Milk","4":"200","5":"-65"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Soymilk","4":"180","5":"-45"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"220","5":"-85"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"2% Milk","4":"260","5":"-125"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Soymilk","4":"230","5":"-95"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"280","5":"-145"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"2% Milk","4":"340","5":"-205"},{"1":"Classic Espresso Drinks","2":"Caffè Mocha (Without Whipped Cream)","3":"Soymilk","4":"290","5":"-155"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Short Nonfat Milk","4":"100","5":"35"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"2% Milk","4":"130","5":"5"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Soymilk","4":"110","5":"25"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Tall Nonfat Milk","4":"150","5":"-15"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"2% Milk","4":"200","5":"-65"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Soymilk","4":"160","5":"-25"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Grande Nonfat Milk","4":"200","5":"-65"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"2% Milk","4":"250","5":"-115"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Soymilk","4":"210","5":"-75"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Venti Nonfat Milk","4":"250","5":"-115"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"2% Milk","4":"320","5":"-185"},{"1":"Classic Espresso Drinks","2":"Vanilla Latte (Or Other Flavoured Latte)","3":"Soymilk","4":"270","5":"-135"},{"1":"Classic Espresso Drinks","2":"Caffè Americano","3":"Short","4":"5","5":"130"},{"1":"Classic Espresso Drinks","2":"Caffè Americano","3":"Tall","4":"10","5":"125"},{"1":"Classic Espresso Drinks","2":"Caffè Americano","3":"Grande","4":"15","5":"120"},{"1":"Classic Espresso Drinks","2":"Caffè Americano","3":"Venti","4":"25","5":"110"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Short Nonfat Milk","4":"50","5":"85"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"2% Milk","4":"80","5":"55"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Soymilk","4":"50","5":"85"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Tall Nonfat Milk","4":"60","5":"75"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"2% Milk","4":"90","5":"45"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Soymilk","4":"70","5":"65"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Grande Nonfat Milk","4":"80","5":"55"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"2% Milk","4":"120","5":"15"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Soymilk","4":"100","5":"35"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Venti Nonfat Milk","4":"110","5":"25"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"2% Milk","4":"150","5":"-15"},{"1":"Classic Espresso Drinks","2":"Cappuccino","3":"Soymilk","4":"120","5":"15"},{"1":"Classic Espresso Drinks","2":"Espresso","3":"Solo","4":"5","5":"130"},{"1":"Classic Espresso Drinks","2":"Espresso","3":"Doppio","4":"10","5":"125"},{"1":"Classic Espresso Drinks","2":"Skinny Latte (Any Flavour)","3":"Short Nonfat Milk","4":"60","5":"75"},{"1":"Classic Espresso Drinks","2":"Skinny Latte (Any Flavour)","3":"Tall Nonfat Milk","4":"100","5":"35"},{"1":"Classic Espresso Drinks","2":"Skinny Latte (Any Flavour)","3":"Grande Nonfat Milk","4":"120","5":"15"},{"1":"Classic Espresso Drinks","2":"Skinny Latte (Any Flavour)","3":"Venti Nonfat Milk","4":"160","5":"-25"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Short Nonfat Milk","4":"100","5":"35"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"2% Milk","4":"120","5":"15"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Soymilk","4":"100","5":"35"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Tall Nonfat Milk","4":"140","5":"-5"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"2% Milk","4":"180","5":"-45"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Soymilk","4":"150","5":"-15"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Grande Nonfat Milk","4":"190","5":"-55"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"2% Milk","4":"240","5":"-105"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Soymilk","4":"200","5":"-65"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Venti Nonfat Milk","4":"240","5":"-105"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"2% Milk","4":"300","5":"-165"},{"1":"Signature Espresso Drinks","2":"Caramel Macchiato","3":"Soymilk","4":"250","5":"-115"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Short Nonfat Milk","4":"180","5":"-45"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"200","5":"-65"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Soymilk","4":"180","5":"-45"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"270","5":"-135"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"310","5":"-175"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Soymilk","4":"280","5":"-145"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"350","5":"-215"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"400","5":"-265"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Soymilk","4":"370","5":"-235"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"450","5":"-315"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"510","5":"-375"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Soymilk","4":"460","5":"-325"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Short Nonfat Milk","4":"130","5":"5"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"2% Milk","4":"150","5":"-15"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Soymilk","4":"130","5":"5"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"190","5":"-55"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"2% Milk","4":"230","5":"-95"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Soymilk","4":"200","5":"-65"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"240","5":"-105"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"2% Milk","4":"290","5":"-155"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Soymilk","4":"250","5":"-115"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"320","5":"-185"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"2% Milk","4":"380","5":"-245"},{"1":"Signature Espresso Drinks","2":"Hot Chocolate (Without Whipped Cream)","3":"Soymilk","4":"330","5":"-195"},{"1":"Signature Espresso Drinks","2":"Caramel Apple Spice (Without Whipped Cream)","3":"Short","4":"140","5":"-5"},{"1":"Signature Espresso Drinks","2":"Caramel Apple Spice (Without Whipped Cream)","3":"Tall","4":"210","5":"-75"},{"1":"Signature Espresso Drinks","2":"Caramel Apple Spice (Without Whipped Cream)","3":"Grande","4":"280","5":"-145"},{"1":"Signature Espresso Drinks","2":"Caramel Apple Spice (Without Whipped Cream)","3":"Venti","4":"360","5":"-225"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Short","4":"0","5":"135"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Tall","4":"0","5":"135"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Grande","4":"0","5":"135"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Venti","4":"0","5":"135"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Short Nonfat Milk","4":"100","5":"35"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"2% Milk","4":"120","5":"15"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Soymilk","4":"110","5":"25"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Tall Nonfat Milk","4":"160","5":"-25"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"2% Milk","4":"190","5":"-55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Soymilk","4":"160","5":"-25"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Grande Nonfat Milk","4":"210","5":"-75"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"2% Milk","4":"240","5":"-105"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Soymilk","4":"220","5":"-85"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Venti Nonfat Milk","4":"260","5":"-125"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"2% Milk","4":"310","5":"-175"},{"1":"Tazo® Tea Drinks","2":"Tazo® Chai Tea Latte","3":"Soymilk","4":"280","5":"-145"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Short Nonfat Milk","4":"130","5":"5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"2% Milk","4":"170","5":"-35"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Soymilk","4":"140","5":"-5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Tall Nonfat Milk","4":"210","5":"-75"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"2% Milk","4":"260","5":"-125"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Soymilk","4":"230","5":"-95"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Grande Nonfat Milk","4":"290","5":"-155"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"2% Milk","4":"350","5":"-215"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Soymilk","4":"310","5":"-175"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Venti Nonfat Milk","4":"370","5":"-235"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"2% Milk","4":"450","5":"-315"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Soymilk","4":"390","5":"-255"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Short Nonfat Milk","4":"80","5":"55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"2% Milk","4":"90","5":"45"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Soymilk","4":"80","5":"55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Tall Nonfat Milk","4":"120","5":"15"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"2% Milk","4":"140","5":"-5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Soymilk","4":"130","5":"5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Grande Nonfat Milk","4":"150","5":"-15"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"2% Milk","4":"190","5":"-55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Soymilk","4":"170","5":"-35"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Venti Nonfat Milk","4":"190","5":"-55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"2% Milk","4":"230","5":"-95"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Tea Latte","3":"Soymilk","4":"210","5":"-75"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Short Nonfat Milk","4":"80","5":"55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"2% Milk","4":"90","5":"45"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Soymilk","4":"80","5":"55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Tall Nonfat Milk","4":"120","5":"15"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"2% Milk","4":"140","5":"-5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Soymilk","4":"130","5":"5"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Grande Nonfat Milk","4":"150","5":"-15"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"2% Milk","4":"190","5":"-55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Soymilk","4":"170","5":"-35"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Venti Nonfat Milk","4":"190","5":"-55"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"2% Milk","4":"230","5":"-95"},{"1":"Tazo® Tea Drinks","2":"Tazo® Full-Leaf Red Tea Latte (Vanilla Rooibos)","3":"Soymilk","4":"210","5":"-75"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Classic Syrup)","3":"Tall","4":"60","5":"75"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Classic Syrup)","3":"Grande","4":"90","5":"45"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Classic Syrup)","3":"Venti","4":"130","5":"5"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Tall Nonfat Milk","4":"80","5":"55"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"2% Milk","4":"90","5":"45"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Soymilk","4":"80","5":"55"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Grande Nonfat Milk","4":"110","5":"25"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"2% Milk","4":"120","5":"15"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Soymilk","4":"110","5":"25"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Venti Nonfat Milk","4":"160","5":"-25"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"2% Milk","4":"180","5":"-45"},{"1":"Shaken Iced Beverages","2":"Iced Brewed Coffee (With Milk & Classic Syrup)","3":"Soymilk","4":"170","5":"-35"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea (With Classic Syrup)","3":"Tall","4":"60","5":"75"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea (With Classic Syrup)","3":"Grande","4":"80","5":"55"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea (With Classic Syrup)","3":"Venti","4":"120","5":"15"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea Lemonade (With Classic Syrup)","3":"Tall","4":"100","5":"35"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea Lemonade (With Classic Syrup)","3":"Grande","4":"130","5":"5"},{"1":"Shaken Iced Beverages","2":"Shaken Iced Tazo® Tea Lemonade (With Classic Syrup)","3":"Venti","4":"190","5":"-55"},{"1":"Smoothies","2":"Banana Chocolate Smoothie","3":"Grande Nonfat Milk","4":"280","5":"-145"},{"1":"Smoothies","2":"Banana Chocolate Smoothie","3":"2% Milk","4":"300","5":"-165"},{"1":"Smoothies","2":"Banana Chocolate Smoothie","3":"Soymilk","4":"290","5":"-155"},{"1":"Smoothies","2":"Orange Mango Banana Smoothie","3":"Grande Nonfat Milk","4":"260","5":"-125"},{"1":"Smoothies","2":"Orange Mango Banana Smoothie","3":"2% Milk","4":"270","5":"-135"},{"1":"Smoothies","2":"Orange Mango Banana Smoothie","3":"Soymilk","4":"270","5":"-135"},{"1":"Smoothies","2":"Strawberry Banana Smoothie","3":"Grande Nonfat Milk","4":"290","5":"-155"},{"1":"Smoothies","2":"Strawberry Banana Smoothie","3":"2% Milk","4":"290","5":"-155"},{"1":"Smoothies","2":"Strawberry Banana Smoothie","3":"Soymilk","4":"290","5":"-155"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Tall Nonfat Milk","4":"160","5":"-25"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Whole Milk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Soymilk","4":"160","5":"-25"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Grande Nonfat Milk","4":"220","5":"-85"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Whole Milk","4":"240","5":"-105"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Soymilk","4":"220","5":"-85"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Venti Nonfat Milk","4":"310","5":"-175"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Whole Milk","4":"350","5":"-215"},{"1":"Frappuccino® Blended Coffee","2":"Coffee","3":"Soymilk","4":"310","5":"-175"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Whole Milk","4":"200","5":"-65"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Soymilk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"260","5":"-125"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Whole Milk","4":"290","5":"-155"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Soymilk","4":"260","5":"-125"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"340","5":"-205"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Whole Milk","4":"390","5":"-255"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Soymilk","4":"350","5":"-215"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Whole Milk","4":"200","5":"-65"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Soymilk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"280","5":"-145"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Whole Milk","4":"280","5":"-145"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Soymilk","4":"260","5":"-125"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"330","5":"-195"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Whole Milk","4":"370","5":"-235"},{"1":"Frappuccino® Blended Coffee","2":"Caramel (Without Whipped Cream)","3":"Soymilk","4":"340","5":"-205"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"220","5":"-85"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Whole Milk","4":"240","5":"-105"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Soymilk","4":"220","5":"-85"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"310","5":"-175"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Whole Milk","4":"340","5":"-205"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Soymilk","4":"310","5":"-175"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"420","5":"-285"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Whole Milk","4":"460","5":"-325"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Soymilk","4":"430","5":"-295"},{"1":"Frappuccino® Light Blended Coffee","2":"Coffee","3":"Tall Nonfat Milk","4":"90","5":"45"},{"1":"Frappuccino® Light Blended Coffee","2":"Coffee","3":"Grande Nonfat Milk","4":"120","5":"15"},{"1":"Frappuccino® Light Blended Coffee","2":"Coffee","3":"Venti Nonfat Milk","4":"160","5":"-25"},{"1":"Frappuccino® Light Blended Coffee","2":"Mocha","3":"Tall Nonfat Milk","4":"110","5":"25"},{"1":"Frappuccino® Light Blended Coffee","2":"Mocha","3":"Grande Nonfat Milk","4":"150","5":"-15"},{"1":"Frappuccino® Light Blended Coffee","2":"Mocha","3":"Venti Nonfat Milk","4":"210","5":"-75"},{"1":"Frappuccino® Light Blended Coffee","2":"Caramel","3":"Tall Nonfat Milk","4":"100","5":"35"},{"1":"Frappuccino® Light Blended Coffee","2":"Caramel","3":"Grande Nonfat Milk","4":"150","5":"-15"},{"1":"Frappuccino® Light Blended Coffee","2":"Caramel","3":"Venti Nonfat Milk","4":"200","5":"-65"},{"1":"Frappuccino® Light Blended Coffee","2":"Java Chip","3":"Tall Nonfat Milk","4":"150","5":"-15"},{"1":"Frappuccino® Light Blended Coffee","2":"Java Chip","3":"Grande Nonfat Milk","4":"220","5":"-85"},{"1":"Frappuccino® Light Blended Coffee","2":"Java Chip","3":"Venti Nonfat Milk","4":"290","5":"-155"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"170","5":"-35"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Whole Milk","4":"190","5":"-55"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Soymilk","4":"170","5":"-35"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"230","5":"-95"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Whole Milk","4":"260","5":"-125"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Soymilk","4":"240","5":"-105"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"310","5":"-175"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Whole Milk","4":"350","5":"-215"},{"1":"Frappuccino® Blended Crème","2":"Strawberries & Crème (Without Whipped Cream)","3":"Soymilk","4":"320","5":"-185"},{"1":"Frappuccino® Blended Crème","2":"Vanilla Bean (Without Whipped Cream)","3":"Tall Nonfat Milk","4":"170","5":"-35"},{"1":"Frappuccino® Blended Crème","2":"Vanilla Bean (Without Whipped Cream)","3":"Whole Milk","4":"200","5":"-65"},{"1":"Frappuccino® Blended Crème","2":"Vanilla Bean (Without Whipped Cream)","3":"Soymilk","4":"180","5":"-45"},{"1":"Frappuccino® Blended Crème","2":"Vanilla Bean (Without Whipped Cream)","3":"Grande Nonfat Milk","4":"240","5":"-105"}],"options":{"columns":{"min":{},"max":[10],"total":[5]},"rows":{"min":[10],"max":[10],"total":[242]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
@@ -1849,297 +1899,241 @@ drinks_cal_diff</code></pre>
 </ul>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuXG5ncm91cF9ieShkcmlua3NfY2FsX2RpZmYsIEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgXG4gIHN1bW1hcmlzZShtZWFuKENhbG9yaWVzKSkgXG5gYGBcbmBgYCJ9 -->
-<pre class="r"><code>```r
-
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5ncm91cF9ieShkcmlua3NfY2FsX2RpZmYsIEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgXG4gIHN1bW1hcmlzZShtZWFuKENhbG9yaWVzKSkgXG5gYGAifQ== -->
+<pre class="r"><code>
 group_by(drinks_cal_diff, Beverage_category) %&gt;% 
   summarise(mean(Calories)) </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== --&gt;
-</code></pre>
-<p><code>summarise()</code> ungrouping output (override with <code>.groups</code> argument)</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuTkFcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-NA</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6OSwibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0MVN2MHZEUUJRK28xRlNVQ3dpSW5RSUx1clFncmpvRnF4V0JFR3hGVG9JOGt5dTZkSGtMcjFjNjQrcGd3NHUvZ1hxNHVMa0g2R0QvNEs3dTZ1YjlTN0pnUVlFRDVKNzk3M3Z2ZSs5ZTNldzJWd3ROQXNJb1ZFMGhndzBha29UbVllTldua05vVEZESGtha3cxTDdtU1ROU0VPQjAvS3pNc2RjTllBNEpxNjlGVWNjeHpHek56bWhuVGh6ajFkWnE0VXhRZ04xS3RVNFJGSFBkUWxsejAvMlJvQ3BoejM3WHh6KzhoaHF6c0p2emk3eDJ5S2ZMZFdmcmJlaGc2bTk0MHJQQnU1akRqN1d4YzNYaVU5QjlEaitvM3FySGpJbTJrUkdwTUxGQmx3b3hRWUd6VVJvU2pFZHVMb2tIODF0cDRpUzVYVDNTdDNYRW5mQ2hmN2lTWC9SOGZaVC9PaFd3dDFYaHprWjcrRm03ZjFtM1drdHY5MWR2OTNuN3Qya0VDcjE1TTZOREN6cVJvNWRFTmhuL0R4elRJVVk2RklWQXNabHpjdTVYQlpucHhXZGIxTGxHOGpmY0RqOHpJdTZhcWFacUFZTEhnaW90RGlvS2FDdlhNZ0Vpd1JoVkFZWjZwV1l1ZUFSbmdPbWUxUlY0cFhkZG85MnlpdXJTaUh4cDJzeXM2MGZ0cEZxR3NNc2w2bmZHS1krb1hyaVpnQW5PTkFYSWx0T09xNUVjbHBDdHlMUnVDS1lBTTBydUN6UVNOSWMrdm9HRW84MnRoMERBQUE9In0= --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_category&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;mean(Calories)&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;Classic Espresso Drinks&quot;,&quot;2&quot;:&quot;140.1724&quot;},{&quot;1&quot;:&quot;Coffee&quot;,&quot;2&quot;:&quot;4.2500&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Coffee&quot;,&quot;2&quot;:&quot;276.9444&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Crème&quot;,&quot;2&quot;:&quot;233.0769&quot;},{&quot;1&quot;:&quot;Frappuccino® Light Blended Coffee&quot;,&quot;2&quot;:&quot;162.5000&quot;},{&quot;1&quot;:&quot;Shaken Iced Beverages&quot;,&quot;2&quot;:&quot;114.4444&quot;},{&quot;1&quot;:&quot;Signature Espresso Drinks&quot;,&quot;2&quot;:&quot;250.0000&quot;},{&quot;1&quot;:&quot;Smoothies&quot;,&quot;2&quot;:&quot;282.2222&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;177.3077&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[2]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[9]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-* STUCK!!! - how do you find the mean of a subset of observations? - infact that may be right. - Can&#39;t arrange by &quot;mean(Calories)&quot; column
-
-* Most/ least calorific, 
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxudG9wXzMgPC0gYXJyYW5nZShkcmlua3NfY2Fsb3JpZXMsIGRlc2MoQ2Fsb3JpZXMpKSAlPiUgXG4gIGhlYWQoMTApICU+JSBcbiAgcHJpbnQoKVxuYGBgXG5gYGByXG5ib3R0b21fMyA8LSBhcnJhbmdlKGRyaW5rc19jYWxvcmllcywgQ2Fsb3JpZXMpICU+JSBcbiAgaGVhZCgxMCkgJT4lIFxuICBwcmludCgpXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-top_3 &lt;- arrange(drinks_calories, desc(Calories)) %&gt;% 
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6OSwibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUE0MVNPMHZFUUJCZW8xRnk0T01RRWVHS1lLTVdkNDBJMm9VN0h3aUM0cDF3aFNCanNwZGJMdG5OYmZiT1IyV2hoWTIvUUcxc3JQd1JXdmdYN08xdDdUeDNreXhvUUhBaDJkbHZ2cGx2Wm1mMzE1dkxoV1lCSVRTTVJwQ0JoazFwSXZPZ3NWbGVSV2pFa0ljaDZiRFVmaXBKMDlKUTRKVDhyTXd4V3dzZ2pvbHJiOFFSeDNITTdIVk9hQ2ZPM0tNMTFtcGhqTkNGT3BVMk9VUlJ6M1VKWmM5UGRqWEExTU9lL1M4T2Yza01OV2YrTjJlSCtHMlJ6NWJxejlUYjBNSFUzbmFscDRyN21JT1BkWEZ6ZGVKVEVEMk8vNmplcW9lTWlUYVJFYWx3c1FIblNyR0JRVE1SbWxCTUI2NHV5VWR6eXltaVpEbmQzVkwzdGNTZGNMNi9jTnhmY0x5OUZEKzhsWEQzMVdGT3hudTRXWDIvV1hOYVMyOTMxMi8zdVhzM0tZUktQYmx6SXdPTHVwRWpGd1QyR1QvTEhCTWhCcnBZZzRCeFdmTlNMcGZGMlVsRjV4dFgrUzdrYnpBWWZPWkZYVFhUVEZTREJROEVWRm9jMUJUUVZ5NWtqRVdDTUNxRERQVkt6Rnp3RU04Qmt6MnFLdkhLYnJ0SE8rVVZKWkM0MHpXZTJkWVAyMGdsalVHV3l0UlBERk9mVUQxd000QmpIT2o3a0IwbkRWY2lPU3loTzVGb1hCRk1nT1lWWEJab0pPa05mWDBEUEtNKyt4d0RBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean(Calories)"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Classic Espresso Drinks","2":"140.1724"},{"1":"Coffee","2":"4.2500"},{"1":"Frappuccino® Blended Coffee","2":"276.9444"},{"1":"Frappuccino® Blended Crème","2":"233.0769"},{"1":"Frappuccino® Light Blended Coffee","2":"162.5000"},{"1":"Shaken Iced Beverages","2":"114.4444"},{"1":"Signature Espresso Drinks","2":"250.0000"},{"1":"Smoothies","2":"282.2222"},{"1":"Tazo® Tea Drinks","2":"177.3077"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[9]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
+<pre class="r"><code>NA</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li>Most/ least calorific,</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudG9wXzMgPC0gYXJyYW5nZShkcmlua3NfY2Fsb3JpZXMsIGRlc2MoQ2Fsb3JpZXMpKSAlPiUgXG4gIGhlYWQoMTApICU+JSBcbiAgcHJpbnQoKVxuYGBgIn0= -->
+<pre class="r"><code>top_3 &lt;- arrange(drinks_calories, desc(Calories)) %&gt;% 
   head(10) %&gt;% 
   print()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBODFVM1dvVFFSU2VibmV0WFVpMUNBVkJZYndROUNLNVVCQXZRMU1yaVBYQ1J0TTdQVzVPc2tNMk04dnNiRzFDd1Q2Unp5QStpVS9oWmVPWjdJeG05OEphRlhSaDl2eCs1MjkrWHU0ZFBZeVBZc2JZT2d0WndOWWpZbG4wcXIvZmZzeFlHSkN3Um9aTlMwL0k2UVl4SWEzcnRHSm51SGtveGhKTXFaRS9LWEtOUmFING5oWnlVbHpzd002c3c2MTlEWGxlSm9tUTZ2Tkh2cHVoSE9LUTk5Um9oUGlyUWJiN01MZm9Qc0psb3Y4SEZkU20yUjZrd2lEdnBTcFJHUkIzb0pJVStMMkJNS2txRFNkem5sdXdScGplL3hQUW5XZHdESVFSK2QrTlh2Vzg0NGJ4VkNQSzVVaWVnekY0MmR6L3NzamJGNFNvN2R2R2c3djhRR1FUTHg2cTJmU0hHQTlTbGVHcXcvWnJsRWJ3RjBxT3dOU1FQdzMwbTdEVi9JeHRXVTMzd3hkNzExbjM5Rk9EOGpxZE83OTV0Nkl6VnRHVHR6WGFlQzRpQ1ZNczNKQkNYLzB1SHFPR01iNUphSXZHU3MrYzRhbzNPTG4xM1pFdVd1NmRlcEFwTFd6VVdxcE5yZDUzZkxvV3JlQ01mb3ZGNG11enBpU0R3dGZrbGZFUURIUkdtdkFrblRjZ0d5bzNRa2tDQmZidGl4cmdOZDFRWEN1bHJXVFlUdEpTVHRxUGxpZkVtcXV2NWZoNGhRK3JsTUhDaFlwY3FDc294MEw2aVVRWnZNUE1DVnZVOGJMaFRrN3ZqUEdka0xib0dHWEErOFYwRjd4bTJSczcvd1lNTXFtWDhnVUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"510"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Soymilk","4":"460"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Whole Milk","4":"460"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"450"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"2% Milk","4":"450"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Soymilk","4":"430"},{"1":"Frappuccino® Blended Coffee","2":"Java Chip (Without Whipped Cream)","3":"Venti Nonfat Milk","4":"420"},{"1":"Signature Espresso Drinks","2":"White Chocolate Mocha (Without Whipped Cream)","3":"2% Milk","4":"400"},{"1":"Tazo® Tea Drinks","2":"Tazo® Green Tea Latte","3":"Soymilk","4":"390"},{"1":"Frappuccino® Blended Coffee","2":"Mocha (Without Whipped Cream)","3":"Whole Milk","4":"390"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYm90dG9tXzMgPC0gYXJyYW5nZShkcmlua3NfY2Fsb3JpZXMsIENhbG9yaWVzKSAlPiUgXG4gIGhlYWQoMTApICU+JSBcbiAgcHJpbnQoKVxuYGBgIn0= -->
 <pre class="r"><code>bottom_3 &lt;- arrange(drinks_calories, Calories) %&gt;% 
   head(10) %&gt;% 
   print()</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBODFVVzJzVFFSU2VibmV0WFVocEVRUkJZWHdROUNFQkx3OTlERTJ0SU5ZSEcwM2Y5TGc1eVE3WnpDeXpzN1VKZ3YxRi9nYnhsL2dyZkd3OGs1M1I3RDVZcTRJdXpKN3JkMjV6ZWJGLy9EQStqaGxqNnl4a0FWdVBpR1hSeS81QmU1ZXhNQ0JoalF5YmxwNlMwelZpUWxyYnRHSm51SEVreGhKTXFaRS9MbktOUmFINHZoWnlVbHpzd002c3c4MEREWGxlSm9tUTZ2Tkh2cGVoSE9LUTk5Um9oUGlyUVhiNk1MZm9Qc0psb3Y4SEZkU20yUjZrd2lEdnBTcFJHUkIzcUpJVStOMkJNS2txRFNkem5sdXdScGplK3hQUTdhZHdBb1FSK2QrTlh2VjgzUTNqaVVhVXk1RThBMlB3c3JuL1paRzNMZ2hSMjdlTkIzZjRvY2dtWGp4U3Mra1BNUjZrS3NOVmg1MVhLSTNnejVVY2dha2hmeHJvTjJHcitSbmJzcHJ1aHkvMnJyUHUrMDhOeXV0MDd2em0zWXJPV0VWUDM5Um80N21JSkV5eGNFTUtmZlY3ZUlJYXh2ZzZvUzBhS3oxemhxdmU0T1RXZDBlNmFMbDM2a0dtdExCUmE2azJ0WHJYOGVsYXRJSXoraTBXaTYvTm1wSU1DbCtUVjhaRE1OQVphY0tUZE42QWJLamNDQ1VKRk5pM0wycUExM1JEc1YxS1c4bXduYVNsbkxUdlAxb2VFV3V2dnBiajR4VStySElHQ3hjcmNyR3VvQndMNlVjU1pmQVdNeWRzVWN2TGpqczVQVFRHdDBMYW9tT1VBZThYMDJYd21tVno3UHdiMUJ3R1pmTUZBQUE9In0= --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_category&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Beverage&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Beverage_prep&quot;],&quot;name&quot;:[3],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Calories&quot;],&quot;name&quot;:[4],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;Signature Espresso Drinks&quot;,&quot;2&quot;:&quot;White Chocolate Mocha (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;2% Milk&quot;,&quot;4&quot;:&quot;510&quot;},{&quot;1&quot;:&quot;Signature Espresso Drinks&quot;,&quot;2&quot;:&quot;White Chocolate Mocha (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Soymilk&quot;,&quot;4&quot;:&quot;460&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Coffee&quot;,&quot;2&quot;:&quot;Java Chip (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Whole Milk&quot;,&quot;4&quot;:&quot;460&quot;},{&quot;1&quot;:&quot;Signature Espresso Drinks&quot;,&quot;2&quot;:&quot;White Chocolate Mocha (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Venti Nonfat Milk&quot;,&quot;4&quot;:&quot;450&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Green Tea Latte&quot;,&quot;3&quot;:&quot;2% Milk&quot;,&quot;4&quot;:&quot;450&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Coffee&quot;,&quot;2&quot;:&quot;Java Chip (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Soymilk&quot;,&quot;4&quot;:&quot;430&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Coffee&quot;,&quot;2&quot;:&quot;Java Chip (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Venti Nonfat Milk&quot;,&quot;4&quot;:&quot;420&quot;},{&quot;1&quot;:&quot;Signature Espresso Drinks&quot;,&quot;2&quot;:&quot;White Chocolate Mocha (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;2% Milk&quot;,&quot;4&quot;:&quot;400&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Green Tea Latte&quot;,&quot;3&quot;:&quot;Soymilk&quot;,&quot;4&quot;:&quot;390&quot;},{&quot;1&quot;:&quot;Frappuccino® Blended Coffee&quot;,&quot;2&quot;:&quot;Mocha (Without Whipped Cream)&quot;,&quot;3&quot;:&quot;Whole Milk&quot;,&quot;4&quot;:&quot;390&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[4]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[10]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuTkFcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-NA</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBNjFUelU3Q1FCQmVTcXZRQkZLamlkZStBRTJNSGp3cVJiMExHbTVtYmJmUVVIYWJiUkgxeE9ONDhpSDBuVHhTcDNRSGJSTkpKRFNaenN3M016dC91N2U5NGFrNU5Ba2hkYUlUamRRTkVJbHhON2p1bkJPaWE2RFV3TkRNK1RNNEhZS2dBMWxBRUxYSURRY0QraW8rM3UwQm8zWlBobnlTN05KUUpOOXpSUkF3OW0vdDJJMW9rb1NlZlpYRWtpV0pLQi83cDduY29mbFQxcFpJa2E3VmxXek9mTHRVNHRaZ2tjVnlhUkI4dnRtWFV5WkRqM0tobkJ2WTBycVhBamY2WXlGVHBlZ0RHa1U0dUJ0SnVZKzVqSHZHMDNCbk1YMFI1WVcwaTZGdS9pNGFpbHVLSDIzbWxYdHFjRHBsdUVGZGdRZGQ5c1FrSGJFSGo2WnNKT1FMamdrTjZ4bWpJMHd2UmllWFJrS0crYW1sVkUwcDVnNm1hd0ZwQy9obFdmWlZyY25MNzVtcUNVSFRweWwxQWdueG9DMHJJZnNpVGtQQklVakxINTFSQ2E3SkNtRE5lRjZKMy9IR016N3BuSnlwVWRmVWpGcEtObi9KZXBGVHk5UlpCcTZWOFZISTEydU42Q1BEamJlaDVWWEhUZ3d2QmZkckFwbzRxVWdwK3BtZWlCQlpOVWVXMy9pb3FkdHNCQUFBIn0= --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_category&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Beverage&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Beverage_prep&quot;],&quot;name&quot;:[3],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;Calories&quot;],&quot;name&quot;:[4],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Tea&quot;,&quot;3&quot;:&quot;Short&quot;,&quot;4&quot;:&quot;0&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Tea&quot;,&quot;3&quot;:&quot;Tall&quot;,&quot;4&quot;:&quot;0&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Tea&quot;,&quot;3&quot;:&quot;Grande&quot;,&quot;4&quot;:&quot;0&quot;},{&quot;1&quot;:&quot;Tazo® Tea Drinks&quot;,&quot;2&quot;:&quot;Tazo® Tea&quot;,&quot;3&quot;:&quot;Venti&quot;,&quot;4&quot;:&quot;0&quot;},{&quot;1&quot;:&quot;Coffee&quot;,&quot;2&quot;:&quot;Brewed Coffee&quot;,&quot;3&quot;:&quot;Short&quot;,&quot;4&quot;:&quot;3&quot;},{&quot;1&quot;:&quot;Coffee&quot;,&quot;2&quot;:&quot;Brewed Coffee&quot;,&quot;3&quot;:&quot;Tall&quot;,&quot;4&quot;:&quot;4&quot;},{&quot;1&quot;:&quot;Coffee&quot;,&quot;2&quot;:&quot;Brewed Coffee&quot;,&quot;3&quot;:&quot;Grande&quot;,&quot;4&quot;:&quot;5&quot;},{&quot;1&quot;:&quot;Coffee&quot;,&quot;2&quot;:&quot;Brewed Coffee&quot;,&quot;3&quot;:&quot;Venti&quot;,&quot;4&quot;:&quot;5&quot;},{&quot;1&quot;:&quot;Classic Espresso Drinks&quot;,&quot;2&quot;:&quot;Caffè Americano&quot;,&quot;3&quot;:&quot;Short&quot;,&quot;4&quot;:&quot;5&quot;},{&quot;1&quot;:&quot;Classic Espresso Drinks&quot;,&quot;2&quot;:&quot;Espresso&quot;,&quot;3&quot;:&quot;Solo&quot;,&quot;4&quot;:&quot;5&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[4]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[10]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-*top: White choc mocha(WCM) w/2%, WCM w/soya, Java Chip w/ Whole
-*bottom: Tazo - short, tall, grande
-
-* or - top: WCM, Java Chop, Green Latte w/ 2%
-* bot:tazo, brewed Coffee, Caffe Americano
-
-*or - mean calorie per category results - see summary
-
-# Summary
-* Using the mean calorie content of each beverage category, the most calorific are Smoothies, Frappuciono blended coffee and signature espresso drinks, respectively. While the least are Coffee, Shaken Iced beverages and Classic espresso drinks, respectively. 
-* When not grouped by beverage category the drinks with the top and bottom 3 calorie contents are different and seem to be affected greatly by the milk used in Beverage_prep
-
-# Q5 
-* average depending on prep type
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubWVhbl9ieV9wcmVwX2JhZG5hbWVzIDwtIGdyb3VwX2J5KGRyaW5rc19jYWxvcmllcywgQmV2ZXJhZ2VfcHJlcCkgJT4lIFxuICBzdW1tYXJpc2UobWVhbihDYWxvcmllcykpIFxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-mean_by_prep_badnames &lt;- group_by(drinks_calories, Beverage_prep) %&gt;% 
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTAsIm5jb2wiOjR9LCJyZGYiOiJINHNJQUFBQUFBQUFBNjFUelU3Q1FCQmVTcXZRQklSbzRyVXZRQzhteHFOUzFMdFV3ODJNN1JZYXltNnpMZjZkZUJ4UFBvUytrMGZxbE82aWJTS0poQ2JUbWZsbVp1ZHY5Mll3T2pGSEppR2tUblNpa2JxQklqRnUzYXZlR1NHNmhrb05EYzJjUDZQVElRbzZVZ2NKb3hhNW9ldkNLLzk0dDF3SzFrQ0ViSnJzMGxBazMzTjRFRkQ2YiszWWlTQkpRcys2VEdKQms0U1hqLzNUWE83US9DbHJTNlJJMStvTCtrUjlxMVRpMW1DUnBlTkFFSHkrV1JjektrSVBHSmZPRGRYU3VwY0NONFlUTGxLcDZDNUVrUnJjdFFEbXExekdIV1ZwdUxPWUlZL3lRdHJGVURkLzV3M0pPNUlmYmVhVmUyb3dtRkcxUVYyQzNUNTlwQUxHOU42RGxJNjVlRkZqVW9iMWpKVWpUaTlXVGc1RVhJVDVxYVZVVGNHZmJKV3VoYVF0OEpkbDJWZTFKaSsvWjdJbUJabytwR0FIQXVOUlcxWkM5bm1jaHB4aGtKWS9PcU1TWEJNVjRHRE84a3I4bmplWnMybnZWRTY2SmtmVWtyTDVTOWFMbEZvbWp6TFVWaWtiaDJ5OTFRZ2VxRnA0R3p0ZU5XekgrRkRVZWsxRUV6dmxLU2cvMCtPUlFsYTlrZVUzZmc0Tk0yc0VBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Short","4":"0"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Tall","4":"0"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Grande","4":"0"},{"1":"Tazo® Tea Drinks","2":"Tazo® Tea","3":"Venti","4":"0"},{"1":"Coffee","2":"Brewed Coffee","3":"Short","4":"3"},{"1":"Coffee","2":"Brewed Coffee","3":"Tall","4":"4"},{"1":"Coffee","2":"Brewed Coffee","3":"Grande","4":"5"},{"1":"Coffee","2":"Brewed Coffee","3":"Venti","4":"5"},{"1":"Classic Espresso Drinks","2":"Caffè Americano","3":"Short","4":"5"},{"1":"Classic Espresso Drinks","2":"Espresso","3":"Solo","4":"5"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[10]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
+<pre class="r"><code>NA</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p><em>top: White choc mocha(WCM) w/2%, WCM w/soya, Java Chip w/ Whole </em>bottom: Tazo - short, tall, grande</p>
+<ul>
+<li>or - top: WCM, Java Chop, Green Latte w/ 2%</li>
+<li>bot:tazo, brewed Coffee, Caffe Americano</li>
+</ul>
+<p>*or - mean calorie per category results - see summary</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<ul>
+<li>Using the mean calorie content of each beverage category, the most calorific are Smoothies, Frappuciono blended coffee and signature espresso drinks, respectively. While the least are Coffee, Shaken Iced beverages and Classic espresso drinks, respectively.</li>
+<li>When not grouped by beverage category the drinks with the top and bottom 3 calorie contents are different and seem to be affected greatly by the milk used in Beverage_prep</li>
+</ul>
+<p>*post discussion answer - better formula</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0X2dyb3VwX21lYW4gPC0gZ3JvdXBfYnkoZHJpbmtzX2NhbG9yaWVzLCBCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIFxuICBzdW1tYXJpc2UobWVhbl9jYWxvcmllcyA9IG1lYW4oQ2Fsb3JpZXMpKVxuYGBgIn0= -->
+<pre class="r"><code>cat_group_mean &lt;- group_by(drinks_calories, Beverage_category) %&gt;% 
+  summarise(mean_calories = mean(Calories))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaGVhZChjYXRfZ3JvdXBfbWVhbiwgMylcbmBgYCJ9 -->
+<pre class="r"><code>head(cat_group_mean, 3)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVJ6VTdDUUJBZUN0WFFCQUx4NElWRFg0QW14c1I0SklCNE5ER2FjRFByZHNBTlpiZnNGbjl1SHZSMWZBZ3Z2bzF2SUhXMjdDYmFQV3hudnBudm0vbTIxOVA1YVRTUEFLQUpMUWlnR1ZJSTRlM05iSGdPMEFvb2FWQ2hiYi9QMUhSRWdRVjdqbUVMeDVPTUdTTjRmR0Z5amNhb2VLcUZYQmxYUHBpb3hRSVI0TlZtZzVsbWViN2xYRWoxK1JHUE01UXBwckh2Z2E0VkhySDNOL0U5dnh6MW9UcWp6ZFZnOHpYUXRZMUN5ZFpvM0RhQkEvdGpmRVRObG5qSFdZRkxwVjljb2JOR0pnbk1sQmFXOVUrcXJkVlQ0dVU2VnU2VnJySXNmK296dVRYclpub3dTbG5Ca29VbVBtVzdHdVZRNVlWUWtraUJmYjZ3Um03b0d0RGJTcnRKT3VRUFc3a2FucHpaQ1ZWOWZ6b3VidjZKZy8zTW9IUmFvWDk4bEVzaDBTK2ZzWHZNWE5JbHk1WGpKS2ZmVlhncmhKcWtVQVh6ZlJGWG1VY3FjN0Q3QlY4V2loazJBZ0FBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Classic Espresso Drinks","2":"140.1724"},{"1":"Coffee","2":"4.2500"},{"1":"Frappuccino® Blended Coffee","2":"276.9444"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGFpbChjYXRfZ3JvdXBfbWVhbiwgMylcbmBgYCJ9 -->
+<pre class="r"><code>tail(cat_group_mean, 3)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVF2VTdETUJDK0pnMm9rVnExWW1MTHlwQklDQW1WTFVLRkI2QkY2b1pNNnFaUlV6dllMbjlUVjVhK1FWblllUWllb2p2UFFjTTV0U1dJQi92dXUvdSsrODQzZy9HWlAvWUJ3SVVtT09CNkdJSjNPN29PK3dCTkI1TUdGbHI2ZmNhbUl3dzAyRFVNWFRnZVppa2phaWxvY0NVTFFhWGt3VUJrYkM1TlEydTQ0RnpOTWlvQlZocm9qY2dyLy9vTVJwVFlUb0NPbG94NXJBMUEvUEN4N24rdkwrTHB5WGJ6dG4ydmVmRVlXV2kxeW9kandONGxmYVNDcFBRdUlZcW1YTHlZUW50QkNVTXc1Nkx5OEUrcUpmaFRaT1hhV202RlYxbVdQL1daU1U2a25XbEJmMElVaWFZQytaanRhcFJEWHFpTU15UTUrdU84R3JraGFrQjN5YlNUU1pqTWxtd2VucDdyQ1ZWOWY5b21kdi9Fem42bVV4b3R6MmdkVUpabWpGcnpPYm1udVVrNnVISzFjVlRnNXl1N0NxSXlVbHdSMitjblBMZEl0UnpzZmdIbnRsbWtNQUlBQUE9PSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Signature Espresso Drinks","2":"250.0000"},{"1":"Smoothies","2":"282.2222"},{"1":"Tazo® Tea Drinks","2":"177.3077"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>*alternate using slice() - I was trying to use slice() to show top and bottom 3 in fell swoop but couldn’t figure it out.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0X2dyb3VwX3RvcF9ib3QgPC0gZ3JvdXBfYnkoZHJpbmtzX2NhbG9yaWVzLCBCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIFxuICBzdW1tYXJpc2UobWVhbl9jYWxvcmllcyA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhtZWFuX2NhbG9yaWVzKSkgJT4lIFxuICBzbGljZV9oZWFkKCkgJT4lIFxuICBwcmludCgpXG5gYGAifQ== -->
+<pre class="r"><code>cat_group_top_bot &lt;- group_by(drinks_calories, Beverage_category) %&gt;% 
+  summarise(mean_calories = mean(Calories)) %&gt;% 
+  arrange(desc(mean_calories)) %&gt;% 
+  slice_head() %&gt;% 
+  print()</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVBTMDdETUJDZHVEVW9rVklGY1k1RUNEWmxWeUhFQVlCSzNTR1RtalRDc1Z2SDViUGpCTDBFUitNZWJjZU9MUlhQd3A1NWIrYk52TWY3eFUyMnlBQmdCR01nTUtLWUFwMC9QNVJUZ0RIQklrRWl0ZjhYTmwxaVlzSGloRWlmT3FYTXF1VTlGaE5MekRhL3UrbmY3alpTb0pKMXJxbHdLZ040Y2NjL3VHWU5mNm1aNFkzUzM1N0lPODRrZ2tKcEovMVBLdFhxc3dweXVaWDd3ZWVBRWUrc0Jldjc2T0pzeVF5cjNqVE9ZN1dQUnM3VjJyUks0aEN4ZG1rMG5PZ0lLTGJTWHJJczY5Vld2cGZYVjNhRDQ0ZklmWjZjNUdUWVNRNWVpM3F0TXk2YlZ2Snd2R0N2WFBoaWdwYWQ0MnF0VzJtQ0ZVVDd5aWpEUWw5V0t4RVFadzcyUnhGMW9sM21BUUFBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Smoothies","2":"282.2222"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="q5" class="section level1">
+<h1>Q5</h1>
+<ul>
+<li>average depending on prep type</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVhbl9ieV9wcmVwX2JhZG5hbWVzIDwtIGdyb3VwX2J5KGRyaW5rc19jYWxvcmllcywgQmV2ZXJhZ2VfcHJlcCkgJT4lIFxuICBzdW1tYXJpc2UobWVhbihDYWxvcmllcykpIFxuYGBgIn0= -->
+<pre class="r"><code>mean_by_prep_badnames &lt;- group_by(drinks_calories, Beverage_prep) %&gt;% 
   summarise(mean(Calories)) </code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== --&gt;
-</code></pre>
-<p><code>summarise()</code> ungrouping output (override with <code>.groups</code> argument)</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubmFtZXMobWVhbl9ieV9wcmVwX2JhZG5hbWVzKVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-names(mean_by_prep_badnames)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-output-begin eyJkYXRhIjoiWzFdIFxcQmV2ZXJhZ2VfcHJlcFxcICBcXG1lYW4oQ2Fsb3JpZXMpXFxcbiJ9 --&gt;
-</code></pre>
-<p>[1] _prep  (Calories)<br />
-</p>
-<pre><code>
-
-
-&lt;!-- rnb-output-end --&gt;
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubWVhbl9ieV9wcmVwIDwtIHJlbmFtZShtZWFuX2J5X3ByZXBfYmFkbmFtZXMsIFxcbWVhbl9jYWxvcmllc1xcID0gXFxtZWFuKENhbG9yaWVzKVxcKVxuXG5hcnJhbmdlKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcylcbmBgYFxuYGBgclxuYXJyYW5nZShtZWFuX2J5X3ByZXAsIGRlc2MobWVhbl9jYWxvcmllcykpXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-mean_by_prep &lt;- rename(mean_by_prep_badnames, \mean_calories\ = \mean(Calories)\)
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiYHN1bW1hcmlzZSgpYCB1bmdyb3VwaW5nIG91dHB1dCAob3ZlcnJpZGUgd2l0aCBgLmdyb3Vwc2AgYXJndW1lbnQpXG4ifQ== -->
+<pre><code>`summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubmFtZXMobWVhbl9ieV9wcmVwX2JhZG5hbWVzKVxuYGBgIn0= -->
+<pre class="r"><code>names(mean_by_prep_badnames)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiQmV2ZXJhZ2VfcHJlcFwiICBcIm1lYW4oQ2Fsb3JpZXMpXCJcbiJ9 -->
+<pre><code>[1] &quot;Beverage_prep&quot;  &quot;mean(Calories)&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWVhbl9ieV9wcmVwIDwtIHJlbmFtZShtZWFuX2J5X3ByZXBfYmFkbmFtZXMsIFwibWVhbl9jYWxvcmllc1wiID0gXCJtZWFuKENhbG9yaWVzKVwiKVxuXG5hcnJhbmdlKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcylcbmBgYCJ9 -->
+<pre class="r"><code>mean_by_prep &lt;- rename(mean_by_prep_badnames, &quot;mean_calories&quot; = &quot;mean(Calories)&quot;)
 
 arrange(mean_by_prep, mean_calories)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTMsIm5jb2wiOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFTdTA0Q1FSUWRGbGJpSm9zZ2ZnQ0ZsbXloaFNZMkUwSTBGR2dpUG1nTUdXQ0FsZG1aZFZoOFZmWjJmSUt4MG9yR3d1Z1ArQXY4Z05UMjRNenVUQVRDSkp0N3o1bHo3cDI3dVNmRjZvNVZ0UUFBY1pBQUJvaWJJZ1htMmVsQmZnK0FoQ0ZBVEZ5c3luZ25SRm1SU0RJdFBsdGRKQ3FNTUpXdkZKbnZ1eHFabFE3amdaYWRJa0swN0pBajJzUUtaVUpaN29qUkZncHlaWmQwdGY4YzA4QlZJQzM5UzBUSkNydjMvdUY2VkhxWmNIdHJGbWJDNGt0MDFrV0hFUnd4QUtUa3BIQURoQWR1cWxoNGpPTHgrOGg3SDFGNDVvVUpySDYvaXZNR0wxOEdwYzFCQ2RZZldIbjh0UWZkbncvbjZYa01yM2FHKzluaFB1ekN5TytyZVAwWkZaNy81U1pGSHU2cDMyMG8waTdnRzh4Ukc5ZDhqbjFOZWhqUldnTVJ4bDNwbUN1enl0bXRvMHZac3BSOC9YUTYvVjNzMXlDb3AvdHAwbXFpQURrdEx2d0NUUllzU2VZSExxUENaTWpkTUJmTU1iNUFyUFdwZkVrejMrajBhVGUvS3h1RTE5R3hWVzdQNUViVTBwaXFVcVplSWt6Ykx0VkxaQkpVeDNxL1VtTGljR0RINXk3VkcyZ0p0dWNFTEVCYVp6VVkwVXc0RzVqOEFmbUkyMFFTQXdBQSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_prep"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Solo","2":"5.00000"},{"1":"Doppio","2":"10.00000"},{"1":"Short","2":"37.00000"},{"1":"Tall","2":"63.42857"},{"1":"Grande","2":"85.71429"},{"1":"Short Nonfat Milk","2":"99.16667"},{"1":"Venti","2":"118.57143"},{"1":"Tall Nonfat Milk","2":"147.82609"},{"1":"Soymilk","2":"207.27273"},{"1":"Grande Nonfat Milk","2":"209.61538"},{"1":"2% Milk","2":"218.00000"},{"1":"Venti Nonfat Milk","2":"260.00000"},{"1":"Whole Milk","2":"283.75000"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[13]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYXJyYW5nZShtZWFuX2J5X3ByZXAsIGRlc2MobWVhbl9jYWxvcmllcykpXG5gYGAifQ== -->
 <pre class="r"><code>arrange(mean_by_prep, desc(mean_calories))</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTMsIm5jb2wiOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFTdTA3RE1CUjFRd01pVXFyeStJQU9NRFlTVkVpVldDeUVRQXlBUkNsMFFaWGJ1cTJwWXdjMzVUV3hzL1VURUJOTUxBd0lmb0JmNkEvUW1iM0JUbXdCVVMxRjk1N2pjKzcxamU3UmRxM2sxQndBd0F6SUFndk0yRElGZHZWNHAxZ0dJR3RKa0pFWDh5cGVTOUdTVEJTWmw1K3JMN0lWVHJuT1o3ZDVFQkNEN0VxWGk5RElqaEdsUnJZckVHdGhqUlppV2VHQXN6WUtDL3VFOW96L0JMT1FhSkJYL2ltaXVRcS84WC9oWWxKNm1uQjk5UzljaUl0UDBUbW5YVTV4d2dDUVU1UENaUkFmdUtMajFsMFNEMTlIL3V1SXdhb2ZKN0QyK1NUUE16eDdITzZ0RFBkZzQ1YnZqei9La0h5OWVmY1BZM2hlZXRsY2V0bUVQWmo0QXgwdjNwUEMvMys1elpDUCsvcDNXNXAwdC9BbEZxaUQ2NEhBZ1NGOWpGaTlpU2dYUkRuK2xaa1gvTW96cFZ4VlNyMCtpcUx2ZEw4bVJYM1R6NUJPQzRYSWF3dnBsMmlTc3N6eElDU2NTWk9sZHNOT21UTWlSZVFIVEwya1ZXeDJCNnhYWE50UUhlTDc1TGc2ZC8va1Z0TFRpblF0MjJ3UlpoM0N6QmJaRkRXd1diQ2NIRG1lMkFzRVlXWUZIY24ydlpDSHlPaWNKcWVHaVljRGt4K3ljS3MxRXdNQUFBPT0ifQ== --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_prep&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;mean_calories&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;Solo&quot;,&quot;2&quot;:&quot;5.00000&quot;},{&quot;1&quot;:&quot;Doppio&quot;,&quot;2&quot;:&quot;10.00000&quot;},{&quot;1&quot;:&quot;Short&quot;,&quot;2&quot;:&quot;37.00000&quot;},{&quot;1&quot;:&quot;Tall&quot;,&quot;2&quot;:&quot;63.42857&quot;},{&quot;1&quot;:&quot;Grande&quot;,&quot;2&quot;:&quot;85.71429&quot;},{&quot;1&quot;:&quot;Short Nonfat Milk&quot;,&quot;2&quot;:&quot;99.16667&quot;},{&quot;1&quot;:&quot;Venti&quot;,&quot;2&quot;:&quot;118.57143&quot;},{&quot;1&quot;:&quot;Tall Nonfat Milk&quot;,&quot;2&quot;:&quot;147.82609&quot;},{&quot;1&quot;:&quot;Soymilk&quot;,&quot;2&quot;:&quot;207.27273&quot;},{&quot;1&quot;:&quot;Grande Nonfat Milk&quot;,&quot;2&quot;:&quot;209.61538&quot;},{&quot;1&quot;:&quot;2% Milk&quot;,&quot;2&quot;:&quot;218.00000&quot;},{&quot;1&quot;:&quot;Venti Nonfat Milk&quot;,&quot;2&quot;:&quot;260.00000&quot;},{&quot;1&quot;:&quot;Whole Milk&quot;,&quot;2&quot;:&quot;283.75000&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[2]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[13]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTMsIm5jb2wiOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFTelU3Q1FCQmVDdFhRcEFURkIvQ0FSNW9vTVNIaHNpRkc0MEZOQkpTTElRc3NVRmwyNjFMOE8zbjN4aU1ZVDNyaTRzSG9DL2dLdm9DY3ZWTjMyOTBJaEUyYm1mbG12dms2T3ozZHErV3RtZ1VBaUlNRU1FRGNGQzR3cTVYOVhBR0FoQ0dDbUVna3BiMFZSUm5oU0RBdFhsc2xyUE11STNqenlDVTloYXlkWWVxN204ZU10cEUvbTFqZDJab04xdzg0b2kyOHJMRE03dnIvWWJxQ0NGbFNab1pDV3JYY1pkeGZVclVTeWFnb0lYdHBma2pSWlh2TTgxeW15OHFNTUdGVGNsSjQ5U0h2QlVBUFJyYW43R1YrWE15TWk5RDllWGNlbnlhd2NjK09KcDhGZVBFOE9zeU9EbUh0NjBXY1YxanR2MzJMQjU2RWhzTFNROFRQZ3NodUFIWG1ydHlrcUk4SDZyb05CZG9sZkkwNTZ1QzZ4N0dud1Q1R3RONUVoSEZYTXViYUpEbTdjWFFyVzdhUzZrRVEvQzdxTlFrYWFEME5XaTNrSTZmTkJWOUUwd1hLS3ZOOGwxRkJNdVMvWVM2UVkzd0JTQStwL0pKV3J0a2QwbDV1ZTFjcWhQbm8yTXEzWjN3ajBqUUMxY3ZVQzhPMDQxSzlWNU9nQnRhTFRZbVJ3NGtkajd0VWI5Z1M2TUR4bVk5MG5kVmtSQ1BoY0dENkI2aDc2QWNUQXdBQSJ9 --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_prep&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;mean_calories&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;Whole Milk&quot;,&quot;2&quot;:&quot;283.75000&quot;},{&quot;1&quot;:&quot;Venti Nonfat Milk&quot;,&quot;2&quot;:&quot;260.00000&quot;},{&quot;1&quot;:&quot;2% Milk&quot;,&quot;2&quot;:&quot;218.00000&quot;},{&quot;1&quot;:&quot;Grande Nonfat Milk&quot;,&quot;2&quot;:&quot;209.61538&quot;},{&quot;1&quot;:&quot;Soymilk&quot;,&quot;2&quot;:&quot;207.27273&quot;},{&quot;1&quot;:&quot;Tall Nonfat Milk&quot;,&quot;2&quot;:&quot;147.82609&quot;},{&quot;1&quot;:&quot;Venti&quot;,&quot;2&quot;:&quot;118.57143&quot;},{&quot;1&quot;:&quot;Short Nonfat Milk&quot;,&quot;2&quot;:&quot;99.16667&quot;},{&quot;1&quot;:&quot;Grande&quot;,&quot;2&quot;:&quot;85.71429&quot;},{&quot;1&quot;:&quot;Tall&quot;,&quot;2&quot;:&quot;63.42857&quot;},{&quot;1&quot;:&quot;Short&quot;,&quot;2&quot;:&quot;37.00000&quot;},{&quot;1&quot;:&quot;Doppio&quot;,&quot;2&quot;:&quot;10.00000&quot;},{&quot;1&quot;:&quot;Solo&quot;,&quot;2&quot;:&quot;5.00000&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[2]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[13]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-* this seems like a convoluted way of changing the name of the column in order to arrange by mean calories
-
-# Q6
-*compare with average calories for all drinks
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuc3VtbWFyaXNlKGRyaW5rc19jYWxvcmllcywgbWVhbihDYWxvcmllcykpXG5gYGBcbmBgYHJcbk5BXG5gYGBcbmBgYCJ9 --&gt;
-
-```r
-```r
-summarise(drinks_calories, mean(Calories))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTMsIm5jb2wiOjJ9LCJyZGYiOiJINHNJQUFBQUFBQUFBMjFTdlU3RE1CQTJhVU5GcEpUeTh3QU1aV3dHT2xDcGkxVWhFRU5Cb2dXNm9NcE4zVGJVdFlPYjhqZXhzL1VSRUJOTVhSZ1F2QUN2d0F2QXpFNndFMXUwVWExRWQvZmRmZmZsZkRuYWFSU3RoZ1VBU0lFME1FREtGQzR3ait1N2hSSUFhVU1FQ3lLeEpPMjFLRm9UamdSejRyVlZ3anJ0TVlJM3FoN3BLMlRsQk5QQTJ6aGd0SU9DNlVSbWEzTTZYTjNqaUxieHZNSWF1eG44aDdrNkltUk9tUmtKYWRWYWovRmdUdFZpTEtPaXRPeWwrUkZGbCswdzMvZVlMcXN4d29UTnlrbmh4WnU4RndCOUdOdStzdWZGU1hsdFVvYmUxNnR6Ly9BTlc3ZXMrdjFlZ21lUDQvMzhlQjgyUHA3RWVZYkhnNWRQOGNERHlGQll1WXY1ZVJEYmRhRE96SldiRkEzd1VGMjNvVUM3Z2k4eFIxM2M5RG4yTlRqQWlEWmRSQmozSkdPbXpSSm5WNDV1WmN0V1VqME13NStrbmt2UVVPdHAwR3FqQURrZEx2Z2krazFRTXN3UFBFWUZ5WkQvaHBrZ0wvQUVzRHlpOGt2YUJiYzNvdjNDdGhTSTB2R3hsVzlQK1VZc2FZU3FsYW4zaFduWG8zcXRKa0V0clBlYUZSTkhBenMrOTZoZXNDWFFvUk93QU9rNnkyVkVJOUZzNFBjUDFYRzgzeElEQUFBPSJ9 -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_prep"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Whole Milk","2":"283.75000"},{"1":"Venti Nonfat Milk","2":"260.00000"},{"1":"2% Milk","2":"218.00000"},{"1":"Grande Nonfat Milk","2":"209.61538"},{"1":"Soymilk","2":"207.27273"},{"1":"Tall Nonfat Milk","2":"147.82609"},{"1":"Venti","2":"118.57143"},{"1":"Short Nonfat Milk","2":"99.16667"},{"1":"Grande","2":"85.71429"},{"1":"Tall","2":"63.42857"},{"1":"Short","2":"37.00000"},{"1":"Doppio","2":"10.00000"},{"1":"Solo","2":"5.00000"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[13]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li>this seems like a convoluted way of changing the name of the column in order to arrange by mean calories</li>
+</ul>
+</div>
+<div id="q6" class="section level1">
+<h1>Q6</h1>
+<p>*compare with average calories for all drinks</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc3VtbWFyaXNlKGRyaW5rc19jYWxvcmllcywgbWVhbihDYWxvcmllcykpXG5gYGAifQ== -->
+<pre class="r"><code>summarise(drinks_calories, mean(Calories))</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MX0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVF3WW9DTVF6TlZLdE1RWGZCZnhBOU9CY3ZDM3NSRkQ5QWRzRnJuYW5PWUcybFU5R2pmK0FQK0cxNzlETjAwNkVGYVNGTjhwcVg1bVcxV0UvWm1nRkFDOXBBb0VVeEJQcjdzNXg4QWJRSkpnaytwTTVmc0dqUUFBQjk1MmZsOStOKyt4dEdoVlR4ZzZneCtId0Qrd2ZCMVdqT3BUYVZxTWNSSlRYNm5BVmFENDFjOFhyaGlYdm5rdGR4YjFad3k3T3RRVDVtejRqUzFVZGJhWVVrNHFhbkVUa3hFZkJ4VW02U1lwS1hKN1YzYXdEbVZZT2ZMdkgyRnJzdnljdTNvcjVWUjZoZHBVU1lYZktOa0dFZnFMZ1JuQjFOcFd4UWdtaWRXVzE1cUdPNWxnRnB0TUh6SHlucURRRzBBUUFBIn0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["mean(Calories)"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"193.8719"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
 <pre class="r"><code>NA</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MX0sInJkZiI6Ikg0c0lBQUFBQUFBQUExMVFVWXJDTUJDZHBtYWxCVVh3RG90K3RDQ0NDUDRzS0I1Z1VmQTMxcWpGbUVnYVdUKzlnUmZ3Ykg3dU1kUkpTVUFTbU16TXk3eVplZm1kcllicEtnV0FHQnBBSUtZWUFsMHU1dGtZb0VFd2lmQWhzZjZDUmQwYUFHaGIvN09mL045dmorK2drRXAyNUJVR25RK3dmZVJNOXFaTUtGM3lxaDlRRXEzK2NrOXJvWkVyWGk4OFllOUNzQ3Jzblc2WVlmbFdJeCt6WjBCcHFwTXBsVVFTc2R2VGdCenBBT2ljcGQxa2t4WDdzenhrZzVHZDRHU0RXeTl5OWhIYm1lVGxlbEhYNjR2TFhTbTVYMTZ3TlJmK1ExQnlyVGcvNlZJYUx3WFJLamZLTUYrWEZrcDRwQllIenpmMzBlRnR0UUVBQUE9PSJ9 --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;mean(Calories)&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;193.8719&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[1]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[1]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-* mean for all drinks = 193.8719
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxuZmlsdGVyKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcyA+IDE5My44NzE5KVxuYGBgXG5gYGAifQ== --&gt;
-
-```r
-```r
-filter(mean_by_prep, mean_calories &gt; 193.8719)</code></pre>
-<pre><code>
-&lt;!-- rnb-source-end --&gt;
-
-&lt;!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVJTMDdETUJDZHBnMVZJNlVxOUFMZHNFd2s2QUtrYmlLRVlBVUx2dDFWSm5WYlU4Y09yc3RueDU1YmNJTnVFUWVDTXlBMTJJa3RtZ2d2NHBrMzgrYTlpUytPaDMxdjZBRkFIUnJnUU4xVklialhWeWZCSVVERFVVbE5GVnI2ZmxaTlhSVm9zS083VEtHNXY5czdJM1J1MHAxVGdkZ1k5ODQ1bXlDNVdXbGU4cGZrTDkyK3dVeVNmL3E4MnhtbnVFQUEybG9xbWtmYUdFVDMvZFdndXhwRTVPc2pmSHYvamxLRFAzeENjVXFlWFlZU3ZEQitIUVA2Ui9nUkN6VEZvMVRnMUlJSlJtd1VJOG9GMFl6U21KYmdUNkVkNWV0UnIrcVRaZGxQVlMrbWFHSDFMT2lOa1VUaFJDaSt5dFlWU3BPbmtuQ21TRTQzLzZsbGNrMVVnTTZTYVNmaklKNHQyVHpZTzlBS2ViMDR2b25kamRncE5KMnM4bkpibUUwSnc5WThSWGVZbXFTdFZzNDNEbE5CbUxTcktIUVJTaTZSN2ZOaVRpMlNMd2ZyWDgwdXNINVVBZ0FBIn0= --&gt;
-
-&lt;div data-pagedtable=&quot;false&quot;&gt;
-  &lt;script data-pagedtable-source type=&quot;application/json&quot;&gt;
-{&quot;columns&quot;:[{&quot;label&quot;:[&quot;Beverage_prep&quot;],&quot;name&quot;:[1],&quot;type&quot;:[&quot;chr&quot;],&quot;align&quot;:[&quot;left&quot;]},{&quot;label&quot;:[&quot;mean_calories&quot;],&quot;name&quot;:[2],&quot;type&quot;:[&quot;dbl&quot;],&quot;align&quot;:[&quot;right&quot;]}],&quot;data&quot;:[{&quot;1&quot;:&quot;2% Milk&quot;,&quot;2&quot;:&quot;218.0000&quot;},{&quot;1&quot;:&quot;Grande Nonfat Milk&quot;,&quot;2&quot;:&quot;209.6154&quot;},{&quot;1&quot;:&quot;Soymilk&quot;,&quot;2&quot;:&quot;207.2727&quot;},{&quot;1&quot;:&quot;Venti Nonfat Milk&quot;,&quot;2&quot;:&quot;260.0000&quot;},{&quot;1&quot;:&quot;Whole Milk&quot;,&quot;2&quot;:&quot;283.7500&quot;}],&quot;options&quot;:{&quot;columns&quot;:{&quot;min&quot;:{},&quot;max&quot;:[10],&quot;total&quot;:[2]},&quot;rows&quot;:{&quot;min&quot;:[10],&quot;max&quot;:[10],&quot;total&quot;:[5]},&quot;pages&quot;:{}}}
-  &lt;/script&gt;
-&lt;/div&gt;
-
-&lt;!-- rnb-frame-end --&gt;
-
-&lt;!-- rnb-chunk-end --&gt;
-
-
-&lt;!-- rnb-text-begin --&gt;
-
-
-* drink preps over mean - all the milks!
-
-# Q7
-* which coffee is least caloriefull
-
-
-&lt;!-- rnb-text-end --&gt;
-
-
-&lt;!-- rnb-chunk-begin --&gt;
-
-
-&lt;!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxubGVhc3RfY2FsX2RyaW5rIDwtIGZpbHRlcihkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5ID09IFxcQ29mZmVlXFwpICU+JSBcbiAgYXJyYW5nZShDYWxvcmllcykgJT4lIFxuICBoZWFkKDEpICU+JSBcbiAgcHJpbnQoKVxuYGBgXG5gYGByXG5OQVxuTkFcbmBgYFxuYGBgIn0= --&gt;
-
-```r
-```r
-least_cal_drink &lt;- filter(drinks_calories, Beverage_category == \Coffee\) %&gt;% 
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li>mean for all drinks = 193.8719</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmlsdGVyKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcyA+IDE5My44NzE5KVxuYGBgIn0= -->
+<pre class="r"><code>filter(mean_by_prep, mean_calories &gt; 193.8719)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NSwibmNvbCI6Mn0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVJ2VTdETUJDK3BnMVZJN1g4NUFXNk1DWURYVUJkSW9SZ2dvSGZicFZKM2RiVXNZUHJVdGpZZVF2ZW9DdmlnZUFaa0Jyc3hCWk5oSWY0N3J2Nzd2c3V2andaOUx5QkJ3QjFhSUFEZFZlRjRONWNud2FIQUExSEpUVlZhT243V1RYNUt0RGdqdTR5aGViQmZ2ZWMwSmxKOTg0RVlpUGN2ZUJzak9SbXBYbkZYNUsvZFBjV00wbis2ZlB1cHB6aUFnSG9hS2xvRm1sakVEMzBWbjEvMVkvSTEwZjQ5djRkcFFaLy9JVGlsRHk3RENWNGJ2dzZCbXdmNHljczBBUVBVNEZUQ3lZWXNXR01LQmRFTTBwaldvSXZRenVxclVlOXFrK1daVDlWdlppaXVkV3pvRGRDRW9Wam9mZ3FXMWNvVFo1S3dwa2lPWDcrVTh2a21xZ0Eyd3Vtbll5Q2VMcGdzK0JJQytUbDRyUk43RzdFVGlIcFpKV0gyOEpzUWhpMjNpbTZ4OVFrSGJWeHZuQ1lDc0trM1VTaDgxQnlpV3lmRjNOcWtYdzNXUDhDeTdpQ3JGTUNBQUE9In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_prep"],"name":[1],"type":["chr"],"align":["left"]},{"label":["mean_calories"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"2% Milk","2":"218.0000"},{"1":"Grande Nonfat Milk","2":"209.6154"},{"1":"Soymilk","2":"207.2727"},{"1":"Venti Nonfat Milk","2":"260.0000"},{"1":"Whole Milk","2":"283.7500"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[5]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<ul>
+<li>drink preps over mean - all the milks!</li>
+</ul>
+</div>
+<div id="q7" class="section level1">
+<h1>Q7</h1>
+<ul>
+<li>which coffee is least caloriefull</li>
+</ul>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVhc3RfY2FsX2RyaW5rIDwtIGZpbHRlcihkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5ID09IFwiQ29mZmVlXCIpICU+JSBcbiAgYXJyYW5nZShDYWxvcmllcykgJT4lIFxuICBoZWFkKDEpICU+JSBcbiAgcHJpbnQoKVxuYGBgIn0= -->
+<pre class="r"><code>least_cal_drink &lt;- filter(drinks_calories, Beverage_category == &quot;Coffee&quot;) %&gt;% 
   arrange(Calories) %&gt;% 
   head(1) %&gt;% 
   print()</code></pre>
-<pre class="r"><code>NA
-NA</code></pre>
-<p>```</p>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6NH0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVJ5MDdETUJEY3BEYTBrVklWOFFQOFFDSWhMajJpRnZFQlBLVGVLcE5zMG9oZ1I0NUw0Y2FYdDZ4VEc3VVdLem5abmRuMWVPeW5oOVZkc2tvQVlBUU1ZaGh4U29HL3ZqeG1jd0FXVXhFUk1iSC9MMnE2cG9UUm1wMFFGMHRWVllnQm1pNDA3ckM4K1pma3p4dWxEU1ZUQzk2UHdjV1pJSmZpQTNzM3lSeDR0Y0JQMUtMR2RTRU0xa3AvTzJMc2lUOTkzOWhwN0h6VFVyUktOM2JYTTZtSlZydmN5NlcwNGgvNkhDakNNeFd0NlB2QVRWSUtJL0pLMHp4VisyRGtVbldtVVpLR1ludDdQQmlPZEFETXR0S2VwTXlLelZhK1o3ZHpxekR3eDBoZEhwM2s3S2daSDl4ZTNEOE55cnFSL2twNEs5NndkY1dVTEErTzgwNDMwbmdyaFBhNVVVYjR2cVJRclVjR2M3RC9CWithcWF3MUFnQUEifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6NH0sInJkZiI6Ikg0c0lBQUFBQUFBQUEyMVJRVTdETUJEY3BEYTBrVklWOFFFK2tBakVoU05xRVE4QUt2V0dUTEpKSTRJZE9TNkZHeTl2V2FjMmFpMVdjckk3cyt2eDJFOFBxOXRrbFFEQUNCakVNT0tVQWwrK1BHWjNBQ3ltSWlKaVl2OWYxSFJKQ2FNMU95TE9GcXFxRUFNMG5XdmNZbm4xTDhtZjEwb2JTcVlXdkIrRGl4TkJMc1VIOW02U09mQmlqcCtvUlkydmhUQllLLzN0aUxFbi92UjlZNmV4ODAwTDBTcmQyRjFQcENaYWJYTXZsOUtLZitpenB3alBWTFNpN3dNM1NTbU15Q3ROODFUdGdwRnoxWmxHU1JxSzdlM3hZRGpTQVREYlNIdVNNaXZXRy9tZTNWeGJoWUUvUk9yeTZDaG5CODE0Ny9iaS9tbFExbzMwVjhKYjhZYXRLNlprZVhDY2Q3cVJ4bHNodE0rTk1zTDNKWVZxUFRLWWc5MHZEWWU2QURVQ0FBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Coffee","2":"Brewed Coffee","3":"Short","4":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbk5BXG5gYGAifQ== -->
+<pre class="r"><code>NA
+NA</code></pre>
+<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <ul>
@@ -2149,7 +2143,7 @@ NA</code></pre>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQojRGF5IDIgSG9tZXdvcmsKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShkcGx5cikKCmBgYAojIFExCipsb2FkIGluIGRhdGFzZXQKYGBge3J9CmRyaW5rc19tZW51IDwtIHJlYWRfY3N2KCI1X2hvbWV3b3JrX2RwbHlyL2RhdGEvc3RhcmJ1Y2tzX2RyaW5rTWVudV9leHBhbmRlZC5jc3YiKQp2aWV3KGRyaW5rc19tZW51KQpkaW0oZHJpbmtzX21lbnUpCmhlYWQoZHJpbmtzX21lbnUpCm5hbWVzKGRyaW5rc19tZW51KQpgYGAKKiAyNDIgb2JzLCAxOCB2YXJpYWJsZXMsIGNoYXJhY3RlciAmIG51bWVyaWMsIAoqIE5hbWVzID0gQmV2ZXJhZ2UgY2F0ZWdvcnksIGJldmVyYWdlLCBwcmVwIGluc3RydWN0aW9ucyAoc2l6ZS9taWxrIHR5cGUpLCBudXRyaXRpb25hbCBpbmZvcm1hdGlvbi4KCgojIFEyCiogc2VsZWN0IGRyaW5rcyBhbmQgY2Fsb3JpZXMKCmBgYHtyfQpkcmlua3NfY2Fsb3JpZXMgPC0gc2VsZWN0KGRyaW5rc19tZW51LCBCZXZlcmFnZV9jYXRlZ29yeSwgQmV2ZXJhZ2UsIEJldmVyYWdlX3ByZXAsIENhbG9yaWVzKSAlPiUgCiAgZmlsdGVyKCFpcy5uYShDYWxvcmllcykpCiAgCgpgYGAKKiBubyBOQSdzCgojIFEzCipDYWxvcmllIGRpZmZlcmVuY2UKYGBge3J9CmRyaW5rc19jYWxfZGlmZiA8LSBtdXRhdGUoZHJpbmtzX2NhbG9yaWVzLCBjYWxvcmllX2RpZmYgPSAxMzUgLSBDYWxvcmllcykKZHJpbmtzX2NhbF9kaWZmCmBgYAoKIyBRNCAKKiBtZWFuIGNhbG9yaWVzIHBlciBjYXRlZ29yeQpgYGB7cn0KCmdyb3VwX2J5KGRyaW5rc19jYWxfZGlmZiwgQmV2ZXJhZ2VfY2F0ZWdvcnkpICU+JSAKICBzdW1tYXJpc2UobWVhbihDYWxvcmllcykpIAoKICAKYGBgCgoqIFNUVUNLISEhIC0gaG93IGRvIHlvdSBmaW5kIHRoZSBtZWFuIG9mIGEgc3Vic2V0IG9mIG9ic2VydmF0aW9ucz8gLSBpbmZhY3QgdGhhdCBtYXkgYmUgcmlnaHQuIC0gQ2FuJ3QgYXJyYW5nZSBieSAibWVhbihDYWxvcmllcykiIGNvbHVtbgoKKiBNb3N0LyBsZWFzdCBjYWxvcmlmaWMsIAoKYGBge3J9CnRvcF8zIDwtIGFycmFuZ2UoZHJpbmtzX2NhbG9yaWVzLCBkZXNjKENhbG9yaWVzKSkgJT4lIAogIGhlYWQoMTApICU+JSAKICBwcmludCgpCmJvdHRvbV8zIDwtIGFycmFuZ2UoZHJpbmtzX2NhbG9yaWVzLCBDYWxvcmllcykgJT4lIAogIGhlYWQoMTApICU+JSAKICBwcmludCgpCgpgYGAKCip0b3A6IFdoaXRlIGNob2MgbW9jaGEoV0NNKSB3LzIlLCBXQ00gdy9zb3lhLCBKYXZhIENoaXAgdy8gV2hvbGUKKmJvdHRvbTogVGF6byAtIHNob3J0LCB0YWxsLCBncmFuZGUKCiogb3IgLSB0b3A6IFdDTSwgSmF2YSBDaG9wLCBHcmVlbiBMYXR0ZSB3LyAyJQoqIGJvdDp0YXpvLCBicmV3ZWQgQ29mZmVlLCBDYWZmZSBBbWVyaWNhbm8KCipvciAtIG1lYW4gY2Fsb3JpZSBwZXIgY2F0ZWdvcnkgcmVzdWx0cyAtIHNlZSBzdW1tYXJ5CgojIFN1bW1hcnkKKiBVc2luZyB0aGUgbWVhbiBjYWxvcmllIGNvbnRlbnQgb2YgZWFjaCBiZXZlcmFnZSBjYXRlZ29yeSwgdGhlIG1vc3QgY2Fsb3JpZmljIGFyZSBTbW9vdGhpZXMsIEZyYXBwdWNpb25vIGJsZW5kZWQgY29mZmVlIGFuZCBzaWduYXR1cmUgZXNwcmVzc28gZHJpbmtzLCByZXNwZWN0aXZlbHkuIFdoaWxlIHRoZSBsZWFzdCBhcmUgQ29mZmVlLCBTaGFrZW4gSWNlZCBiZXZlcmFnZXMgYW5kIENsYXNzaWMgZXNwcmVzc28gZHJpbmtzLCByZXNwZWN0aXZlbHkuIAoqIFdoZW4gbm90IGdyb3VwZWQgYnkgYmV2ZXJhZ2UgY2F0ZWdvcnkgdGhlIGRyaW5rcyB3aXRoIHRoZSB0b3AgYW5kIGJvdHRvbSAzIGNhbG9yaWUgY29udGVudHMgYXJlIGRpZmZlcmVudCBhbmQgc2VlbSB0byBiZSBhZmZlY3RlZCBncmVhdGx5IGJ5IHRoZSBtaWxrIHVzZWQgaW4gQmV2ZXJhZ2VfcHJlcAoKIyBRNSAKKiBhdmVyYWdlIGRlcGVuZGluZyBvbiBwcmVwIHR5cGUKCmBgYHtyfQptZWFuX2J5X3ByZXBfYmFkbmFtZXMgPC0gZ3JvdXBfYnkoZHJpbmtzX2NhbG9yaWVzLCBCZXZlcmFnZV9wcmVwKSAlPiUgCiAgc3VtbWFyaXNlKG1lYW4oQ2Fsb3JpZXMpKSAKCm5hbWVzKG1lYW5fYnlfcHJlcF9iYWRuYW1lcykKbWVhbl9ieV9wcmVwIDwtIHJlbmFtZShtZWFuX2J5X3ByZXBfYmFkbmFtZXMsICJtZWFuX2NhbG9yaWVzIiA9ICJtZWFuKENhbG9yaWVzKSIpCgphcnJhbmdlKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcykKYXJyYW5nZShtZWFuX2J5X3ByZXAsIGRlc2MobWVhbl9jYWxvcmllcykpCmBgYAoKKiB0aGlzIHNlZW1zIGxpa2UgYSBjb252b2x1dGVkIHdheSBvZiBjaGFuZ2luZyB0aGUgbmFtZSBvZiB0aGUgY29sdW1uIGluIG9yZGVyIHRvIGFycmFuZ2UgYnkgbWVhbiBjYWxvcmllcwoKIyBRNgoqY29tcGFyZSB3aXRoIGF2ZXJhZ2UgY2Fsb3JpZXMgZm9yIGFsbCBkcmlua3MKCmBgYHtyfQpzdW1tYXJpc2UoZHJpbmtzX2NhbG9yaWVzLCBtZWFuKENhbG9yaWVzKSkKCmBgYAoKKiBtZWFuIGZvciBhbGwgZHJpbmtzID0gMTkzLjg3MTkKYGBge3J9CmZpbHRlcihtZWFuX2J5X3ByZXAsIG1lYW5fY2Fsb3JpZXMgPiAxOTMuODcxOSkKYGBgCgoqIGRyaW5rIHByZXBzIG92ZXIgbWVhbiAtIGFsbCB0aGUgbWlsa3MhCgojIFE3Ciogd2hpY2ggY29mZmVlIGlzIGxlYXN0IGNhbG9yaWVmdWxsCgpgYGB7cn0KbGVhc3RfY2FsX2RyaW5rIDwtIGZpbHRlcihkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5ID09ICJDb2ZmZWUiKSAlPiUgCiAgYXJyYW5nZShDYWxvcmllcykgJT4lIAogIGhlYWQoMSkgJT4lIAogIHByaW50KCkKCgpgYGAKCgoqIEdldCBhIHNob3J0IGJsYWNrIGNvZmZlZSAtIHRoZXkgYXJlIHRoZSBiZXN0IGFueXdheS4gCgoqdG9vayBtZSBhIHdoaWxlIHRvIGZpZ3VyZSBvdXQgd2hhdCBuZWVkcyAiIg==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQojRGF5IDIgSG9tZXdvcmsKCmBgYHtyfQpsaWJyYXJ5KHRpZHl2ZXJzZSkKbGlicmFyeShkcGx5cikKCmBgYAojIFExCipsb2FkIGluIGRhdGFzZXQKYGBge3J9CmRyaW5rc19tZW51IDwtIHJlYWRfY3N2KCI1X2hvbWV3b3JrX2RwbHlyL2RhdGEvc3RhcmJ1Y2tzX2RyaW5rTWVudV9leHBhbmRlZC5jc3YiKQp2aWV3KGRyaW5rc19tZW51KQpkaW0oZHJpbmtzX21lbnUpCmhlYWQoZHJpbmtzX21lbnUpCm5hbWVzKGRyaW5rc19tZW51KQpgYGAKKiAyNDIgb2JzLCAxOCB2YXJpYWJsZXMsIGNoYXJhY3RlciAmIG51bWVyaWMsIAoqIE5hbWVzID0gQmV2ZXJhZ2UgY2F0ZWdvcnksIGJldmVyYWdlLCBwcmVwIGluc3RydWN0aW9ucyAoc2l6ZS9taWxrIHR5cGUpLCBudXRyaXRpb25hbCBpbmZvcm1hdGlvbi4KCgojIFEyCiogc2VsZWN0IGRyaW5rcyBhbmQgY2Fsb3JpZXMKCmBgYHtyfQpkcmlua3NfY2Fsb3JpZXMgPC0gc2VsZWN0KGRyaW5rc19tZW51LCBCZXZlcmFnZV9jYXRlZ29yeSwgQmV2ZXJhZ2UsIEJldmVyYWdlX3ByZXAsIENhbG9yaWVzKSAlPiUgCiAgZmlsdGVyKCFpcy5uYShDYWxvcmllcykpCiAgCgpgYGAKKiBubyBOQSdzCgojIFEzCipDYWxvcmllIGRpZmZlcmVuY2UKYGBge3J9CmRyaW5rc19jYWxfZGlmZiA8LSBtdXRhdGUoZHJpbmtzX2NhbG9yaWVzLCBjYWxvcmllX2RpZmYgPSAxMzUgLSBDYWxvcmllcykKZHJpbmtzX2NhbF9kaWZmCmBgYAoKIyBRNCAKKiBtZWFuIGNhbG9yaWVzIHBlciBjYXRlZ29yeQpgYGB7cn0KCmdyb3VwX2J5KGRyaW5rc19jYWxfZGlmZiwgQmV2ZXJhZ2VfY2F0ZWdvcnkpICU+JSAKICBzdW1tYXJpc2UobWVhbihDYWxvcmllcykpIAoKICAKYGBgCgoKCiogTW9zdC8gbGVhc3QgY2Fsb3JpZmljLCAKCmBgYHtyfQp0b3BfMyA8LSBhcnJhbmdlKGRyaW5rc19jYWxvcmllcywgZGVzYyhDYWxvcmllcykpICU+JSAKICBoZWFkKDEwKSAlPiUgCiAgcHJpbnQoKQpib3R0b21fMyA8LSBhcnJhbmdlKGRyaW5rc19jYWxvcmllcywgQ2Fsb3JpZXMpICU+JSAKICBoZWFkKDEwKSAlPiUgCiAgcHJpbnQoKQoKYGBgCgoqdG9wOiBXaGl0ZSBjaG9jIG1vY2hhKFdDTSkgdy8yJSwgV0NNIHcvc295YSwgSmF2YSBDaGlwIHcvIFdob2xlCipib3R0b206IFRhem8gLSBzaG9ydCwgdGFsbCwgZ3JhbmRlCgoqIG9yIC0gdG9wOiBXQ00sIEphdmEgQ2hvcCwgR3JlZW4gTGF0dGUgdy8gMiUKKiBib3Q6dGF6bywgYnJld2VkIENvZmZlZSwgQ2FmZmUgQW1lcmljYW5vCgoqb3IgLSBtZWFuIGNhbG9yaWUgcGVyIGNhdGVnb3J5IHJlc3VsdHMgLSBzZWUgc3VtbWFyeQoKIyBTdW1tYXJ5CiogVXNpbmcgdGhlIG1lYW4gY2Fsb3JpZSBjb250ZW50IG9mIGVhY2ggYmV2ZXJhZ2UgY2F0ZWdvcnksIHRoZSBtb3N0IGNhbG9yaWZpYyBhcmUgU21vb3RoaWVzLCBGcmFwcHVjaW9ubyBibGVuZGVkIGNvZmZlZSBhbmQgc2lnbmF0dXJlIGVzcHJlc3NvIGRyaW5rcywgcmVzcGVjdGl2ZWx5LiBXaGlsZSB0aGUgbGVhc3QgYXJlIENvZmZlZSwgU2hha2VuIEljZWQgYmV2ZXJhZ2VzIGFuZCBDbGFzc2ljIGVzcHJlc3NvIGRyaW5rcywgcmVzcGVjdGl2ZWx5LiAKKiBXaGVuIG5vdCBncm91cGVkIGJ5IGJldmVyYWdlIGNhdGVnb3J5IHRoZSBkcmlua3Mgd2l0aCB0aGUgdG9wIGFuZCBib3R0b20gMyBjYWxvcmllIGNvbnRlbnRzIGFyZSBkaWZmZXJlbnQgYW5kIHNlZW0gdG8gYmUgYWZmZWN0ZWQgZ3JlYXRseSBieSB0aGUgbWlsayB1c2VkIGluIEJldmVyYWdlX3ByZXAKCipwb3N0IGRpc2N1c3Npb24gYW5zd2VyIC0gYmV0dGVyIGZvcm11bGEKCmBgYHtyfQpjYXRfZ3JvdXBfbWVhbiA8LSBncm91cF9ieShkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgCiAgc3VtbWFyaXNlKG1lYW5fY2Fsb3JpZXMgPSBtZWFuKENhbG9yaWVzKSkKaGVhZChjYXRfZ3JvdXBfbWVhbiwgMykKdGFpbChjYXRfZ3JvdXBfbWVhbiwgMykKYGBgCiphbHRlcm5hdGUgdXNpbmcgc2xpY2UoKSAtIEkgd2FzIHRyeWluZyB0byB1c2Ugc2xpY2UoKSB0byBzaG93IHRvcCBhbmQgYm90dG9tIDMgaW4gZmVsbCBzd29vcCBidXQgY291bGRuJ3QgZmlndXJlIGl0IG91dC4KCmBgYHtyfQpjYXRfZ3JvdXBfdG9wX2JvdCA8LSBncm91cF9ieShkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgCiAgc3VtbWFyaXNlKG1lYW5fY2Fsb3JpZXMgPSBtZWFuKENhbG9yaWVzKSkgJT4lIAogIGFycmFuZ2UoZGVzYyhtZWFuX2NhbG9yaWVzKSkgJT4lIAogIHNsaWNlX2hlYWQoKSAlPiUgCiAgcHJpbnQoKQoKYGBgCgoKIyBRNSAKKiBhdmVyYWdlIGRlcGVuZGluZyBvbiBwcmVwIHR5cGUKCmBgYHtyfQptZWFuX2J5X3ByZXBfYmFkbmFtZXMgPC0gZ3JvdXBfYnkoZHJpbmtzX2NhbG9yaWVzLCBCZXZlcmFnZV9wcmVwKSAlPiUgCiAgc3VtbWFyaXNlKG1lYW4oQ2Fsb3JpZXMpKSAKCm5hbWVzKG1lYW5fYnlfcHJlcF9iYWRuYW1lcykKbWVhbl9ieV9wcmVwIDwtIHJlbmFtZShtZWFuX2J5X3ByZXBfYmFkbmFtZXMsICJtZWFuX2NhbG9yaWVzIiA9ICJtZWFuKENhbG9yaWVzKSIpCgphcnJhbmdlKG1lYW5fYnlfcHJlcCwgbWVhbl9jYWxvcmllcykKYXJyYW5nZShtZWFuX2J5X3ByZXAsIGRlc2MobWVhbl9jYWxvcmllcykpCmBgYAoKKiB0aGlzIHNlZW1zIGxpa2UgYSBjb252b2x1dGVkIHdheSBvZiBjaGFuZ2luZyB0aGUgbmFtZSBvZiB0aGUgY29sdW1uIGluIG9yZGVyIHRvIGFycmFuZ2UgYnkgbWVhbiBjYWxvcmllcwoKIyBRNgoqY29tcGFyZSB3aXRoIGF2ZXJhZ2UgY2Fsb3JpZXMgZm9yIGFsbCBkcmlua3MKCmBgYHtyfQpzdW1tYXJpc2UoZHJpbmtzX2NhbG9yaWVzLCBtZWFuKENhbG9yaWVzKSkKCmBgYAoKKiBtZWFuIGZvciBhbGwgZHJpbmtzID0gMTkzLjg3MTkKYGBge3J9CmZpbHRlcihtZWFuX2J5X3ByZXAsIG1lYW5fY2Fsb3JpZXMgPiAxOTMuODcxOSkKYGBgCgoqIGRyaW5rIHByZXBzIG92ZXIgbWVhbiAtIGFsbCB0aGUgbWlsa3MhCgojIFE3Ciogd2hpY2ggY29mZmVlIGlzIGxlYXN0IGNhbG9yaWVmdWxsCgpgYGB7cn0KbGVhc3RfY2FsX2RyaW5rIDwtIGZpbHRlcihkcmlua3NfY2Fsb3JpZXMsIEJldmVyYWdlX2NhdGVnb3J5ID09ICJDb2ZmZWUiKSAlPiUgCiAgYXJyYW5nZShDYWxvcmllcykgJT4lIAogIGhlYWQoMSkgJT4lIAogIHByaW50KCkKCgpgYGAKCgoqIEdldCBhIHNob3J0IGJsYWNrIGNvZmZlZSAtIHRoZXkgYXJlIHRoZSBiZXN0IGFueXdheS4gCgoqdG9vayBtZSBhIHdoaWxlIHRvIGZpZ3VyZSBvdXQgd2hhdCBuZWVkcyAiIg==</div>
 
 
 
@@ -2196,7 +2190,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("homework_dplyr.Rmd");
+  window.initializeSourceEmbed("day02_homework.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
