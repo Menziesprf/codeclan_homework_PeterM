@@ -14,9 +14,13 @@ library(dplyr)
 ```{r}
 drinks_menu <- read_csv("5_homework_dplyr/data/starbucks_drinkMenu_expanded.csv")
 view(drinks_menu)
+dim(drinks_menu)
+head(drinks_menu)
+names(drinks_menu)
 ```
 * 242 obs, 18 variables, character & numeric, 
 * Names = Beverage category, beverage, prep instructions (size/milk type), nutritional information.
+
 
 # Q2
 * select drinks and calories
