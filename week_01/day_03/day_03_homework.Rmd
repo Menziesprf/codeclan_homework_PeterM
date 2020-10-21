@@ -1,0 +1,103 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+```{r}
+movies <- read_csv("data/movies.csv")
+```
+ 
+ # Q1
+ 
+```{r}
+dim(movies)
+names(movies)
+head(movies)
+view(movies)
+```
+ 
+ * Are the "original_title" and "title" columns identical? If so we could remove one of them. Is there a compare function to do this?
+ * I'd check for NA's, in all forms (eg. "na" "NaN" "--" "0" etc.),  in each column. We could probably ignore them in "homepage", "tagline" and "overview" but either remove or impute them in numeric columns such as "budget", "revenue", "vote_average", "vote_count", "runtime" in case we want to find the average of these columns. If there is an NA in the title columns can we figure out the title from the overview/other info and add the title.
+ * check the range of the numeric columns to see if there are any significant outliers that may skew averages.
+ * Examine "language" column - Are all films in english? If so remove the column.
+ * "Overview" and perhaps "tagline" don't seem very useful in this format. Remove them? Maybe you could search them for key words to get an idea of film genre and add that as a column then group them like that?
+ * In "vote_count" are any so low that the vote result isn't valid statistically? What is the vote_average scale?
+ * What does "popularity" represent? Is it related to the "vote_average" or does it show similar results. I.e high popularity = high vote average?
+ * "release date" - all dates in the same format? Any using American system, not sure how you'd tell unless in xx/yy/zzzz, yy>12.
+ 
+ # Q2 
+ 
+```{r}
+
+filter(movies, is.na(title))
+filter(movies, is.na(original_title))
+
+# both have 0 NA's so arbitrarilly choosing "title"
+
+movies_selected <- select(movies, title, runtime, budget)
+```
+
+# Q3
+* We already know "title" has 0 NA's
+* A value of 0 for "runtime" and "budget" is essentially NA so I'll convert 0 to NA
+```{r}
+movies_selected_na <- movies_selected %>% 
+  mutate(runtime = na_if(runtime, 0)) %>% 
+  mutate(budget = na_if(budget, 0))
+
+
+select(movies_selected_na, runtime) %>% 
+  filter(is.na(runtime)) %>% 
+  nrow()
+
+select(movies_selected_na, budget) %>% 
+  filter(is.na(budget)) %>% 
+  nrow()
+```
+* runtime = 37 NA's
+* budget = 1,037 NA's
+
+# Q4
+* woops got ahead of myself in Q3, decided to leave it and ignore the new object i made
+
+```{r}
+movies_runtime <- mutate(movies_selected, runtime = na_if(runtime, 0))
+
+select(movies_runtime, runtime) %>% 
+  filter(is.na(runtime))
+```
+* 37 NA's
+* when you say "save to a new variable" does that mean make it into a new column or assign it to an object using "<-"? 
+
+# Q5 
+
+```{r}
+movies_imputed <- movies_runtime %>% 
+  mutate(runtime = 
+           coalesce(runtime, median(runtime, na.rm = T)))
+
+filter(movies_imputed, is.na(runtime))
+```
+
+* 0 NA's in runtime
+
+#     Q6 
+```{r}
+slice_max(movies_imputed, runtime, n =10)
+
+slice_min(movies_imputed, runtime, n = 10)
+
+```
+ 
+
+```{r}
+movies_imputed <- movies_imputed %>% 
+  mutate(budget =
+           if_else(budget < 100, median(budget, na.rm = T), budget))
+```
+ 
+* I removed NA's when finding the median budget, but should I also remove all 0's before finding the median?
+ 
