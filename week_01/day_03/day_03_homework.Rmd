@@ -28,6 +28,13 @@ view(movies)
  * What does "popularity" represent? Is it related to the "vote_average" or does it show similar results. I.e high popularity = high vote average?
  * "release date" - all dates in the same format? Any using American system, not sure how you'd tell unless in xx/yy/zzzz, yy>12.
  
+ * [using answers - additional ways of investigating data]
+```{r}
+sum(is.na(movies))
+nrow(movies) - nrow(drop_na(movies))
+```
+ * shows number of rows with an NA
+ 
  # Q2 
  
 ```{r}
@@ -60,6 +67,22 @@ select(movies_selected_na, budget) %>%
 * runtime = 37 NA's
 * budget = 1,037 NA's
 
+[using answers - tidier ways of doing Q3]
+
+```{r}
+movies_selected %>% 
+  summarise(na_runtime = sum(is.na(runtime)),
+            na_title = sum(is.na(title)),
+            na_budget = sum(is.na(budget)))
+
+# Or
+
+movies_selected %>% 
+  summarise(across(.fns = ~sum(is.na(.x))))
+```
+* .fns = function
+* ~ creates an "anonymous" (temporary) function in this case the finding the sum of NA's in each column (each column = .x)
+
 # Q4
 * woops got ahead of myself in Q3, decided to leave it and ignore the new object i made
 
@@ -91,7 +114,9 @@ slice_max(movies_imputed, runtime, n =10)
 slice_min(movies_imputed, runtime, n = 10)
 
 ```
+ * Be aware - slice() returns top or bottom 10 (or n) DISTINCT results. So if 3 runtimes were 14 mins we'd get 12 rows returned
  
+# Q7
 
 ```{r}
 movies_imputed <- movies_imputed %>% 
@@ -100,4 +125,36 @@ movies_imputed <- movies_imputed %>%
 ```
  
 * I removed NA's when finding the median budget, but should I also remove all 0's before finding the median?
+
+# Extension 
+*Completed using answers/during discussion
+# Q1
+
+```{r}
+
+movie_budgets <- movies_imputed %>% 
+  mutate(
+    budget_type = case_when(
+      budget < 12e6 ~ "Small budget",
+      budget < 40e6 ~ "Medium budget",
+      budget >= 40e6 ~ "Big budget")) 
+
+movie_budgets
+
+```
+ # Q2
+ *numeric cols
+ 
+```{r}
+movies %>%
+  summarise(across(where(is.numeric), ~sum(is.na(.x))))
+```
+
+*character columns
+
+```{r}
+movies %>%
+  summarise(across(where(is.character), ~sum(is.na(.x))))
+```
+ 
  
