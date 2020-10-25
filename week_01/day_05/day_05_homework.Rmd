@@ -1,0 +1,218 @@
+---
+title: "R Notebook"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r}
+library(plyr)
+
+library(tidyverse)
+
+```
+
+```{r}
+books <- read_csv("data/books.csv", 
+                  locale = locale(date_format = "%m/%d/%Y"))
+names(books)
+dim(books)
+str(books)
+```
+
+* publication_date should be date column
+• fix missing values
+
+```{r}
+is.na(books) %>% 
+  sum()
+
+select(books, bookID) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, title) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, authors) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, average_rating) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, isbn) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, isbn13) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, language_code) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, num_pages) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, ratings_count) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, text_reviews_count) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, publication_date) %>% 
+  is.na() %>% 
+  sum()
+
+select(books, publisher) %>% 
+  is.na() %>% 
+  sum()
+
+```
+* 17 Total NA
+* 1 NA authors
+* 3 NA average_rating
+* 1 NA isbn
+* 1 NA isbn13
+* 1 NA language_code
+* 3 NA num_pages
+* 1 NA ratings_count
+* 1 NA text_reviews_count
+* 4 NA publication_date
+* 1 NA publisher
+
+* Obs - ID = 34889 has had its info shifted across into the wrong columns.
+
+* going to drop NA's then seems clean I think.
+
+```{r}
+books_nadropped <- drop_na(books) 
+
+head(books_nadropped)
+  
+```
+
+* things to consider investigating
+    -   relationship between "average_rating", "ratings_count" and "text_reviews_count"
+    -   average rating for each language, publisher and author
+    -   relationship between publication_date and rating
+          -   group by decade?
+    -   relationship between book length("num_pages") and rating
+          -   find mean/median
+          -   does num_pages distance from mean/median affect rating
+
+
+```{r}
+books_nadropped %>% 
+  select(bookID, average_rating, ratings_count, text_reviews_count) %>% 
+  arrange(ratings_count)
+```
+* some very low rating counts for many of these so I'm going to drop any below 10. Arbitrarily choosing 10, should this number be higher? Is the average rating invalid if the number of ratings are below a certain number?
+
+```{r}
+books_low_count_dropped <- filter(books_nadropped, ratings_count >= 20)
+```
+# average rating per different groupings
+* top and bottom 5 authors by mean rating 
+```{r}
+author_ratings <- books_low_count_dropped %>% 
+  group_by(authors) %>% 
+  summarise(author_mean_rating = mean(average_rating)) %>% 
+  arrange(desc(author_mean_rating))
+head(author_ratings, 5)
+tail(author_ratings, 5)
+```
+
+* top and bottom 5 publishers by mean rating
+
+```{r}
+publisher_ratings <- books_low_count_dropped %>% 
+  group_by(publisher) %>% 
+  summarise(publisher_mean_rating = mean(average_rating)) %>% 
+  arrange(desc(publisher_mean_rating))
+head(publisher_ratings, 5)
+tail(publisher_ratings, 5)
+```
+
+* top and bottom 5 languages by mean rating
+* 20 languages total
+```{r}
+books_low_count_dropped %>% 
+  distinct(language_code)
+
+language_mean_rating <- books_low_count_dropped %>% 
+  group_by(language_code) %>% 
+  summarise(language_mean_rating = mean(average_rating)) %>% 
+  arrange(desc(language_mean_rating))
+head(language_mean_rating, 5)
+tail(language_mean_rating, 5)
+
+```
+
+# Decade of publication
+* this is proving very tricky. Trying to figure out a way to round the year down to nearest 10. (eg 1999 to 1990), then I could group by year and each grouping would represent one decade.
+
+
+```{r}
+library(lubridate)
+
+# i think using floor_date() is the way forward but can't figure it out.      
+  
+# mean_by_decade <- books_low_count_dropped %>% 
+  #mutate(decade_of_publication = test)
+
+# floor_date(mean_by_decade, test = "year")
+
+# dates_vector_rounded_down <- books_low_count_dropped %>% 
+  #pull(publication_date) %>% 
+  #floor_date("year")
+
+```
+
+# Rating vs page numbers
+
+```{r}
+page_num_rating <- books_low_count_dropped %>% 
+  select(average_rating, num_pages)
+
+summarise(page_num_rating, mean(num_pages))
+summarise(page_num_rating, median(num_pages))
+page_num_rating %>% 
+  slice_min(num_pages)
+```
+* mean and median page numbers are quite different, which suggests some erroniously high or low values. 
+* slice_min shows multiple rows with num_pages = 0, which is essentially an NA so i'll drop them.
+* There are also books with 1 or 2 pages in this table. How many pages does a book need to have to be a called a book? I'm goin to say 50 at random for the purposes of this. 
+
+```{r}
+
+page_num_rating_dropped_low <- page_num_rating %>% 
+  filter(num_pages > 50)
+
+page_num_with_diff <- mutate(page_num_rating_dropped_low, median_pages = median(num_pages), 
+       page_diff = num_pages - median_pages) %>% 
+  arrange(desc(page_diff))
+
+page_diff_rounded <- page_num_with_diff %>% 
+  mutate(page_diff_round = 
+           round_any(page_diff, 100))
+
+page_diff_rounded %>% 
+  group_by(page_diff_round) %>% 
+  summarise(mean_rating = mean(average_rating)) %>% 
+  arrange(desc(mean_rating))
+
+
+```
+
+* seems like the book being over the median length leads to a higher rating. 
+  -   Not really sure how useful this is as an assessment
+  - Most useful part of this section was figuring out how to round a column.
+  - I think there will be a way to more accurately say the relationship between the difference from the median page number, and the average rating. Perhaps using standard deviations. 
