@@ -242,9 +242,18 @@ books_dates <- books_low_count_dropped %>%
 
 books_dates
 ```
-
+* Harry's random book selection generator
+* "own_categories" - an object of clean book data he'd made.
 
 ```{r}
-
+holiday_books <- own_categories %>%
+  filter(
+    own_category == "Must own" | own_category == "Nice to have",
+    time_category == "Quick Read"
+  ) %>%
+  sample_n(5) %>%
+  select(title) %>%
+  pull(title)
+holiday_books
 ```
 

@@ -1,0 +1,107 @@
+---
+title: "Wk2 Day2 HW"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+library(tidyverse)
+```
+
+# Q1
+```{r}
+card_base <- read_csv("data/CardBase.csv") %>% 
+  janitor::clean_names()
+customer_base <- read_csv("data/CustomerBase.csv") %>% 
+  janitor::clean_names()
+fraud_base <- read_csv("data/FraudBase.csv") %>% 
+  janitor::clean_names()
+transaction_base <- read_csv("data/TransactionBase.csv") %>% 
+  janitor::clean_names()
+
+```
+
+# Q2
+*expecting 500 rows
+```{r}
+card_customer <- 
+  left_join(card_base, customer_base, by = "cust_id")
+card_customer
+```
+
+# Q3
+* expecting 10,000 rows. Lots of NA's 
+```{r}
+fraud_transactions_combined <- 
+  full_join(fraud_base, transaction_base, by = "transaction_id")
+fraud_transactions_combined 
+```
+* tells me there are 10,000 unique transaction id's?
+
+# Q4
+```{r}
+card_transaction_combined <- 
+  semi_join(card_base, transaction_base, by = c("card_number" = "credit_card_id"))
+card_transaction_combined
+```
+# Q5
+
+```{r}
+hats <- read_csv("data/hat_observations.csv") %>%
+  separate(col = "observation",
+           into = c("hat_colour", "hat_type"),
+           sep = ",") 
+
+hats
+```
+# Q6
+
+```{r}
+hats_date_united <- hats %>% 
+  unite(col = date,
+        c("day", "month", "year"),
+        sep = "/")
+
+hats_date_united
+  
+hats_date_united %>% 
+  filter(hat_type == "beret") %>% 
+  group_by(date) %>% 
+  summarise(beret_sales = sum(observation_count)) %>% 
+  arrange(desc(beret_sales))
+
+```
+
+# Extension
+# 2.1 Joins
+# Q1
+
+```{r}
+all_bases <- 
+  left_join(card_base, customer_base, by = "cust_id") %>% 
+  left_join(transaction_base, by = c("card_number" = "credit_card_id")) %>% 
+  right_join(fraud_base, by = "transaction_id")
+
+all_bases
+
+```
+# Tidyr
+# Q2
+
+```{r}
+exam_scores <- read_csv("data/exam_scores.csv")
+
+exam_scores_clean <- exam_scores %>% 
+  pivot_longer(cols = starts_with("exam_Q"),
+               names_to = "exam_question",
+               values_to = "score") %>% 
+  separate(col = exam_question,
+           into = c("exam", "question"),
+           sep = "_Q") %>% 
+  select(-exam) 
+
+exam_scores_clean
+```
+
+
+
