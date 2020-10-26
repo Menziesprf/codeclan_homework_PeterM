@@ -88,6 +88,14 @@ select(books, publisher) %>%
 * 4 NA publication_date
 * 1 NA publisher
 
+# From answers - more streamlined way of doing the NA's for each column
+
+```{r}
+books %>% 
+  summarise(across(.fns = ~ sum(is.na(.x))))
+```
+
+
 * Obs - ID = 34889 has had its info shifted across into the wrong columns.
 
 * going to drop NA's then seems clean I think.
@@ -216,3 +224,27 @@ page_diff_rounded %>%
   -   Not really sure how useful this is as an assessment
   - Most useful part of this section was figuring out how to round a column.
   - I think there will be a way to more accurately say the relationship between the difference from the median page number, and the average rating. Perhaps using standard deviations. 
+
+
+
+# Monday Review
+
+* After review, I could have assessed NA values in each column more thoroughly. 
+* my thought process was pretty limited to average rating. 
+* 0 page books could have been an audiobook 
+      -   ratings would still be valid in this case
+      -   can use stringr package, to search for keyword audio. - ratings are
+
+```{r}
+books_dates <- books_low_count_dropped %>% 
+  mutate(pub_date = 
+           as.Date(publication_date, format ="%Y"))
+
+books_dates
+```
+
+
+```{r}
+
+```
+
