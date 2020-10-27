@@ -1,0 +1,121 @@
+---
+title: "Wk2 Day2 HW"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+library(tidyverse)
+```
+
+# Q1
+
+```{r}
+cc_tweets <- read_csv("data/code_clan_tweets.csv")
+
+nrow(cc_tweets)
+ncol(cc_tweets)
+names(cc_tweets)
+```
+* 234 rows
+* 27 columns
+
+# Q2
+
+```{r}
+cc_tweets %>% 
+  filter(is_quote == FALSE) %>% 
+  summarise(total_fav = sum(favorite_count))
+```
+* 425 favourites
+
+# Q3
+```{r}
+cc_tweets %>% 
+  filter(is_quote == FALSE) %>% 
+  group_by(source) %>% 
+  summarise(mean_retweets = mean(retweet_count)) %>% 
+  arrange(desc(mean_retweets))
+```
+
+# Q4
+```{r}
+cc_tweets %>% 
+  mutate(
+    media_type = recode(media_type, .missing = "text")) %>%
+  group_by(media_type) %>% 
+  summarise(total_likes = sum(favorite_count)) %>% 
+  arrange(desc(total_likes))
+  
+```
+
+# Q5
+```{r}
+cc_tweets %>% 
+  summarise(mean_characters = mean(display_text_width))
+
+cc_tweets %>% 
+  filter(is_retweet == FALSE) %>% 
+  summarise(mean_characters_no_retweets = mean(display_text_width))
+
+```
+* does it count as a codeclan tweet if its a retweet? 
+* should I have counted the characters in each row of the "text" column and found the mean of that?
+
+# Q6
+
+```{r}
+cc_info <- read_csv("data/code_clan_info.csv")
+```
+
+```{r}
+cc_joined <- cc_tweets %>% 
+  left_join(select(cc_info, tweet_id, status_url), by = "tweet_id")
+cc_joined
+```
+# Q7
+
+```{r}
+codeclan_hashtags <- cc_joined %>% 
+  select(tweet_id, hashtags) %>% 
+  filter(hashtags != is.na(hashtags)) %>% 
+  mutate(hashtags = str_to_lower(hashtags))
+```
+
+# Ext
+# Q8
+
+```{r}
+codeclan_hashtags %>% 
+  mutate(
+    cbracket_hashtags = str_detect(hashtags, "c\\(")) %>% 
+  filter(cbracket_hashtags == TRUE)
+```
+# Q9
+
+```{r}
+cc_tweets %>% 
+  mutate(
+    edinburgh_mentioned = str_detect(text, "(?i)(Edinburgh)")) %>% 
+  filter(edinburgh_mentioned == T) %>% 
+  nrow()
+  
+```
+
+# Q10
+```{r}
+cc_tweets %>% 
+  mutate(
+    twitter_users = str_extract_all(text, "@[a-zA-Z0-9_]+")) %>% 
+  pull(twitter_users) %>% 
+  flatten_chr() %>% 
+  unique()
+  
+  
+```
+
+
+
+
+
+
