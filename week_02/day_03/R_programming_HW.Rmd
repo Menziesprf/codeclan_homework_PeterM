@@ -1,0 +1,133 @@
+---
+title: "Programming in R HW (wk2d3)"
+output:
+  html_document:
+    df_print: paged
+---
+```{r}
+library(tidyverse)
+```
+
+# Q1
+
+```{r}
+Thursday <- list(temp_ºC = 13, precip = "90%", windspeed_mph = 18)
+Friday <- list(temp_ºC = 12, precip = "20%", windspeed_mph = 13)
+Saturday <- list(temp_ºC = 11, precip = "80%", windspeed_mph = 18)
+
+forecast <- list(thurs = Thursday, fri = Friday, sat = Saturday)
+forecast
+```
+
+# Q2
+```{r}
+# q1
+forecast$thurs$precip
+# q2
+forecast$fri$windspeed_mph
+# q3
+forecast$thurs$temp_ºC
+```
+
+# Q3.1
+```{r}
+forecast_matrix <- matrix(c(14, 13, 12, 11, 11, 9, 9, 11, 10, 10, 9, 9, 9, 9), nrow = 2)
+forecast_matrix
+```
+
+# Q3.2
+```{r}
+# q1
+forecast_matrix[2, 3]
+# q2
+forecast_matrix[2, ]
+# q3
+forecast_matrix[,c(1,3,5)]
+```
+
+# Q4
+```{r}
+answer <- function(x){
+  if (is.numeric(x)){
+    if (x < 10){
+    return(paste("The answer is:", x))
+    } else {
+      return(paste("The answer is:", (x / 10)))
+    }
+  } else {
+    return(paste("The answer is:", "Invalid input"))
+  }
+}
+
+answer(T)
+```
+
+```{r}
+answer_better <- function(x){
+  return(paste("The answer is:",
+  (if (is.numeric(x)){
+    if (x < 10){
+    x
+    } else {
+      (x / 10)
+    }
+  } else {
+    "Invalid input"
+  })))
+}
+
+answer_better(54)
+```
+
+# Q5
+```{r}
+#test vectors
+blobber <- c(1, 2, 3, 4, 5)
+crabber <- c(2, 3, 4, 5, 1)
+crabber2 <- c(2, 3, 4, 5, 1)
+chubsley <- c(12, 23, 45, 34, 14)
+```
+
+```{r}
+elements <- function(v1, v2){
+  if (identical(v1, v2)){
+    print("Exactly the same")
+  } else {
+  if (identical(sort(v1), sort(v2))){
+    print("similar")
+  } else {
+      print("different")
+    }
+  }
+}
+
+elements(crabber, crabber2)
+elements(crabber, blobber)
+elements(crabber, chubsley)
+```
+```{r}
+identical(sort(blobber), sort(crabber))
+t <- sort(blobber)
+r <- sort(crabber)
+
+t
+r
+identical(t, r)
+
+# WHY ARE THESE NOT IDENTICAL???? [semi fixed it but still confused]
+# this is weird - if i make "blobber" using c(1:5) it doesnt work but if i do c(1, 2, 3, 4, 5) it does work. as shown below
+```
+
+```{r}
+control <- c(2, 3, 4, 5, 1)
+works <- c(1, 2, 3, 4, 5)
+doesntwork <- c(1:5)
+
+control_sorted <- sort(control)
+
+identical(control_sorted, works)
+identical(control_sorted, doesntwork)
+```
+
+
+

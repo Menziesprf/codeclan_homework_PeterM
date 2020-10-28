@@ -62,6 +62,19 @@ cc_tweets %>%
 * does it count as a codeclan tweet if its a retweet? 
 * should I have counted the characters in each row of the "text" column and found the mean of that?
 
+```{r}
+# after discussion 
+cc_tweets %>% 
+  pull(text) %>% 
+  str_remove_all("@[a-zA-Z0-9_]+") %>% 
+  nchar() %>% 
+  mean()
+  
+
+  # str_remove_all("[[:punct:]]") %>% 
+```
+
+
 # Q6
 
 ```{r}
@@ -80,6 +93,7 @@ codeclan_hashtags <- cc_joined %>%
   select(tweet_id, hashtags) %>% 
   filter(hashtags != is.na(hashtags)) %>% 
   mutate(hashtags = str_to_lower(hashtags))
+codeclan_hashtags
 ```
 
 # Ext
