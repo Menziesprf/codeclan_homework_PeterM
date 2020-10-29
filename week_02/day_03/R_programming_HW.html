@@ -1709,25 +1709,25 @@ forecast$thurs$temp_ºC</code></pre>
 </div>
 <div id="q3.1" class="section level1">
 <h1>Q3.1</h1>
-<pre class="r"><code>forecast_matrix &lt;- matrix(c(14, 13, 12, 11, 11, 9, 9, 11, 10, 10, 9, 9, 9, 9), nrow = 2)
+<pre class="r"><code>forecast_matrix &lt;- matrix(c(14, 13, 12, 11, 11, 9, 9, 11, 10, 10, 9, 9, 9, 9), nrow = 2, byrow = T)
 forecast_matrix</code></pre>
 <pre><code>##      [,1] [,2] [,3] [,4] [,5] [,6] [,7]
-## [1,]   14   12   11    9   10    9    9
-## [2,]   13   11    9   11   10    9    9</code></pre>
+## [1,]   14   13   12   11   11    9    9
+## [2,]   11   10   10    9    9    9    9</code></pre>
 </div>
 <div id="q3.2" class="section level1">
 <h1>Q3.2</h1>
 <pre class="r"><code># q1
 forecast_matrix[2, 3]</code></pre>
-<pre><code>## [1] 9</code></pre>
+<pre><code>## [1] 10</code></pre>
 <pre class="r"><code># q2
 forecast_matrix[2, ]</code></pre>
-<pre><code>## [1] 13 11  9 11 10  9  9</code></pre>
+<pre><code>## [1] 11 10 10  9  9  9  9</code></pre>
 <pre class="r"><code># q3
 forecast_matrix[,c(1,3,5)]</code></pre>
 <pre><code>##      [,1] [,2] [,3]
-## [1,]   14   11   10
-## [2,]   13    9   10</code></pre>
+## [1,]   14   12   11
+## [2,]   11   10    9</code></pre>
 </div>
 <div id="q4" class="section level1">
 <h1>Q4</h1>
@@ -1758,8 +1758,8 @@ answer(T)</code></pre>
   })))
 }
 
-answer_better(54)</code></pre>
-<pre><code>## [1] &quot;The answer is: 5.4&quot;</code></pre>
+answer_better(&quot;koi&quot;)</code></pre>
+<pre><code>## [1] &quot;The answer is: Invalid input&quot;</code></pre>
 </div>
 <div id="q5" class="section level1">
 <h1>Q5</h1>
@@ -1809,6 +1809,67 @@ identical(control_sorted, works)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code>identical(control_sorted, doesntwork)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="answers" class="section level1">
+<h1>ANSWERS</h1>
+</div>
+<div id="q3" class="section level1">
+<h1>Q3</h1>
+<p>• forgot to use arguement “byrow = TRUE” (changed it now)</p>
+<ul>
+<li>not sure I agree with Q4 or Q5 # Q4</li>
+</ul>
+<pre class="r"><code>answer_or_divide &lt;- function(x) {
+  if (is.character(x)) {
+    return(paste(&quot;The answer is: &quot;, x))
+  }
+
+  if (is.numeric(x)) {
+    if (x &lt; 10) {
+      return(x)
+    } else {
+      return(x / 10)
+    }
+  }
+
+  return(&quot;Invalid input&quot;)
+}
+answer_or_divide(56)</code></pre>
+<pre><code>## [1] 5.6</code></pre>
+</div>
+<div id="q5---this-is-wrong" class="section level1">
+<h1>Q5 - this is wrong</h1>
+<pre class="r"><code>is_same_vector &lt;- function(vector_1, vector_2) {
+  if (vector_1 == vector_2) {
+    return(&quot;Exactly the same&quot;)
+  }
+
+  if (sort(vector_1) == sort(vector_2)) {
+    return(&quot;The same&quot;)
+  }
+
+  return(&quot;Different&quot;)
+}
+is_same_vector(crabber2, crabber)</code></pre>
+<pre><code>## Warning in if (vector_1 == vector_2) {: the condition has length &gt; 1 and only
+## the first element will be used</code></pre>
+<pre><code>## [1] &quot;Exactly the same&quot;</code></pre>
+</div>
+<div id="q5---alternate-correct-using-all" class="section level1">
+<h1>Q5 - alternate correct using all()</h1>
+<pre class="r"><code>is_same_vector &lt;- function(vector_1, vector_2) {
+  if (all(vector_1 == vector_2)) {
+    return(&quot;Exactly the same&quot;)
+  }
+
+  if (all(sort(vector_1) == sort(vector_2))) {
+    return(&quot;The same&quot;)
+  }
+
+  return(&quot;Different&quot;)
+}
+is_same_vector(crabber2, blobber)</code></pre>
+<pre><code>## [1] &quot;The same&quot;</code></pre>
 </div>
 
 
