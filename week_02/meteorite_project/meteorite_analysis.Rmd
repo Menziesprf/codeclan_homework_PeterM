@@ -9,7 +9,7 @@ source("cleaning_script.R")
 
 # Analysis
 
-* Largest Meteorites
+# Largest Meteorites
 
 ```{r}
 meteorite_landings_cleaned %>% 
@@ -17,7 +17,7 @@ meteorite_landings_cleaned %>%
   select(name, year, mass_g)
 ```
 
-* Average mass for falling vs found meteorites
+# Average mass for falling vs found meteorites
 
 ```{r}
 meteorite_landings_cleaned %>% 
@@ -25,7 +25,7 @@ meteorite_landings_cleaned %>%
   summarise(mean_mass_g = mean(mass_g))
 ```
 
-* Number of meteorites per year since 2000
+# Number of meteorites per year since 2000
 
 ```{r}
 meteorite_landings_cleaned %>% 
@@ -35,9 +35,78 @@ meteorite_landings_cleaned %>%
 
 ```
 
+# Meteorites by latitude
+
+```{r}
+meteorite_landings_cleaned %>% 
+  filter(latitude > 0) %>% 
+  summarise(northern_hemisphere_meteorites = length(id),
+            mean_size = mean(mass_g))
+
+meteorite_landings_cleaned %>% 
+  filter(latitude < 0) %>% 
+  summarise(southern_hemisphere_meteorites = length(id),
+            mean_size = mean(mass_g))
+
+# unable to determine meteorites falling directly on the equator due to coercing "0" of NA's 
+
+meteorite_landings_cleaned %>% 
+  filter(latitude != 0 & latitude <= abs(23.5)) %>%           # to remove coerced 0 values
+  summarise(meteorites_between_tropics = length(id),
+            mean_size = mean(mass_g))
+
+meteorite_landings_cleaned %>% 
+  filter(latitude > 23.5) %>% 
+  summarise(meteorites_north_of_cancer = length(id),
+            mean_size = mean(mass_g))
+
+meteorite_landings_cleaned %>% 
+  filter(latitude < -23.5) %>% 
+  summarise(meteorites_south_of_capricorn = length(id),
+            mean_size = mean(mass_g))
+
+meteorite_landings_cleaned %>% 
+  filter(latitude > 66.5) %>% 
+  summarise(meteorites_arctic_circle = length(id),
+            mean_size = mean(mass_g))
+
+meteorite_landings_cleaned %>% 
+  filter(latitude < -66.5) %>% 
+  summarise(meteorites_antarctic_circle = length(id),
+            mean_size = mean(mass_g))
+```
+* Conclusions
+    -   Far more meteorite landings reported in the Northern Hemisphere
+    -   Mean size of the Southern Hemisphere landings is approximately double that of Northern Hemisphere landings
+    -   Over 50% of Southern Hemisphere reported landings were in the Antarctic Circle
+    -   ~0.5% of Northern Hemisphere reported landings in Arctic Circle
+    -   Mean size of arctic circle landings is skewed heavily by meteorite "5262" which is a massive 58.2 tonnes (2nd largest in the entire cleaned data) 
+
+# Landings by year
+
+```{r}
+# Earliest landing
+meteorite_landings_cleaned %>% 
+  slice_min(year)
+
+# per century
+source("century_function.R")
+meteorite_landings_cleaned %>% 
+  mutate(century = century(year))%>% 
+  group_by(century) %>% 
+  summarise(total_meteorites = length(id),
+            mean_size = mean(mass_g))
+
+# why is this not working?
+# it is correctly selecting and grouping the centuries but returning 21th century
+# works fine when tested in function script
+```
+* Most reported meteorite landings in 20th century
+* largest mean size of meteorites in 17th century 
 
 
 
+  
 
 
 
