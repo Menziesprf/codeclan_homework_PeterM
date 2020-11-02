@@ -1,0 +1,200 @@
+---
+title: "David's stuff"
+output: html_document
+---
+---
+title: "Meteorite Report"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+---
+```{r, message = FALSE}
+# load in the tidyverse, assertive, maps and plotting packages.
+library(tidyverse)
+library(assertthat)
+library(assertr)
+library(ggplot2)
+library(maps)
+# load in the cleaning script
+source("scripts/data_cleaner_script.R")
+```
+```{r, message=FALSE}
+# load in the dirty data
+dirty_meteorites <- read_csv("data/raw_data.csv")
+meteorites <- clean_data(dirty_meteorites)
+```
+```{r}
+dim(meteorites)
+```
+The data includes ~4000 observations of 7 variables
+The top of the data, showing the column names and some of the data.
+```{r}
+head(meteorites)
+```
+Note, meteorite data only available to 2013.
+# MVP Questions
+**1** Find the names and years found for the ten largest meteorites
+```{r}
+largest_meteorites <- meteorites %>%
+  # select only necessary columns
+  select(name, mass, year) %>% 
+  slice_max(mass, n = 10)
+  
+largest_meteorites
+```
+According to the wikipedia entry for Campo del Cielo it was "found"  < 1576.
+This may be why it is recorded as NA in the year table.
+**2** Find the average mass of meteorites that were recorded falling, vs. those
+which were just found.
+```{r}
+falling_meteorites <- meteorites %>% 
+  filter(fall == "Fell")
+avg_mass_falling_meteorites <- falling_meteorites %>% 
+  summarise(avg_mass = mean(mass, na.rm = TRUE)) %>% 
+  pull()
+avg_mass_falling_meteorites/1000
+```
+Almost 70kg
+How does this compare with meteorites that were just found?
+```{r}
+found_meteorites <- meteorites %>% 
+  filter(fall == "Found")
+avg_mass_found_meteorites <- found_meteorites %>% 
+  summarise(avg_mass = mean(mass, na.rm = TRUE)) %>% 
+  pull()
+avg_mass_found_meteorites/1000
+```
+Almost 180kg
+The average mass of meteorites that are found is around two and a half that of
+meteorites observed while falling. This does make sense given the age of the
+Earth relative to the length of time that humans have existed, and also when not
+falling from the sky, it's probably quite difficult to find a small meteorite. A
+long term study of found meteorites should, therefore, favour larger masses.
+**3** Find the number of meteorites in each year, for every year since 2000.
+```{r}
+# find only recent meteorites
+recent_meteorites <- meteorites %>% 
+  filter(year >= 2000)
+count_meteorites <- recent_meteorites %>%
+  add_count(year) %>%
+  group_by(year) %>%
+  summarise("n_meteorites" = mean(n), .groups = 'drop')
+count_meteorites
+```
+# Extension
+```{r}
+ggplot() +
+  geom_col(data = count_meteorites, aes(x = year, y = n_meteorites), colour = "black", fill="grey") +
+  labs(title = "Plot of meteorites observed from 2000 - 2013") +
+  theme_classic()
+```
+The trend is that over time, less meteorites are recorded per year.
+What is trend in meteorites observed to have fallen in the same period?
+```{r}
+count_fell_meteorites <- recent_meteorites %>%
+  filter(fall == "Fell") %>% 
+  add_count(year) %>%
+  group_by(year) %>%
+  summarise("n_fell_meteorites" = mean(n), .groups = 'drop')
+count_fell_meteorites
+```
+```{r}
+ggplot() +
+  geom_col(data = count_fell_meteorites,
+             aes(x = year, y = n_fell_meteorites), colour = "black", fill="grey") +
+  labs(title = "Plot of meteorites observed falling from 2000 - 2013") +
+  theme_classic()
+```
+While the number of meteorites per year has decreased over time, the number of
+meteorites observed falling has not, but has remained consistently low. The
+implication then is that we are finding old meteorites faster than new ones
+are falling.
+The data includes lat/long co-ordinates. Plot every meteorite on a map of the
+world, placed where it was found.
+```{r}
+# load in world map
+earth_map <- map_data("world")
+# remove the missing values from the plot
+meteorites <- meteorites %>%
+  filter(latitude!=0 & longitude !=0)
+ggplot() +
+  # continental grey background
+  geom_polygon(data = earth_map, aes(x = long, y = lat, group = group),
+               fill = "grey", alpha = 1.5) +
+  # plot lat/longs on top
+  geom_point(data = meteorites, aes(x = longitude, y = latitude)) +
+  coord_cartesian()
+```
+Plot only the largest (greatest mass) meteorites on the world map.
+```{r}
+large_meteorites <- falling_meteorites %>% 
+  # the selection of large meteorites will be those greater than the avg mass
+  filter(mass > avg_mass_falling_meteorites) %>% 
+  # change the units of mass from grams to something more sensible for the plot
+  mutate(mass = mass/1000/1000)
+ggplot() +
+  # plot map
+  geom_polygon(data = earth_map, aes(x = long, y = lat, group = group),
+               fill = "grey", alpha = 1.5) +
+  # plot data
+  geom_point(data = large_meteorites,
+             aes(x = longitude, y = latitude, color = mass)) +
+  coord_cartesian() +
+  labs(color = "Mass (1000kg)", title = "Large Meteorites")
+```
+From the plot very few meteorites exist in the largest mass category. Most are <
+5*1000kg. It may be that a few very very large meteorites drag the mean average
+up. How does the median average of falling meteorites compare.
+```{r}
+median_avg_mass <- falling_meteorites %>% 
+  summarise(avg_mass = median(mass, na.rm = TRUE)) %>% 
+  pull()
+median_avg_mass/1000
+```
+6kg. It is less than 1/10th of what the mean is. The implication, then ,is that
+ the majority of meteorites are considerably less than the mean average mass.
+ 
+Plot the meteorites found falling in the last 100 years.
+```{r}
+meteorites_last_100_years <- falling_meteorites %>% 
+  filter(year > 1920) %>%
+  # remove the missing values
+  filter(latitude != 0 & longitude != 0)
+ggplot() +
+  geom_polygon(data = earth_map, aes(x = long, y = lat, group = group),
+               fill = "grey", alpha = 1.5) +
+  geom_point(data = meteorites_last_100_years,
+             aes(x = longitude, y = latitude)) +
+  coord_cartesian() +
+  labs(title = "Meteorites observed falling since 1920")
+```
+Plot the meteorites observed falling in the past 40 years. Distinguish decade by
+colour.
+```{r}
+recent_meteorites <- meteorites_last_100_years %>%
+  filter(year >= 1980) %>% 
+  mutate(decade = case_when(
+    year >= 1980 & year < 1990 ~ "1980s",
+    year >= 1990 & year < 2000 ~ "1990s",
+    year >= 2000 & year < 2010 ~ "2000s",
+    year >= 2010 & year < 2020 ~ "2010s"
+  )) %>% 
+  group_by(decade)
+ggplot() +
+  geom_polygon(data = earth_map, aes(x = long, y = lat, group = group),
+               fill = "grey", alpha = 1.5) +
+  geom_point(data = recent_meteorites,
+             aes(x = longitude, y = latitude, colour = decade, size = mass/1000)) +
+  scale_color_manual(values = c("1980s" = "yellow",
+                                "1990s" = "orange",
+                                "2000s" = "red",
+                                "2010s" = "black")) +
+  labs(color = "Decade",
+       size = "Mass (kg)",
+       title = "Meteorites in the last 40 years") +
+  coord_cartesian()
+```
+Note, meteorite data only available to 2013.

@@ -106,10 +106,24 @@ meteorite_landings_cleaned %>%
 
 
 
+  # Nabbed from David
   
-
-
-
+```{r}
+library(maps)
+# load in world map
+earth_map <- map_data("world")
+# remove the missing values from the plot
+meteorites <- meteorite_landings_cleaned %>%
+  filter(latitude!=0 & longitude !=0)
+ggplot() +
+  # continental grey background
+  geom_polygon(data = earth_map, aes(x = long, y = lat, group = group),
+               fill = "grey", alpha = 1.5) +
+  # plot lat/longs on top
+  geom_point(data = meteorite_landings_cleaned, aes(x = longitude, y = latitude)) +
+  coord_cartesian()
+```
+  
 
 
 
