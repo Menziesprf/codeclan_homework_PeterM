@@ -90,24 +90,46 @@ FROM employees
 GROUP BY department
 ORDER BY percent_grade_1; 
 
--- EXTENSION
+-- EXTENSION # completed using answers
 -- Q1
 SELECT 
-	start_date 
+	EXTRACT(YEAR FROM start_date) AS year,
+	COUNT(id)
 FROM employees
-GROUP BY EXTRACT (YEAR FROM start_date);
+GROUP BY EXTRACT(YEAR FROM start_date);
 
 -- Q2
 SELECT 
 	first_name,
 	last_name,
-	salary
-FROM employees
-WHERE ;
+	CASE
+		WHEN salary < 40000 THEN 'low'
+		WHEN salary >= 40000 THEN 'high'
+		WHEN salary IS NULL THEN NULL
+	END AS salary_class
+FROM employees;
 
+-- Q3
 
+SELECT 
+	SUBSTRING(local_sort_code, 1, 2) AS first_2_digits, 
+	COUNT(id) AS count_records
+FROM pay_details
+GROUP BY 
+	SUBSTRING(local_sort_code, 1, 2)
+ORDER BY
+	CASE 
+		WHEN SUBSTRING(local_sort_code, 1, 2) IS NULL THEN 1  
+		ELSE 0
+	END DESC,
+	COUNT(id) DESC,
+	SUBSTRING(local_sort_code, 1, 2) ASC;
+	
 
+-- Q4 
 
+SELECT 	
+	
 
 
 
