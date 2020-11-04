@@ -19,6 +19,7 @@ FROM
 		ON e.team_id = t.id;
 		
 -- Q3
+-- why? Inner not left in answs - same result anyway
 
 SELECT 
 	e.first_name,
@@ -38,6 +39,7 @@ SELECT
 FROM teams AS t LEFT JOIN employees AS e 
 ON t.id = e.team_id 
 GROUP BY t.name
+ORDER BY num_employees ASC;
 
 -- Q5
 
@@ -120,7 +122,7 @@ SELECT
 FROM employees AS e LEFT JOIN employees_committees AS ec 
 	 ON e.id = ec.employee_id WHERE ec.employee_id IS NULL;
 
-	 -- 974 aren't on a committee
+	 -- 978 aren't on a committee
 
 -- Q3
 
@@ -154,5 +156,5 @@ FROM blobs AS b FULL JOIN teams as t
 	ON b.team_id = t.id
 ORDER BY num_in_committee DESC;
 	 
-	 
+-- ** I've missed the point here. I'll give it another go late 
 	 
