@@ -136,6 +136,45 @@ SELECT
 FROM employees AS e CROSS JOIN blobs AS b
 WHERE e.department = b.department;
 
+----- alternate way w/ INNER JOIN
+
+WITH biggest_dept(name, avg_salary, avg_fte_hours) AS (
+	SELECT
+		department,
+		AVG(salary),
+		AVG(fte_hours)
+	FROM employees 
+	GROUP BY department
+	ORDER BY COUNT(id) DESC NULLS LAST
+	LIMIT 1
+)
+SELECT 
+	*
+FROM employees AS e
+INNER JOIN biggest_dept AS db
+ON e.department = db.name; 
+
+------- Alternate way w/ sub queries
+
+SELECT 
+	id, 
+	first_name, 
+	last_name, 
+	salary,
+	fte_hours,
+	department,
+	salary/AVG(salary) OVER () AS ratio_avg_salary,
+	fte_hours/AVG(fte_hours) OVER () AS ratio_fte_hours
+FROM employees
+WHERE department = (
+	SELECT
+	department
+FROM employees 
+GROUP BY department
+ORDER BY COUNT(id) DESC
+LIMIT 1);
+
+
 --Extension
 --Q1
 
@@ -144,7 +183,8 @@ SELECT
 	COUNT(id) AS num_with_name
 FROM employees 
 WHERE first_name IS NOT NULL 
-GROUP BY first_name 
+GROUP BY first_name
+HAVING COUNT(id) > 1
 ORDER BY COUNT(id) DESC, first_name ASC;
 
 --Q2

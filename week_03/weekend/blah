@@ -1,0 +1,19 @@
+structure
+
+1) Why is model governance required?
+
+    - to ensure output remains accurate
+    - to ensure bias isn't learned by the model
+    - so if a problem develops, a system is in place to tackle the issue
+
+    “Developing
+and deploying ML systems is relatively fast and cheap, but maintaining them over
+time is difficult and expensive.” - paper from team @ google
+  - “Hidden Technical Debt in Machine Learning Systems”
+https://papers.nips.cc/paper/5656-hidden-technical-debt-in-machine-learning-systems.pdf
+
+  - Defines who is responsible for the final output of the AI/ML model.
+
+2) what should an org's model governance contain?
+
+  -

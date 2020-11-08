@@ -1,0 +1,32 @@
+monitoring for model drift
+
+An effective model drift monitoring process can ensure that your
+critical production system can safely roll out newer versions but
+still revert back to a more stable version if needed.
+
+Many machine learning models tend to be black boxes, where explainability is
+very limited, which can make it difficult to understand why a
+model is not performing as expected.
+
+A model that was initially working pretty well could later degrade due to a
+concept called data drift or concept drift. Data drift occurs when the
+underlying statistical structure of your data changes over time.
+
+Usually model drift is observed by end users of the product.
+by the time the company’s engineers learn about it, it could be
+non-trivial to revert back to an older version.
+
+The “use of AI and machine learning risks
+creating ‘black boxes’ in decision-making
+that could create complicated issues,
+especially during tail events.”1
+
+Underpinning the framework are two high-level guiding principles
+– AI implementations should be human-centric,
+and decisions made or assisted by AI should be explainable,
+transparent and fair to consumers
+
+As an example, a retail store that plans to use AI to recommend food products
+to consumers can use the framework to gauge the implications of a wrong or
+harmful recommendation, and decide if and how people should be involved in the
+decision-making process
