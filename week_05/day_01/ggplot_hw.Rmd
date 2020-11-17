@@ -1,0 +1,179 @@
+---
+title: "ggplot homework"
+author: "Peter Menzies"
+date: "16/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r,message=F}
+library(tidyverse)
+library(CodeClanData)
+library(scales)
+```
+
+# Q1
+
+```{r}
+head(backpack)
+
+names(backpack)
+dim(backpack)
+```
+# Q2
+
+```{r}
+backpack %>% 
+  ggplot() +
+  aes(x = backpack_weight) +
+  geom_bar(fill = "dark blue") +
+  labs(x = "Backpack Weight",
+       y = "Number of Students") +
+  scale_x_continuous(breaks = seq(0, 36, 2)) +
+  scale_y_continuous(breaks = 0:12,
+                     minor_breaks = NULL)
+
+
+```
+* I'm assuming the weight is in pounds.
+* This graph shows lightest back was 2 pounds while the heaviest is 35.
+* Most backpacks look to be be between roughly 5 and 15 pounds. 
+
+# Q3
+
+```{r}
+backpack %>% 
+  ggplot() +
+  aes(x = backpack_weight, fill = sex) +
+  geom_bar() +
+  labs(x = "Backpack Weight (pounds)",
+       y = "Number of Students") + 
+  facet_wrap(~ sex, ncol = 1) +
+  scale_x_continuous(breaks = seq(0, 36, 2)) +
+  scale_y_continuous(breaks = 0:12,
+                     minor_breaks = NULL)
+```
+* I'd say not much difference in backpack weight between male and female students. 
+
+* Boys perhaps tend slightly more towards heavier backpacks. One boy is carrying around bricks.
+
+# Q4
+
+
+```{r}
+backpack %>% 
+  ggplot() +
+  aes(x = body_weight, y = backpack_weight) + 
+  geom_point(position = "jitter") +
+  labs(x = "Body Weight (pounds)",
+       y = "Backpack Weight (pounds)")
+
+```
+* I'd say there is no discernable relationship between body and backpack weight.
+
+# Q5 
+```{r}
+backpack %>% 
+  ggplot() +
+  aes(x = body_weight, y = backpack_weight, colour = sex) + 
+  geom_point(position = "jitter") +
+  labs(x = "Body Weight (pounds)",
+       y = "Backpack Weight (pounds)") +
+  facet_wrap(~ sex)
+```
+
+* Other than male students tending to be heavier, I'd say the relationship between backpack and body weight is unchanged. 
+
+# Q6
+
+```{r, message=F}
+backpack %>% 
+  group_by(back_problems) %>% 
+  summarise(n_students = n()) %>% 
+  mutate(back_problems = as.logical(back_problems)) %>% 
+  ggplot() +
+  aes(x = back_problems, y = n_students) +
+  geom_col(fill = "dark green") + 
+  labs(x = "Reported Back Problems",
+       y = "Number of Students")
+  
+  (32 / (68 +32)) * 100
+  
+```
+
+* 32 % of students report back pain
+
+# Q7 
+
+```{r, message=F}
+backpack %>% 
+  group_by(back_problems, sex) %>% 
+  summarise(n_students = n()) %>% 
+  mutate(back_problems = as.logical(back_problems)) %>% 
+  ggplot() +
+  aes(x = back_problems, y = n_students, fill = sex) +
+  geom_col() + 
+  labs(x = "Reported Back Problems",
+       y = "Number of Students") +
+  facet_wrap(~ sex)
+```
+
+*  A far greater proportion of female students report back pain compared with male students.
+
+# Q8
+
+```{r}
+backpack %>% 
+  mutate(back_problems = as.logical(back_problems)) %>% 
+  ggplot() +
+  aes(x = body_weight, y = backpack_weight, colour = sex) + 
+  geom_point(position = "jitter") +
+  labs(x = "Body Weight (pounds)",
+       y = "Backpack Weight (pounds)") +
+  facet_grid(sex ~ back_problems, labeller = "label_both")  
+```
+
+* I still don't see a relationship between body weight and backpack weight.
+
+* Surprise to see the heaviest backpack reported no back problems.
+
+* Neither body weight nor backpack weight seem to have a correlation with reported back problems.
+
+#  EXT
+# 1
+
+```{r}
+
+backpack %>% 
+  filter(year > 0) %>% 
+  mutate(back_problems = as.logical(back_problems)) %>% 
+  ggplot() +
+  aes(x = back_problems, fill = back_problems) + 
+  geom_bar(position = "dodge") +
+  labs(x = "Reported Back Problems",
+       y = "Number of Students") +
+  facet_grid( ~ year, labeller = "label_both") +
+  scale_x_discrete(labels = NULL,
+                   breaks = NULL) +
+  scale_y_continuous(breaks = 0:17,
+                     minor_breaks = NULL)
+  
+```
+
+* In years 1,3,4 and 5 a similar proportion of students report back pain.
+* In year 2 relatively few report back pain, while in year 6 noone reported back pain. However this could be due to a smaller sample of year 6 students.
+
+# Q2
+```{r}
+backpack 
+ggplot(backpack) +
+  aes(x = backpack_weight) +
+  geom_bar(aes(fill = backpack_weight)) +
+  facet_wrap( ~ year)
+  
+```
+
+
+* didnt get this set of graphs finished properly. It's difficult to draw any significant conclusions on the relationship between year group and backpack weight. Most students seem to have backpacks roughly 10 pounds (+/- 5).

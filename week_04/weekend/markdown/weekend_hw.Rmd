@@ -53,6 +53,9 @@ salaries %>%
   arrange(desc(age)) %>% 
   summarise(max_age = head(age, 1),
             min_age = tail(age, 1))
+
+
+# could have just used max() and min() then arrange isnt required
             
 ```
 
@@ -92,10 +95,11 @@ salaries %>%
 
 # 1.10
 
+* should have used OR 
 
 ```{r}
 salaries %>% 
-  filter(work_experience <2, educational_level < 12)
+  filter(work_experience <2 | educational_level < 12)
 ```
 
 # 1.11
