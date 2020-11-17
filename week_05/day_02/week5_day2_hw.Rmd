@@ -1,0 +1,170 @@
+---
+title: "Week 5 Day 2 HW"
+author: "Peter Menzies"
+date: "17/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=FALSE}
+library(tidyverse)
+library(CodeClanData)
+library(scales)
+
+```
+
+```{r, message=F}
+revenue_breakdown <- qb_revenue_breakdown
+monthly_sales_qb <- qb_monthly_sales
+competitors <-  qb_competitors
+device_data <-qb_device_data
+
+col_scheme <- c("#E89FE9", "#50434F", "#B6A7B5", "#F9A472", "#BD7040")
+```
+
+# MVP 1&2
+
+#1.1
+```{r}
+revenue_breakdown %>% 
+  ggplot() +
+  aes(x = Product, y = Revenue, fill = Year) +
+  geom_col() +
+  labs(y = "Revenue (pounds)", title = "Revenue Breakdown") +
+  theme(axis.text.x = element_text(angle = 40, vjust = 0.7),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  scale_fill_discrete(type = col_scheme)
+  
+```
+
+
+* Revenue improved for all products in 2019, especially from Subscription Services.
+
+# 1.2
+
+```{r}
+monthly_sales_qb %>% 
+  filter(Cashflow == "Kwikbit Unit 1 Sales") %>% 
+  ggplot() +
+  aes(x = Date, y = Amount) +
+  geom_line() +
+  geom_point() +
+  labs(y = "Sales (pounds)", title = "Sales of Kwikbit Unit 1") +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5)) +
+  scale_colour_discrete(type = col_scheme)
+```
+
+
+
+* Sales are increasing! There was a particularly good month in Feb 2019
+
+# 1.3
+
+```{r}
+monthly_sales_qb %>% 
+  filter(Cashflow != "Kwikbit Unit 1 Sales", 
+         str_detect(Date, "2019")) %>% 
+  ggplot() +
+  aes(x = Date, y = Amount, group = Cashflow, colour = Cashflow) +
+  geom_line() +
+  geom_point() +
+  labs(x = "Month", title = "Revenue and Costs in 2019") +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  scale_colour_discrete(type = col_scheme)
+```
+
+
+* While Total Revenue fluctuates monthly it remains much higher than monthly costs, which are pretty constant.
+
+# 1.4
+```{r}
+competitors %>% 
+  filter(Revenue != 0) %>% 
+  mutate(revenue_millions = Revenue/1000000) %>% 
+  ggplot() +
+  aes(x = Year, y = revenue_millions, fill = Company) +
+  geom_area() +
+  labs(y = "Revenue (millions)", title = "Revenue of Competitors") +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  scale_fill_discrete(type = col_scheme)
+  
+```
+
+
+* Competitor 1 has the largest total revenue and the largest increase in revenue over the 5 years.
+* All competitors are increasing their revenue each year.
+
+
+# 1.5
+
+```{r}
+competitors %>% 
+  filter(Revenue != 0) %>% 
+  mutate(revenue_millions = Revenue/1000000) %>% 
+  ggplot() +
+  aes(x = Year, y = revenue_millions, colour = Company) +
+  geom_line() +
+  geom_point() +
+  labs(y = "Revenue (millions)", title = "Revenue of Competitors") +
+  theme(panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5, size = 16)) +
+  scale_colour_discrete(type = col_scheme)
+
+
+```
+
+
+* This graph makes it clearer that competitor 3 started with more revenue than competitor 2, but was overtaken in 2019.
+
+* Slightly problematic that it implies Competitor 3 had 0 revenue in 2015 when in fact it was 3000 (0.003 on this scale, and I suppose pretty much 0 with the numbers we're talking about)
+
+# 1.6
+
+```{r}
+device_data %>% 
+  group_by(device, id) %>% 
+  mutate(total_mins = hours*60 + mins,
+         running_total_thousands = cumsum(counts)/1000,
+         device = recode(device,
+                         "competitor1" = "Comp1",
+                         "competitor2" = "Comp2",
+                         "competitor3" = "Comp3")) %>% 
+  ggplot() +
+  aes(x = total_mins, y = running_total_thousands, colour = device) +
+  geom_line() +
+  facet_grid(device ~ id) +
+  labs(x = "Time (mins)", y = "Steps (thousands)", title = "Total steps per person per device") +
+  theme(legend.position = "none", 
+        axis.text.x = element_text(angle = 40, vjust = 0.7),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(alpha(colour = "gray", 0.3)),
+        plot.title = element_text(hjust = 0.5, size = 16))+
+  scale_colour_discrete(type = col_scheme)
+
+
+```
+
+
+* Looks like all devices count a similar number of steps, which I suppose is the aim. 
+
+
+
+
+
+
+
+
+
+
+

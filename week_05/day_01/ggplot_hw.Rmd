@@ -48,6 +48,7 @@ backpack %>%
   ggplot() +
   aes(x = backpack_weight, fill = sex) +
   geom_bar() +
+  theme_minimal() +
   labs(x = "Backpack Weight (pounds)",
        y = "Number of Students") + 
   facet_wrap(~ sex, ncol = 1) +
@@ -95,7 +96,9 @@ backpack %>%
   mutate(back_problems = as.logical(back_problems)) %>% 
   ggplot() +
   aes(x = back_problems, y = n_students) +
-  geom_col(fill = "dark green") + 
+  geom_col(fill = "dark green") +
+  geom_text(aes(label = n_students), nudge_y = 2) +
+  ylim(0,100) +
   labs(x = "Reported Back Problems",
        y = "Number of Students")
   
@@ -132,12 +135,13 @@ backpack %>%
   geom_point(position = "jitter") +
   labs(x = "Body Weight (pounds)",
        y = "Backpack Weight (pounds)") +
-  facet_grid(sex ~ back_problems, labeller = "label_both")  
+  facet_grid(sex ~ back_problems, labeller = "label_both") +
+  theme(legend.position = "none")
 ```
 
 * I still don't see a relationship between body weight and backpack weight.
 
-* Surprise to see the heaviest backpack reported no back problems.
+* Surprised to see the heaviest backpack reported no back problems.
 
 * Neither body weight nor backpack weight seem to have a correlation with reported back problems.
 
