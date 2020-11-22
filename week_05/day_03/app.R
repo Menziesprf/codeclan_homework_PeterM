@@ -7,8 +7,6 @@ library(CodeClanData)
 ui <- fluidPage(
     theme = shinytheme("slate"),
     
-    padding = 4,
-    
     titlePanel(h1("Top Olympic Medals", align = "center")),
     
     fluidRow(

@@ -1,5 +1,7 @@
 library(shiny)
 library(shinyWidgets)
+library(shinyBS)
+library(shinythemes)
 
 source("prep_script.R")
 
@@ -11,30 +13,45 @@ countries_vect <- tb_top20 %>%
 # Age brackets for selecter
 age_brackets <- c("0-4", "5-14", "15-24", "25-34", "35-44", "45-54", "55-64", "65+" = "65plus")
 
+# Info for popout button
+data_info <- paste("The countries included are the 20 countries with the highest incidence of TB in 2019.",
+                   "The WHO provide a &#39;low&#39;, &#39;high&#39; and &#39;best&#39; estimate. The &#39;best&#39; estimate has been used in this app.",
+                   sep = "<br><br>")
 
 ui <- fluidPage(
-  titlePanel("Estimated Incidence of TB in 2019 for the 20 Countries with the Highest Incidence"),
+  theme = shinytheme("yeti"),
+  titlePanel(h1("Estimated Incidence of TB in 2019", align = "center")),
   tabsetPanel(
     tabPanel("Home",
-      sidebarLayout(
-        sidebarPanel(
-          pickerInput(inputId = "countries",
-                      label = NULL,
-                      choices = countries_vect,
-                      selected = countries_vect,
-                      multiple = T,
-                      options = list(`actions-box` = TRUE,
-                                     `none-selected-text` = "Countries",
-                                     `selected-text-format` = "static",
-                                     `size` = "auto")
+             br(),
+      fluidRow(
+          column(4,
+                 pickerInput(inputId = "countries",
+                             label = NULL,
+                             choices = countries_vect,
+                             selected = countries_vect,
+                             multiple = T,
+                             options = list(`actions-box` = TRUE,
+                                            `none-selected-text` = "Countries",
+                                            `selected-text-format` = "static",
+                                            `size` = "auto")
+                 ),
           ),
+          column(3,
+                 uiOutput("datainfo"),
+                 offset = 1
+          ),
+          column(4,
+                 tags$a("WHO Global TB Report and Data", 
+                        href = "https://www.who.int/teams/global-tuberculosis-programme/data")
+          )
         ),
-        mainPanel(
+        fluidRow(
           plotOutput(outputId = "tbplot")
-        )
       )
     ),
     tabPanel("Age and Gender",
+             br(),
       sidebarLayout(
         sidebarPanel(
           radioButtons(inputId = "gender",
@@ -56,10 +73,11 @@ ui <- fluidPage(
       
     ),
     tabPanel("Risk Factors",
+             br(),
       sidebarLayout(
         sidebarPanel(
           radioButtons(inputId = "riskfactor",
-                       label = "Highlight a Risk Factor",
+                       label = "Risk Factor:",
                        choices = c("Total Incidence" = "all",
                                    "Alcohol abuse" = "alc",
                                    "Diabetes" = "dia",
@@ -96,6 +114,13 @@ server <- function(input, output) {
       scale_y_continuous(n.breaks = 8) +
       theme(axis.text.x = element_text(angle = 90),
             panel.background = element_blank())
+  })
+  
+  output$datainfo <- renderUI({
+    popify(bsButton(inputId = "infobutton",
+                    label = "Data Info"),
+           title = "Data provided by WHO",
+           content = data_info)
   })
   
   output$tbplot_age_gender <- renderPlot({
