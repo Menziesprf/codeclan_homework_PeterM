@@ -109,10 +109,13 @@ server <- function(input, output) {
       arrange(country) %>% 
       ggplot() +
       aes(x = country, y = best/1000) +
-      geom_col() +
+      geom_col(fill = "light blue") +
       labs(x = "Country", y = "Estimated Incidence (thousands)") +
       scale_y_continuous(n.breaks = 8) +
-      theme(axis.text.x = element_text(angle = 90),
+      theme(axis.text.x = element_text(angle = 90, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.x = element_text(size = 14, face = "bold"),
+            axis.title.y = element_text(size = 14, face = "bold"),
             panel.background = element_blank())
   })
   
@@ -131,10 +134,13 @@ server <- function(input, output) {
              risk_factor == "all") %>% 
       ggplot() +
       aes(x = country, y = best/1000) +
-      geom_col() +
+      geom_col(fill = "light blue") +
       labs(x = "Country", y = "Estimated Incidence (thousands)") +
-      scale_y_continuous(n.breaks = 8) +
-      theme(axis.text.x = element_text(angle = 90),
+      scale_y_continuous(n.breaks = 8)  +
+      theme(axis.text.x = element_text(angle = 90, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.x = element_text(size = 14, face = "bold"),
+            axis.title.y = element_text(size = 14, face = "bold"),
             panel.background = element_blank())
   })
   
@@ -145,11 +151,15 @@ server <- function(input, output) {
              risk_factor %in% input$riskfactor) %>% 
       ggplot() +
       aes(x = country, y = best/1000) +
-      geom_col() +
+      geom_col(fill = "light blue") +
       labs(x = "Country", y = "Estimated Incidence (thousands)") +
-      scale_y_continuous(n.breaks = 8) +
-      theme(axis.text.x = element_text(angle = 90),
-            panel.background = element_blank())
+      scale_y_continuous(n.breaks = 8)  +
+      theme(axis.text.x = element_text(angle = 90, size = 12),
+            axis.text.y = element_text(size = 12),
+            axis.title.x = element_text(size = 14, face = "bold"),
+            axis.title.y = element_text(size = 14, face = "bold"),
+            panel.background = element_blank(),
+            ) 
   })
 }
 
