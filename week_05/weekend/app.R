@@ -50,12 +50,12 @@ ui <- fluidPage(
           plotOutput(outputId = "tbplot")
       )
     ),
-    tabPanel("Age and Gender",
+    tabPanel("Age and Sex",
              br(),
       sidebarLayout(
         sidebarPanel(
-          radioButtons(inputId = "gender",
-                       label = "Gender:",
+          radioButtons(inputId = "sex",
+                       label = "Sex:",
                        choices = c("Male" = "m",
                                    "Female" = "f"),
                        inline = T),
@@ -66,7 +66,7 @@ ui <- fluidPage(
                                width = "70%")
         ),
         mainPanel(
-          plotOutput(outputId = "tbplot_age_gender")
+          plotOutput(outputId = "tbplot_age_sex")
         )
       )
              
@@ -126,11 +126,11 @@ server <- function(input, output) {
            content = data_info)
   })
   
-  output$tbplot_age_gender <- renderPlot({
+  output$tbplot_age_sex <- renderPlot({
     
     tb_top20 %>% 
       filter(age_group  %in%  input$age,
-             sex == input$gender,
+             sex == input$sex,
              risk_factor == "all") %>% 
       ggplot() +
       aes(x = country, y = best/1000) +
