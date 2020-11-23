@@ -1,0 +1,172 @@
+---
+title: "Wk 6 Day 1 HW"
+author: "Peter Menzies"
+date: "23/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F}
+library(prob)
+library(gtools)
+library(CodeClanData)
+library(tidyverse)
+```
+# MVP 1 - Titanic
+
+```{r}
+titanic <- as_tibble(Titanic) 
+    
+titanic$crew <- titanic$Class == "Crew"
+
+titanic
+                          
+```
+```{r}
+titanic %>% 
+  filter(crew == T) %>% 
+  summarise(total_crew = sum(n))
+
+titanic %>% 
+  filter(crew == T, Survived == "Yes") %>% 
+  summarise(total_crew_survived = sum(n))
+
+212/885
+
+```
+Probability a crew member survived = 0.239548
+
+
+```{r}
+titanic %>% 
+  filter(crew == F) %>% 
+  summarise(total_passengers = sum(n))
+
+titanic %>% 
+  filter(crew == F, Survived == "Yes") %>% 
+  summarise(total_passengers_survived = sum(n))
+
+499/1316
+```
+
+Probability a passenger survived = 0.3791793
+
+# MVP/Extension
+#Q1
+
+```{r}
+one_dice <- rolldie(1)
+one_dice %>% 
+  filter(X1 < 5) %>% 
+  summarise(prob = n()/nrow(one_dice))
+```
+#Q2
+
+```{r}
+6 * 6 * 6
+```
+
+216 outcomes
+
+# Q3
+
+```{r}
+four_dice <- rolldie(4) %>% 
+  mutate(row = row_number())
+
+four_dice_totals <- four_dice %>% 
+  pivot_longer(cols = X1:X4, names_to = "roll", values_to = "value") %>% 
+  group_by(row) %>% 
+  summarise(total = sum(value)) %>% 
+  right_join(four_dice)
+
+four_dice_totals %>% 
+  filter(total  %in%  c(5,6,7)) %>% 
+  nrow()
+four_dice_totals %>% 
+  filter(total  %in%  c(5,6,7)) %>% 
+  summarise(prob = n()/nrow(four_dice_totals))
+
+```
+1) 34 outcomes
+2) probability = 0.02623457
+3) Assumptions = dice are fair, all outcomes are equally likely
+
+# Q4
+
+```{r}
+permutations(5, 5) %>% 
+  nrow()
+1/120
+```
+
+probability = 0.008333333...
+
+# Q5
+
+```{r}
+permutations(6,6, repeats.allowed = T) %>% 
+  nrow()
+1/46656
+
+permutations(6,6, repeats.allowed = F) %>% 
+  nrow()
+720/46656
+
+
+```
+1) probability = 0.00002143347
+2) probability = 0.0154321
+
+# Q6
+
+0.5
+
+# Q7
+
+```{r}
+
+dr_appt <- as_tibble(permutations(8, 5, repeats.allowed = F))
+dr_appt %>% 
+  nrow()
+
+#Gianna = 1, Danesh = 2
+
+dr_appt %>%     
+  filter(isin(dr_appt, c(1, 2))) %>% 
+  summarise(prob = n()/nrow(dr_appt))
+
+dr_appt %>% 
+  filter(isin(dr_appt, c(1, 2), ordered = T)) %>% 
+  summarise(prob = n()/nrow(dr_appt))
+
+# Henry = 3
+
+dr_appt %>% 
+  filter(V1 %in% c(1, 3)) %>% 
+  filter(V2 %in% c(1, 3)) %>% 
+  nrow()
+```
+
+1) 6720 different orders
+2) probability = 0.3571429
+3) probability = 0.1785714
+4) 240 orders
+
+# Q8
+
+```{r}
+combinations(n = 8, r = 5) %>% 
+  nrow()
+```
+
+56 possible team combinations
+
+# Q9
+
+56 * 5
+
+280 possible team + a captain combinations
+
