@@ -1,0 +1,91 @@
+---
+title: "Wk6 D2 hw"
+author: "Peter Menzies"
+date: "24/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F}
+library(tidyverse)
+library(janitor)
+```
+
+
+# MVP 
+
+```{r, message=F}
+phones <- read_csv("data/20190928-items.csv") %>% 
+  clean_names()
+head(phones)
+summary(phones)
+```
+```{r, message=F}
+phones %>% 
+  group_by(brand) %>% 
+  summarise(total_models = n()) %>% 
+  arrange(desc(total_models))
+```
+* Samsungs have most phones in dataset with 397.
+
+```{r}
+samsung_stats <- phones %>% 
+  filter(brand == "Samsung") %>% 
+  summarise(num_phones = n(),
+            mean_rating = mean(rating),
+            sd_rating = sd(rating))
+
+phones %>% 
+  filter(brand == "Samsung") %>% 
+  ggplot() +
+  aes(x = rating) +
+  geom_histogram(aes(y = ..density..), colour = "white", bins = 40) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = samsung_stats$mean_rating,
+      sd = samsung_stats$sd_rating
+    ),
+    colour = "orange"
+  )
+
+
+
+```
+
+* I'd say the normal distribution fits quite well, other than the significant amount of outliers at 1 and 5 that do not fit. The data is skewed to the left.
+
+```{r}
+phones %>% 
+  filter(brand == "Samsung") %>% 
+  filter(rating <= (samsung_stats$mean_rating + samsung_stats$sd_rating),
+         rating >= (samsung_stats$mean_rating - samsung_stats$sd_rating)) %>% 
+  summarise(one_sd_ratings_prop = n()/samsung_stats$num_phones)
+
+phones %>% 
+  filter(brand == "Samsung") %>% 
+  filter(rating <= (samsung_stats$mean_rating + samsung_stats$sd_rating * 2),
+         rating >= (samsung_stats$mean_rating - samsung_stats$sd_rating * 2)) %>% 
+  summarise(two_sd_ratings = n()/samsung_stats$num_phones)
+
+phones %>% 
+  filter(brand == "Samsung") %>% 
+  filter(rating <= (samsung_stats$mean_rating + samsung_stats$sd_rating * 3),
+         rating >= (samsung_stats$mean_rating - samsung_stats$sd_rating * 3)) %>% 
+  summarise(three_sd_ratings = n()/samsung_stats$num_phones)
+```
+
+* This doesn't fit with the empirical 3 sigma rule. Each quantile contains a lower proportion of the ratings than expected. Due to the high number of outlier ratings of 1 and 5 I assume. 
+
+# EXT
+
+```{r}
+samsung_ratings <- phones %>% 
+  filter(brand == "Samsung")
+
+qqnorm(y = samsung_ratings$rating)
+```
+
+Not entirely sure what I'm looking at but it's different to a normal qq distribution. Looks like a lot data points at the extremes, which I suppose fits with the high density of outliers in the earlier plot?
