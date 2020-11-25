@@ -1,0 +1,151 @@
+---
+title: "Week 6 Day 3 HW"
+author: "Peter Menzies"
+date: "25/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F}
+library(tidyverse)
+library(janitor)
+library(infer)
+```
+
+# MVP
+
+```{r, message=F, warning=F}
+ames <- read_csv("data/ames.csv") %>% 
+  clean_names()
+```
+
+```{r}
+ames %>% 
+  ggplot(aes(x = lot_area)) +
+  geom_histogram(aes(y = ..density..), colour = "white", bins = 50) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = mean(ames$lot_area),
+      sd = sd(ames$lot_area)
+    ),
+    colour = "orange"
+  )
+
+ames %>% 
+  ggplot(aes(x = lot_area)) +
+  geom_boxplot()
+
+qqnorm(y = ames$lot_area)
+```
+
+I'd say that is not normally distributed. There is a high density of results below 30,000 which look to have a normal distribution but there are also a significant number of results with a far greater lot area, which affect the distribution.
+
+
+```{r}
+bootstrapped_lot_area <- ames %>% 
+  specify(response = lot_area) %>% 
+  generate(reps = 5000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+
+ci_95 <- bootstrapped_lot_area %>% 
+  get_ci(level = 0.95, type = "percentile")
+
+bootstrapped_lot_area %>% 
+  visualise() +
+  shade_ci(endpoints = ci_95)
+```
+
+```{r}
+ci_99 <- bootstrapped_lot_area %>% 
+  get_ci(level = 0.99, type = "percentile")
+
+bootstrapped_lot_area %>% 
+  visualise() +
+  shade_ci(endpoints = ci_99)
+```
+
+This is wider, which is to be expected.
+
+```{r}
+bootstrapped_lot_area %>% 
+  summarise(point_estimate_mean_lot_area = mean(stat))
+```
+
+# EXT
+
+```{r}
+ames_year_built <- ames %>% 
+  select(order, year_built) %>% 
+  mutate(before_1920 = as.numeric(year_built < 1920)) 
+```
+
+```{r}
+bootstrapped_year_200 <- ames_year_built %>% 
+  specify(response = before_1920) %>% 
+  generate(reps = 200, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+bootstrapped_year_5000 <- ames_year_built %>% 
+  specify(response = before_1920) %>% 
+  generate(reps = 5000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+bootstrapped_year_50000 <- ames_year_built %>% 
+  specify(response = before_1920) %>% 
+  generate(reps = 50000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+```
+
+
+```{r}
+bootstrapped_year_200 %>% 
+  summarise(point_estimate = mean(stat)) 
+bootstrapped_year_200 %>% 
+  get_ci(level = 0.95, type = "percentile")
+            
+```
+```{r}
+bootstrapped_year_5000 %>% 
+  summarise(point_estimate = mean(stat)) 
+bootstrapped_year_5000 %>% 
+  get_ci(level = 0.95, type = "percentile")
+```
+
+```{r}
+bootstrapped_year_50000 %>% 
+  summarise(point_estimate = mean(stat)) 
+bootstrapped_year_50000 %>% 
+  get_ci(level = 0.95, type = "percentile")
+```
+
+Number of reps seems to make very little difference to the point estimate and confidence intervals. 
+
+
+```{r}
+bootstrapped_year_10 <- ames_year_built %>% 
+  specify(response = before_1920) %>% 
+  generate(reps = 10, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+bootstrapped_year_10 %>% 
+  summarise(point_estimate = mean(stat)) 
+bootstrapped_year_10 %>% 
+  get_ci(level = 0.95, type = "percentile")
+```
+
+
+
+
+
+
+
+
+
+
+
+
