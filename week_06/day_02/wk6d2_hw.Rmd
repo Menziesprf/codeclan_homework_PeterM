@@ -79,6 +79,9 @@ phones %>%
 
 * This doesn't fit with the empirical 3 sigma rule. Each quantile contains a lower proportion of the ratings than expected. Due to the high number of outlier ratings of 1 and 5 I assume. 
 
+
+*[Post Discussion] - Woops the 1st quantile (+/- one sd) contains a higher proportion of results than would be predicted by the empirical rule
+
 # EXT
 
 ```{r}
