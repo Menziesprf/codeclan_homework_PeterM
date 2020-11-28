@@ -1,0 +1,206 @@
+---
+title: "MVP HW"
+author: "Peter Menzies"
+date: "28/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=F}
+library(infer)
+library(janitor)
+library(CodeClanData)
+library(tidyverse)
+```
+
+```{r, message=F, warning=F}
+sleep <- msleep %>% 
+  clean_names()
+summary(sleep)
+```
+
+# MVP 1.1
+
+### Jabberwockies sleep comparison 
+
+* $\alpha$ = 0.05
+* $H_0$: sampled_animals_sleep = 7 hours
+* $H_a$: sampled_animals_sleep != 7 hours
+
+```{r}
+observed_sleep_stat <- sleep %>% 
+  summarise(mean_sleep_total = mean(sleep_total))
+observed_sleep_stat
+
+null_sleep_dist <- sleep %>% 
+  specify(response = sleep_total) %>% 
+  hypothesise(null = "point", mu = 7) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+null_sleep_dist %>% 
+  visualise(bins = 30) +
+  shade_p_value(obs_stat = observed_sleep_stat, direction = "both")
+
+null_sleep_dist %>%  
+  get_p_value(obs_stat = observed_sleep_stat, direction = "both")
+
+```
+
+* The p value is < 0.05, therefore we can reject the null hypothesis
+
+* There is significant statistical evidence suggesting these animal's mean sleep total is different to that of the Jabberwocky
+
+### Omnivores vs Herbivores
+
+* $\alpha$ = 0.05
+* $H_0$: mean_omnivore_sleep_total - mean_herbivore_sleep_total = 0
+* $H_a$: mean_omnivore_sleep_total - mean_herbivore_sleep_total != 0
+
+```{r}
+omni_herbi_sleep <- sleep %>% 
+  filter(vore == "omni" | vore == "herbi")
+
+observed_omni_herbi_stat <- omni_herbi_sleep %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+observed_omni_herbi_stat
+
+null_omni_herbi_dist <- omni_herbi_sleep %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+null_omni_herbi_dist %>% 
+  visualise(bins = 30) + 
+  shade_p_value(obs_stat = observed_omni_herbi_stat, direction = "both")
+
+null_omni_herbi_dist %>%
+  get_p_value(obs_stat = observed_omni_herbi_stat, direction = "both")
+```
+
+* p value > 0.05 therefore we fail to reject the Null Hypothesis
+
+* There is not statistically significant evidence to suggest that omnivores and herbivores require different amounts of sleep. 
+
+### Domesticated animals
+
+* $\alpha$ = 0.05
+* $H_0$: prop_domesticated = 0.05
+* $H_a$: prop_domesticated > 0.05
+
+```{r}
+domesticated_animals <- sleep %>% 
+  mutate(conservation = replace_na(conservation, "NA"),
+    is_domesticated = as.logical(conservation == "domesticated"))
+
+observed_domesticated_stat <- domesticated_animals %>% 
+  filter(is_domesticated == T) %>% 
+  summarise(prop_domesticated = n()/nrow(domesticated_animals))
+observed_domesticated_stat
+
+null_domesticated_dist <- domesticated_animals %>% 
+  specify(response = is_domesticated, success = "TRUE") %>% 
+  hypothesise(null = "point", p = 0.05) %>% 
+  generate(reps = 10000, type = "simulate") %>% 
+  calculate(stat = "prop")
+
+null_domesticated_dist %>% 
+  visualise(bins = 30) +
+  shade_p_value(obs_stat = observed_domesticated_stat, direction = "right")
+
+null_domesticated_dist %>% 
+  get_p_value(obs_stat = observed_domesticated_stat, direction = "right")
+```
+
+* p < 0.05 therefore we can reject $H_0$
+
+* There is statistically significant evidence suggesting more than 5% of the population of animals are domesticated.
+
+# 1.2 Hypothesis testing
+### 1.2.1 Defining hypotheis
+
+###### 1 
+
+* $H_0$: prop_aware_after_advertising = 0.04
+* $H_a$: prop_aware_after_advertising > 0.04
+* Null Hypothesis: The proportion of people aware of the coffee shop is unchanged at 40%
+* Alternative Hypothesis: The proportion of people aware of the coffee shape is now greater than 40%
+
+* Assumption: Initial survey results were statistically significant
+
+* Generate Method: "simulate"
+
+###### 2
+
+* $H_0$: banner_top_CTR - banner_right_CTR = 0
+* $H_a$: banner_top_CTR - banner_right_CTR > 0
+
+* Null Hypothesis: The CTR of the newly positioned banner minus the CTR of the old position is equal to 0, and is therefore unchanged by the new position.
+
+* Alternative Hypothesis: The CTR of the newly positioned banner minus the CTR of the old position is greater than 0, therefore showing an increase in CTR.
+
+* Generate Method: "permute"
+
+
+###### 3
+
+* $H_0$: mean_width_mm != 145 
+* $H_a$: mean_width_mm = 145 
+
+* Null Hypothesis: The average width of the part is not 145 mm.
+
+* Alternative Hypothesis: The average width of the part is 145 mm.
+
+* Generate Method: "bootstrap"
+
+# 1.2.2 Interpreting results
+
+###### 1
+
+* p value > 0.05 therefore failed to reject $H_0$
+
+* There is not statistically significant evidence to suggest an increase in people's awareness of the coffee shop after the advertising effors.
+
+###### 2
+
+* p value < 0.01 therefore reject $H_0$
+
+* There is statistically significant evidence suggesting an increase in CTR for the newly positioned banner.
+
+###### 3
+
+* p value > 0.05 therefore failed to reject $H_0$
+
+* There is statistically significant evidence to suggest that the parts made in over this period of a week do not meet the required standards.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -125,6 +125,8 @@ bootstrapped_year_50000 %>%
 
 Number of reps seems to make very little difference to the point estimate and confidence intervals. 
 
+I assume there comes a point where the original sample size is the limiting factor so increasing the number of bootstrap samples will make no difference.
+
 
 ```{r}
 bootstrapped_year_10 <- ames_year_built %>% 
