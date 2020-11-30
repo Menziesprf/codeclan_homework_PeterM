@@ -86,6 +86,8 @@ null_omni_herbi_dist %>%
 
 * There is not statistically significant evidence to suggest that omnivores and herbivores require different amounts of sleep. 
 
+[misread the question - should be do omnis sleep more than herbs, not just are they different]
+
 ### Domesticated animals
 
 * $\alpha$ = 0.05
@@ -157,6 +159,8 @@ null_domesticated_dist %>%
 
 * Generate Method: "bootstrap"
 
+[post discussion - switch the null and alternative hypothesiseseses. Null = business as normal]
+
 # 1.2.2 Interpreting results
 
 ###### 1
@@ -178,7 +182,7 @@ null_domesticated_dist %>%
 * There is statistically significant evidence to suggest that the parts made in over this period of a week do not meet the required standards.
 
 
-
+[post discussion - with the switched null and alternative hypothese, the null would be rejected.]
 
 
 
