@@ -1,0 +1,182 @@
+---
+title: "WK7 D1 HW"
+author: "Peter Menzies"
+date: "30/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=F}
+library(dplyr)
+library(lubridate)
+library(tidyverse)
+library(tsibble)
+library(tsibbledata)
+library(feasts)
+
+date1 <- ymd_hms("2017-04-22 22:01:18")
+date2 <- ymd_hms("2001-11-07 10:09:56")
+
+library(nycflights13)
+```
+
+# 1 Dates and Times
+### 1.1
+
+```{r}
+year(date1)
+month(date1, label = T, abbr = F)
+mday(date1)
+yday(date1)
+wday(date1)
+```
+
+### 1.2
+
+```{r}
+next_fortnight <- date1 + weeks(2)
+next_fortnight
+
+previous_decade <- date2 - years(10)
+previous_decade
+```
+
+### 1.3
+
+```{r}
+this_year <- today()
+this_year
+  
+interval_years <- lubridate::interval(previous_decade, this_year)
+interval_years
+```
+
+### 1.4
+
+```{r}
+nyc_date1 <- with_tz(date1, tzone = "America/New_York")
+nyc_date1
+
+nyc_date2 <- with_tz(date2, tzone = "America/New_York")
+nyc_date2
+```
+
+### 1.5
+
+```{r}
+flights %>% 
+  mutate(departure_date = make_datetime(year, month, day, hour, minute)) 
+```
+
+# Time Series Familiarity
+### 2.6
+
+```{r}
+weather_selected <- weather %>% 
+  select(time_hour, origin, temp, dewp, humid, precip)
+
+head(weather_selected) 
+```
+
+* Hourly observations from 1st Jan 2013 to 30th Dec 2013, taken at Newark Liberty International Airport, John F. Kennedy International Airport and LaGuardia Airport.
+
+
+### 2.7
+
+```{r}
+weather_tsibble <- weather_selected %>% 
+  as_tsibble(key = origin, index = time_hour)
+weather_tsibble
+```
+### 2.8
+
+```{r}
+weather_tsibble <- weather_tsibble %>% 
+  mutate(year = year(time_hour),
+         month = month(time_hour, label = T))
+weather_tsibble
+
+weather_tsibble %>% 
+  ggplot() +
+  aes(x = time_hour, y = temp, colour = origin) +
+  geom_line( show.legend = F) +
+  facet_wrap(~ origin, ncol = 1) +
+  labs(x = "Time",
+       y = "Temperature ºF",
+       title = "Temperature at New York Airports in 2013") +
+  scale_x_datetime(breaks = "1 month",
+                   labels = month,
+                   date_labels = "%B") +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.7),
+        plot.title = element_text(face = "bold", hjust = 0.4))
+  
+```
+
+* Plotting the whole timeseries gives a good impression of the overall trend in temperature throughout the year, and shows that genereally temperatures are similar across the 3 airports.
+
+
+* However it isn't clear how the temperatures vary across a month, week or day. Depending on what interests us perhaps limit the timeframe of the plot or use a rolling window average.
+
+### 2.9
+
+```{r, message=F}
+library(slider)
+weather_tsibble %>% 
+  mutate(avg_roll_temp = slide_dbl(
+    .x = temp,
+    .f = ~ mean(., na.rm = T),
+    .before = 84,
+    .after = 84
+  )) %>% 
+  ggplot() +
+  aes(x = time_hour, colour = origin) +
+  geom_line(aes(y=temp), colour = "grey") +
+  geom_line(aes(y=avg_roll_temp), show.legend = F) +
+  facet_wrap(~ origin, ncol = 1) +
+  labs(x = "Time",
+       y = "Temperature ºF",
+       title = "Temperature at New York Airports in 2013") +
+  scale_x_datetime(breaks = "1 month",
+                   labels = month,
+                   date_labels = "%B") +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.7),
+        plot.title = element_text(face = "bold", hjust = 0.4))
+                 
+```
+
+* Window of 84 hours (3.5 days) before and after the point was chosen so that the rolling average was of a week's temperature. Chosen the variation in a smaller window is difficult see on a grid of the whole year. 
+
+* The temperature trends upwards from February to July then trends downwards till December as one might expect. There's a reasonable amount of cyclical variation within each month.
+
+### 2.10
+
+```{r}
+weather_tsibble_day <- weather_tsibble %>% 
+  mutate(avg_day_temp = slide_dbl(
+    .x = temp,
+    .f = ~ mean(., na.rm = T),
+    .before = 12,
+    .after = 12,
+    .step = 24
+  ))
+
+weather_tsibble_day %>% 
+  drop_na(avg_day_temp) %>% 
+  ggplot() +
+  aes(x = time_hour, colour = origin) +
+  geom_line(aes(y = avg_day_temp), show.legend = F) +
+  facet_wrap(~ origin, ncol = 1) +
+  labs(x = "Time",
+       y = "Temperature ºF",
+       title = "Temperature at New York Airports in 2013") +
+  scale_x_datetime(breaks = "1 month",
+                   labels = month,
+                   date_labels = "%B") +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.7),
+        plot.title = element_text(face = "bold", hjust = 0.4))
+```
+
+
+
