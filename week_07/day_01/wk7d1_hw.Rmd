@@ -51,6 +51,8 @@ this_year
   
 interval_years <- lubridate::interval(previous_decade, this_year)
 interval_years
+
+as.period(interval_years)
 ```
 
 ### 1.4
@@ -146,7 +148,7 @@ weather_tsibble %>%
                  
 ```
 
-* Window of 84 hours (3.5 days) before and after the point was chosen so that the rolling average was of a week's temperature. Chosen the variation in a smaller window is difficult see on a grid of the whole year. 
+* Window of 84 hours (3.5 days) before and after the point was chosen so that the rolling average was of a week's temperature. Chosen because the variation in a smaller window is difficult see on a grid of the whole year. 
 
 * The temperature trends upwards from February to July then trends downwards till December as one might expect. There's a reasonable amount of cyclical variation within each month.
 
@@ -179,4 +181,27 @@ weather_tsibble_day %>%
 ```
 
 
+```{r}
+# same results but alternate method and doesn't drop NA's so maybe better
+
+
+weather_day_alternate <- weather_tsibble %>% 
+  group_by_key(origin) %>%
+  index_by(date = as_date(time_hour)) %>%
+  summarise(temp_mean = mean(temp, na.rm = TRUE))
+
+weather_day_alternate %>% 
+  ggplot() +
+  aes(x = date, colour = origin) +
+  geom_line(aes(y = temp_mean), show.legend = F) +
+  facet_wrap(~ origin, ncol = 1) +
+  labs(x = "Time",
+       y = "Temperature ºF",
+       title = "Temperature at New York Airports in 2013") +
+  #scale_x_datetime(breaks = "1 month",
+                   #labels = month,
+                   #date_labels = "%B") +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.7),
+        plot.title = element_text(face = "bold", hjust = 0.4))
+```
 
