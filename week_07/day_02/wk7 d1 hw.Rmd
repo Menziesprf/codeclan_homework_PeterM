@@ -1,0 +1,216 @@
+---
+title: "Wk7d2 HW"
+author: "Peter Menzies"
+date: "01/12/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=F}
+library(tidyverse)
+library(lubridate)
+library(tsibble)
+library(tsibbledata)
+library(fable)
+```
+
+# MVP 
+### 1
+
+```{r}
+bikes <- nyc_bikes %>% 
+  mutate(year = year(start_time),
+         month = month(start_time, label = T),
+         date = date(start_time))
+
+```
+
+### 2
+
+```{r}
+bikes %>% 
+  index_by(month) %>% 
+  summarise(hire_count = n()) %>% 
+  ggplot() +
+  aes(x = month, y = hire_count) +
+  geom_col()
+```
+
+* Probably not adequete for an accurate forecast, I'd prefer to have more than one years worth of data to do that
+
+* However it does give a decent impression of the trend that more bikes are hired in the Summer months than over Winter.
+
+###3
+
+```{r}
+bikes_date_count <- bikes %>% 
+  index_by(date) %>% 
+  summarise(hire_count = n())
+
+bikes_date_count %>% 
+  ggplot() +
+  aes(x = date, y = hire_count) +
+  geom_line() +
+  scale_x_date(breaks = "1 month",
+                   labels = month,
+                   date_labels = "%B") +
+  theme(axis.text.x = element_text(angle = 30, vjust = 0.7))
+```
+
+* Similar trend of increased hires in Summer
+* Shows there is significant variation in hire numbers within each month, perhaps cyclical with each week.
+
+* More data points so probably better for forecasting but I would still prefer to have multiple years of data.
+
+
+### 4
+
+```{r}
+bikes_filled <- bikes_date_count %>% 
+  fill_gaps(hire_count = 0)
+
+# 0 chosen as I assume there were no hires on these dates and that is why they were not included. Using the median I feel would falsely inflate the hire count.
+
+model <- bikes_filled %>% 
+  model(
+    mean_model = MEAN(hire_count),
+    naive_model = NAIVE(hire_count),
+    snaive_model = SNAIVE(hire_count),
+    arima_model = ARIMA(hire_count)
+  )
+```
+
+### 5
+
+```{r}
+forecast_mean <- model %>% 
+  select(mean_model) %>% 
+  forecast(h = 120)
+
+forecast_mean %>% 
+  autoplot(bikes_filled) +
+  scale_x_date(breaks = "1 month",
+                   date_labels = "%B %y") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.1))
+```
+
+
+```{r}
+forecast_naive <- model %>% 
+  select(naive_model) %>% 
+  forecast(h = 120)
+
+forecast_naive %>% 
+  autoplot(bikes_filled) +
+  scale_x_date(breaks = "1 month",
+                   date_labels = "%B %y") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.1))
+```
+
+```{r}
+forecast_snaive <- model %>% 
+  select(snaive_model) %>% 
+  forecast(h = 120)
+
+forecast_snaive %>% 
+  autoplot(bikes_filled) +
+  scale_x_date(breaks = "1 month",
+                   date_labels = "%B %y") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.1))
+```
+
+```{r}
+forecast_arima <- model %>% 
+  select(arima_model) %>% 
+  forecast(h = 120)
+
+forecast_arima %>% 
+  autoplot(bikes_filled) +
+  scale_x_date(breaks = "1 month",
+                   date_labels = "%B %y") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.1))
+```
+
+* SNAIVE seems like the bet model, as it takes into account daily variation but I don't think any are showing the expected increase in hires as it gets to April and May
+
+### 6
+
+```{r}
+train <- bikes_filled %>% 
+  filter_index("2018-01-01" ~ "2018-09-30")
+
+model_train <- train %>%    # choo choo
+  model(
+    mean_model = MEAN(hire_count),
+    naive_model = NAIVE(hire_count),
+    snaive_model = SNAIVE(hire_count),
+    arima_model = ARIMA(hire_count)
+  )
+
+forecast_train <- model_train %>% 
+  forecast(h = 120)
+```
+```{r}
+forecast_train %>% 
+  autoplot(train) +
+  autolayer(filter_index(bikes_filled, "2018-10-01" ~ .), colour = "black") +
+  scale_x_date(breaks = "1 month",
+                   date_labels = "%B %y") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.1)) 
+
+accuracy(forecast_train, bikes_filled)
+```
+
+
+### 7
+
+* SNAIVE seems the most accurate.
+
+* I'd want another year at least to model the data on.
+* The SNAIVE model is perhaps acceptable for the first 3 months of 2019.
+
+### 8 
+
+```{r}
+bikes %>% 
+  ggplot() +
+  geom_point(aes(x = start_lat, y = start_long, colour = month), position = "jitter") +
+  facet_wrap(~ bike_id)
+```
+
+* Bikes 31681 & 31735 were used the most in January to April.
+* Bikes 33074, 33557 and 33571 were used most in June, July and August.
+* The remaining bikes were used the most from Oct to December.
+
+```{r}
+bikes %>% 
+  ggplot() +
+  geom_point(aes(x = end_lat, y = end_long, colour = month), position = "jitter") +
+  facet_wrap(~ bike_id)
+```
+
+* Seems a wider variety of starting points  and more clustering of end points
+
+
+### 9 
+
+```{r}
+library(leaflet)
+leaflet(bikes) %>% 
+  addTiles() %>% 
+  addMarkers(lng = bikes$start_long, lat = bikes$start_lat, clusterOptions = markerClusterOptions(), clusterId = "start point") #%>% 
+  #addMarkers(lng = bikes$end_long, lat = bikes$end_lat, clusterOptions = markerClusterOptions(), clusterId = "end point")
+  
+```
+
+
+
+
+
+
+
+
+
+
