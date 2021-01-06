@@ -1,0 +1,88 @@
+---
+title: "HW - Linear Regression"
+author: "Peter Menzies"
+date: "05/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=F}
+library(tidyverse)
+library(modelr)
+library(broom)
+```
+
+# MVP
+
+#### 1
+```{r}
+project <- read_csv("data/project_management.csv")
+```
+
+
+#### 2
+```{r}
+project %>% 
+  ggplot(aes(x = actual_length, y = estimated_length)) +
+  geom_point()
+```
+
+
+#### 3
+```{r}
+project %>% 
+  summarise(cor = cor(estimated_length, actual_length))
+```
+* Indicates a strong positive correlation 
+
+#### 4
+
+```{r}
+model_project <- lm(formula = estimated_length ~ actual_length, data = project)
+model_project
+```
+#### 5
+
+```{r}
+tidy(model_project)
+glance(model_project)
+```
+y = 0.52x + 4.587
+
+* slope = 0.52...
+* Positive gradient, for every increase of 1 for x there is an increase of 0.5 for y 
+
+* R^2 = 0.647...
+* Quite High, 64% of the variation in estimated_length can be explained by variation in actual_length
+
+#### 6
+
+```{r}
+model_project %>% 
+  autoplot()
+```
+
+* Graphs look fine to me other than the outliers
+* p value < 0.005 so the correlation is statistically significant
+
+# Extension
+
+```{r}
+project %>% 
+  ggplot(aes(x = actual_length, y = estimated_length)) +
+  geom_point() +
+  geom_text(aes(label = 1:nrow(project)))
+
+
+```
+
+outliers - 16, 5, 36, 31
+
+
+
+
+
+
+
