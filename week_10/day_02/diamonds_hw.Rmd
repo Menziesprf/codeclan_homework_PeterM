@@ -1,0 +1,204 @@
+---
+title: "week 10 day 2 HW"
+author: "Peter Menzies"
+date: "06/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=F, warning=F}
+library(tidyverse)
+```
+
+# MVP
+#### 1
+
+```{r}
+diamonds_data <- read_csv("diamonds.csv")
+
+head(diamonds_data)
+summary(diamonds_data)
+```
+
+#### 2
+
+```{r}
+library(GGally)
+
+diamonds_data %>% 
+  select(carat, x, y, z) %>% 
+  ggpairs()
+
+```
+
+#### 3
+
+```{r}
+diamonds_working <- diamonds_data %>% 
+  select(-x, -y, -z, -X1)
+```
+
+#### 4
+###### i
+
+```{r}
+ggpairs(diamonds_working)
+```
+
+##### ii
+
+```{r}
+diamonds_working %>% 
+  ggplot() +
+  aes(x = carat, y = price) +
+  geom_point()
+```
+* Clear positive correlation
+
+
+#### 5
+
+##### i
+
+```{r}
+unique(diamonds_working$cut)
+unique(diamonds_working$clarity)
+unique(diamonds_working$color)
+```
+
+* cut = 4 Dummy variables
+
+* clarity = 7 Dummy variables
+
+* Colour = 6 Dummy variables
+
+##### ii
+
+```{r}
+library(fastDummies)
+```
+```{r}
+dummy_cols(diamonds_working, select_columns = c("cut", "clarity", "color"), remove_first_dummy = T, remove_selected_columns = T)
+```
+ 
+* Correct number of dummy columns
+
+#### 6
+```{r}
+library(broom)
+library(ggfortify)
+```
+
+##### i
+```{r}
+model_diamonds1 <- lm(price ~ carat, data = diamonds_working)
+
+summary(model_diamonds1)
+autoplot(model_diamonds1)
+```
+* Low p value, High R squared = good stuff
+
+* Res vs fitted = line rises to the right, not good
+* Q-Q = looks odd
+* Scale-location = line rises to right, not good
+
+##### ii
+
+```{r}
+model_diamonds2 <- lm(log(price) ~ carat, data = diamonds_working)
+
+summary(model_diamonds2)
+autoplot(model_diamonds2)
+```
+
+* p value and r squared still good
+* graphs look worse!
+
+```{r}
+model_diamonds3 <- lm(price ~ log(carat), data = diamonds_working)
+
+summary(model_diamonds3)
+autoplot(model_diamonds3)
+```
+
+* p value and r squared still good
+* graphs look worse!
+```{r}
+model_diamonds4 <- lm(log(price) ~ log(carat), data = diamonds_working)
+
+summary(model_diamonds4)
+autoplot(model_diamonds4)
+```
+
+* BOTH LOGS
+* P value and R squared even better
+
+* Graphs look perfect
+
+##### iii
+
+```{r}
+model_diamonds5 <- lm(log(price) ~ log(carat) + cut, data = diamonds_working)
+
+summary(model_diamonds5)
+autoplot(model_diamonds5)
+```
+
+```{r}
+model_diamonds6 <- lm(log(price) ~ log(carat) + clarity, data = diamonds_working)
+
+summary(model_diamonds6)
+autoplot(model_diamonds6)
+```
+
+```{r}
+model_diamonds7 <- lm(log(price) ~ log(carat) + color, data = diamonds_working)
+
+summary(model_diamonds7)
+autoplot(model_diamonds7)
+```
+
+
+* ALl look good graph wise
+* All have low p values and high r squared values
+* Clarity has the highest R Squared value so is the best categorical predictor
+
+##### iv
+* Clarity
+* reference level = 7.768115
+* Clarity of "IF" shows greatest difference (increase) in price from reference level. Makes sense since it is the "best" clarity
+
+# Extension
+
+#### 7
+
+```{r}
+model_diamonds8 <- lm(log(price) ~ log(carat) + clarity + log(carat):clarity, data = diamonds_working)
+
+summary(model_diamonds8)
+autoplot(model_diamonds8)
+```
+
+* Yes it is statistically justified
+* It also makes sense that a diamond that has a better clarity and a has more carrots will have a higher price.
+
+
+##### 8
+
+```{r}
+coplot(log(price) ~ log(carat)|clarity, 
+       panel = function(x, y, ...){
+         points(x, y)
+         abline(lm(y ~ x), col = "blue")
+       },
+       data = diamonds_working)
+```
+
+* This shows that as log(carat) increases, the log(price) increases for all clarities.
+
+* Perhaps shows that the carat doesn't have to be as high for the price to be high for the better clarities.
+
+
