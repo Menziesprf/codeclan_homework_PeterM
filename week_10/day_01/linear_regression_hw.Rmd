@@ -40,7 +40,7 @@ project %>%
 #### 4
 
 ```{r}
-model_project <- lm(formula = estimated_length ~ actual_length, data = project)
+model_project <- lm(formula = actual_length ~ estimated_length, data = project)
 model_project
 ```
 #### 5
@@ -49,10 +49,10 @@ model_project
 tidy(model_project)
 glance(model_project)
 ```
-y = 0.52x + 4.587
+y = 1.22x + 1.416
 
-* slope = 0.52...
-* Positive gradient, for every increase of 1 for x there is an increase of 0.5 for y 
+* slope = 1.22...
+* Positive gradient, for every increase of 1 for x there is an increase of 1.22... for y 
 
 * R^2 = 0.647...
 * Quite High, 64% of the variation in estimated_length can be explained by variation in actual_length
