@@ -168,8 +168,16 @@ autoplot(model_diamonds7)
 
 ##### iv
 * Clarity
-* reference level = 7.768115
+* reference level = clarity I1 (#changed after hw discussion)
 * Clarity of "IF" shows greatest difference (increase) in price from reference level. Makes sense since it is the "best" clarity
+
+(post discussion)
+* exp of IF coefficient gives actual coefficient
+```{r}
+exp(1.114625)
+```
+* Assuming carat is constant, if the clarity is changed from I1 to IF the diamond will be 3 times as expensive
+
 
 # Extension
 
@@ -184,6 +192,8 @@ autoplot(model_diamonds8)
 
 * Yes it is statistically justified
 * It also makes sense that a diamond that has a better clarity and a has more carrots will have a higher price.
+
+* Only slightly improves r squared so not really the correct way of approacing the model. We'll use anova() in the future
 
 
 ##### 8
@@ -201,4 +211,12 @@ coplot(log(price) ~ log(carat)|clarity,
 
 * Perhaps shows that the carat doesn't have to be as high for the price to be high for the better clarities.
 
+```{r}
+# Post discussion
+diamonds_working %>%
+  ggplot(aes(x = log(carat), y = log(price), colour = clarity)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ clarity)
+```
 

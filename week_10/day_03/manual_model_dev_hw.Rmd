@@ -1,0 +1,143 @@
+---
+title: "manual model dev hw"
+author: "Peter Menzies"
+date: "07/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# MVP
+```{r, message=F, warning=F}
+library(tidyverse)
+library(GGally)
+library(modelr)
+```
+```{r}
+houses <- read_csv("data/kc_house_data.csv")
+```
+
+```{r}
+head(houses)
+summary(houses)
+```
+
+```{r}
+houses_trim <- houses %>% 
+  select(-sqft_living15, -sqft_lot15, -id, -zipcode, -date) %>% 
+  mutate(waterfront = as.logical(waterfront),
+         renovated = if_else(yr_renovated == 0, F, T)) %>% 
+  select(-yr_renovated)
+  
+```
+
+* grade and condition are ordinal variables
+
+```{r}
+alias_model <- lm(price ~ ., data = houses_trim)
+alias(alias_model)
+
+```
+* we can remove sqft_basement 
+
+```{r}
+houses_trim <- houses_trim %>% 
+  select(-sqft_basement)
+```
+
+
+```{r}
+houses_trim_numeric <- houses_trim %>%
+  select_if(is.numeric)
+
+houses_trim_nonnumeric <- houses_trim %>%
+  select_if(function(x) !is.numeric(x))
+
+houses_trim_nonnumeric$price <- houses_trim$price
+
+ggpairs(houses_trim_numeric, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+
+highest correlations: 
+* price ~ sqft_living  = 0.702
+* price ~ grade  = 0.667
+* price~ sqft_above  = 0.606
+
+
+
+```{r}
+ggpairs(houses_trim_nonnumeric, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+* Price ~ waterfront has a lot of movement between box plots so maybe also worth considering
+
+
+```{r}
+houses_pca <- prcomp(houses_trim_numeric, center = T, scale. = T)
+summary(houses_pca)
+houses_pca$rotation
+```
+
+* Needs 8 principal components to account for 90% of variance
+
+
+## First Predictor
+
+```{r}
+mod1a <- lm(price ~ sqft_living, data = houses_trim)
+
+summary(mod1a)
+
+par(mfrow = c(2,2))
+plot(mod1a)
+```
+
+```{r}
+mod1b <- lm(price ~ sqft_above, data = houses_trim)
+
+summary(mod1b)
+
+par(mfrow = c(2,2))
+plot(mod1b)
+```
+
+```{r}
+mod1c <- lm(price ~ grade, data = houses_trim)
+
+summary(mod1c)
+
+par(mfrow = c(2,2))
+plot(mod1c)
+```
+
+
+```{r}
+mod1d <- lm(price ~ waterfront, data = houses_trim)
+
+summary(mod1d)
+
+par(mfrow = c(2,2))
+plot(mod1d)
+```
+* All have good p values
+
+* mod1a (price ~ sqft_living) has highest R squared so I'll use it 1st, though the scale-location graph has a worrying upwards trend.
+
+## Second predictor
+
+```{r}
+houses_resid <- houses_trim %>% 
+  add_residuals(mod1a) %>% 
+  select(-price, sqft_living)
+```
+```{r}
+houses_resid %>% 
+  ggpairs(upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* Highest Correlations with resid are "lat", "long", "yr_built"
+* Also a lot of movement in "waterfront" boxplot
+* So those 4 would be in my choices for next predictor to add
+
