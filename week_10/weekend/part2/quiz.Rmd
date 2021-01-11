@@ -1,0 +1,92 @@
+---
+title: "HW quiz"
+author: "Peter Menzies"
+date: "10/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+### 1
+
+Over-fitting
+
+### 2
+
+AIC of 33,559 (the lower score)
+
+### 3
+
+the first , with the higher adjusted r2
+
+### 4
+
+No i think that is a well-fitted model
+
+### 5
+
+K-fold validation, splits the data into the selected number of groups (k), then uses one group as test data and the rest as training data. Then repeats until all groups have been used as the test data
+
+### 6
+
+It is a set of data selected before modelling begins. After you have tested and selected the model you want to use, the validation set is used as a final test, to ensure you have not overfitted the model to the previously used test set(s)
+
+### 7
+
+Start with a model "y ~ .", then remove the predictor that affects the model the least. Repeat this until you have as simple a model as possible that is still acceptably accurate
+
+### 8 
+
+aka "exhaustive search" it tests every possible combination of predictors and interactions to produce the most effective model possible
+
+### 9 
+
+* Sense-check - Does it make sense for the predictors included to be included 
+* Avoid disallowed variables, their proxies and variables the will cause bias
+* Ensure the model and it's predictors are explainable
+* Avoid relying heavily on one predictor/make sure model is stable
+* Check the PSI and CSI, to make sure your model fits the new data
+* Be clear on when the model is and isn't valid.
+* Ensure it is easily implemented
+* Make sure the model is well documented (ie, business context, decisions, assumptions, model explanation, recent validation, implementation instructions)
+
+### 10
+
+Characteristic Stability Index
+
+### 11
+PSI compares a predicted variable using new data and previously used test data
+
+### 12
+
+PSI < 0.1 - No change. You can continue using existing model.
+PSI >=0.1 but less than 0.2 - Slight change is required.
+PSI >=0.2 - Significant change is required. Ideally, you should not use this model any more.
+
+### 13
+
+miscommunication between departments involved in implementing?
+
+not doing the answers to q9?
+
+### 14
+
+Investigate the cause of the fall in accuracy
+
+### 15
+
+So they can be monitored/audited easily
+
+### 16
+
+So it is clear to all why the model was created and implemented, and so it can be monitored while it is in use.
+
+
+
+
+
+
+
+
+

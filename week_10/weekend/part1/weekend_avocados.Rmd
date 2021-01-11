@@ -1,0 +1,427 @@
+---
+title: "Weekend Avocados"
+author: "Peter Menzies"
+date: "10/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# MVP
+
+```{r, message=F, warning=F}
+source("data_exploration_cleaning.R")
+```
+
+##### Summary of data cleaning/featur engineering
+
+
+PLU 4046 - small Hass
+PLU 4225 - large Hass
+PLU 4770 - Extra large Hass
+
+* Convert Sizes into percentage of total sales
+
+* Convert Bag numbers into percentage sold in small bags
+
+* Convert Date into season
+  -   Spring = March 1st - May 31st
+  -   Summer = June 1st - August 31st
+  -   Autumn = Sep 1st  - Nov 30th
+  -   Winter = Dec 1st - Feb 28th
+
+* Convert convential/organic into Organic - true false
+
+* Regions - extract the regions which equal totalUS figures
+
+* Convert year to factor
+
+
+### 1st Predictor
+```{r}
+library(GGally)
+library(modelr)
+```
+
+```{r}
+alias_avocado <- lm(average_price ~ ., data = avocados_cleaned)
+
+alias(alias_avocado)
+```
+* we can remove non_hass_percent
+
+```{r}
+avocados_cleaned <- avocados_cleaned %>% 
+  select(-non_hass_percent)
+```
+
+
+```{r}
+avocados_numeric <- avocados_cleaned %>% 
+  select_if(is.numeric)
+
+avocados_non_numeric <- avocados_cleaned %>% 
+  select_if(function(x) !is.numeric(x))
+
+avocados_non_numeric$average_price <- avocados_cleaned$average_price
+```
+```{r}
+summary(prcomp(avocados_numeric, center = T, scale. = T))
+```
+
+
+* 5 principal components accounts for 96% of variance 
+```{r}
+ggpairs(avocados_numeric, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* Biggest correlation = average_price ~ total_volume
+* 2nd = average_price ~ small_hass_percentage 
+* 3rd = average_price ~ xl_hass_percentage
+
+
+
+```{r}
+ggpairs(avocados_non_numeric, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* Most movement to least (estimate): Organic, Region, season, year
+
+
+* 1st predictors to test: total_volume, small_hass_percent, organic, region
+
+```{r}
+model_1a <- lm(average_price ~ total_volume, data = avocados_cleaned)
+model_1b <- lm(average_price ~ small_hass_percent, data = avocados_cleaned)
+model_1c <- lm(average_price ~ organic, data = avocados_cleaned)
+model_1d <- lm(average_price ~ region, data = avocados_cleaned)
+```
+
+```{r}
+summary(model_1a)
+par(mfrow=c(2,2))
+plot(model_1a)
+```
+
+```{r}
+summary(model_1b)
+par(mfrow=c(2,2))
+plot(model_1b)
+```
+
+```{r}
+summary(model_1c)
+par(mfrow=c(2,2))
+plot(model_1c)
+```
+
+```{r}
+summary(model_1d)
+par(mfrow=c(2,2))
+plot(model_1d)
+```
+
+##### Average_price ~ total_volume 
+
+* Multiple R^2 is highest = 0.5219
+* Residual standard error is significant at 0.2418 (~ 25% of avg_price)
+* Plots look ok, deviation at right tail of Q-Q plot, upwards trend in scale-location
+
+
+# 2nd Predictor 
+
+```{r}
+avocados_resid <- avocados_cleaned %>% 
+  add_residuals(model_1a) %>% 
+  select(-average_price, -total_volume)
+```
+
+```{r}
+ggpairs(avocados_resid, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* remaining numeric correlations are pretty small: small_hass_percent is largest at 0.254
+* boxplot movement most to least: region, year, season, organic
+
+```{r}
+model_2a <- lm(average_price ~ total_volume + small_hass_percent, data = avocados_cleaned)
+model_2b <- lm(average_price ~ total_volume + region, data = avocados_cleaned)
+model_2c <- lm(average_price ~ total_volume + year, data = avocados_cleaned)
+model_2d <- lm(average_price ~ total_volume + season, data = avocados_cleaned)
+
+```
+
+```{r}
+summary(model_2a)
+par(mfrow=c(2,2))
+plot(model_2a)
+```
+
+* R2 increase, resid standard error decrease
+
+```{r}
+summary(model_2b)
+par(mfrow=c(2,2))
+plot(model_2b)
+```
+
+```{r}
+summary(model_2c)
+par(mfrow=c(2,2))
+plot(model_2c)
+```
+
+```{r}
+summary(model_2d)
+par(mfrow=c(2,2))
+plot(model_2d)
+```
+
+##### average_price ~ total_volume + region (model_2b)
+
+* Highest increase in R^2 (0.634) and highest drop in resid std error (0.2118)
+* P values all significantly low
+* Plots ok: Q-Q plot has deviation at right tail still
+
+# 3rd predictor
+
+```{r}
+avocados_resid <- avocados_cleaned %>% 
+  add_residuals(model_2b) %>% 
+  select(-average_price, -total_volume, -region)
+```
+```{r}
+ggpairs(avocados_resid, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* Numeric correlations all very low
+* Try season, year and organic and total_volume:region
+
+```{r}
+model_3a <- lm(average_price ~ total_volume + region + season, data = avocados_cleaned)
+model_3b <- lm(average_price ~ total_volume + region + year, data = avocados_cleaned)
+model_3c <- lm(average_price ~ total_volume + region + organic, data = avocados_cleaned)
+model_3d <- lm(average_price ~ total_volume + region + total_volume:region, data = avocados_cleaned)
+
+```
+
+```{r}
+summary(model_3a)
+par(mfrow=c(2,2))
+plot(model_3a)
+```
+
+```{r}
+summary(model_3b)
+par(mfrow=c(2,2))
+plot(model_3b)
+```
+
+```{r}
+summary(model_3c)
+par(mfrow=c(2,2))
+plot(model_3c)
+```
+
+```{r}
+summary(model_3d)
+par(mfrow=c(2,2))
+plot(model_3d)
+```
+
+##### average_price ~ total_volume + region + season (model_3a)
+
+* Highest Increase in multi R^2 (0.6835) and decrease in resid standard error (0.1971)
+* All pvalues significantly low
+* plots ok
+
+# 4th Predictor
+
+```{r}
+avocados_resid <- avocados_cleaned %>% 
+  add_residuals(model_2b) %>% 
+  select(-average_price, -total_volume, -region, -season)
+```
+```{r}
+ggpairs(avocados_resid, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+* Correlations are very low and not much movement in box plots other than year.
+* Investigate interactions
+
+##### Interactions
+model_3a: average_price ~ total_volume + region + season
+
+interactions:
+* total_volume:region
+* total_volume:season
+* region:season 
+
+
+```{r}
+avocados_int_resid <- avocados_cleaned %>% 
+  add_residuals(model_3a) %>% 
+  select(-average_price)
+```
+
+
+```{r}
+avocados_int_resid %>% 
+  ggplot(aes(x = total_volume, y = resid, colour = region)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F)
+
+avocados_int_resid %>% 
+  ggplot(aes(x = total_volume, y = resid, colour = season)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = F)
+
+avocados_int_resid %>% 
+  ggplot(aes(x = region, y = resid, colour = season)) +
+  geom_boxplot() +
+  geom_smooth(method = "lm", se = F)
+```
+
+```{r}
+model_4a <- lm(average_price ~ total_volume + region + season + total_volume:region, data = avocados_cleaned)
+
+model_4b <- lm(average_price ~ total_volume + region + season + total_volume:season, data = avocados_cleaned)
+
+model_4c <- lm(average_price ~ total_volume + region + season + region:season, data = avocados_cleaned)
+
+model_4d <- lm(average_price ~ total_volume + region + season + organic, data = avocados_cleaned)
+
+model_4e <- lm(average_price ~ total_volume + region + season + year, data = avocados_cleaned)
+```
+
+```{r}
+summary(model_4a)
+par(mfrow=c(2,2))
+plot(model_4a)
+```
+
+```{r}
+summary(model_4b)
+par(mfrow=c(2,2))
+plot(model_4b)
+```
+```{r}
+summary(model_4c)
+par(mfrow=c(2,2))
+plot(model_4c)
+```
+
+```{r}
+summary(model_4d)
+par(mfrow=c(2,2))
+plot(model_4d)
+```
+
+```{r}
+summary(model_4e)
+par(mfrow=c(2,2))
+plot(model_4e)
+```
+
+#####average_price ~ total_volume + region + season + year (model_4e)
+
+* Highest increase in R^2 (0.7327) and reduction in resid std error (0.1812)
+* all pvalues significant (year 2016 p = 0.048, so only just <0.05)
+* plots look ok
+* I am slightly dubious as to whether year should be included, because can it be used in predicting avocado price in 2021?
+
+# 5th Predictor
+
+```{r}
+avocados_resid <- avocados_cleaned %>% 
+  add_residuals(model_2b) %>% 
+  select(-average_price, -total_volume, -region, -season, -year)
+```
+```{r}
+ggpairs(avocados_resid, upper = list(continuous = wrap("cor", family="sans", size = 2)))
+```
+
+```{r}
+model_5a <- lm(average_price ~ total_volume + region + season + year + organic, data = avocados_cleaned) 
+
+model_5b <- lm(average_price ~ total_volume + region + season + year + total_volume:region, data = avocados_cleaned)
+
+model_5c <- lm(average_price ~ total_volume + region + season + year + small_hass_percent, data = avocados_cleaned)
+
+model_5d <- lm(average_price ~ total_volume + region + season + year + total_volume:season, data = avocados_cleaned)
+```
+
+
+```{r}
+summary(model_5a)
+par(mfrow=c(2,2))
+plot(model_5a)
+```
+
+```{r}
+summary(model_5b)
+par(mfrow=c(2,2))
+plot(model_5b)
+```
+
+```{r}
+summary(model_5c)
+par(mfrow=c(2,2))
+plot(model_5c)
+```
+
+
+```{r}
+summary(model_5d)
+par(mfrow=c(2,2))
+plot(model_5d)
+```
+
+##### average_price ~ total_volume + region + season + year + total_volume:region (model_5b)
+
+```{r}
+anova(model_4e, model_5b)
+```
+* It is significant despite some of the interactions having a high p value
+* R squared now up to 0.7804 and res std error down to 0.1645
+
+* drifting of both tails on Q-Q plot
+
+#6th predictor
+
+```{r}
+model_6a <- lm(average_price ~ total_volume + region + season + year + total_volume:region + small_hass_percent, data = avocados_cleaned)
+
+model_6b <- lm(average_price ~ total_volume + region + season + year + total_volume:region + organic, data = avocados_cleaned)
+
+model_6c <- lm(average_price ~ total_volume + region + season + year + total_volume:region + total_volume:season, data = avocados_cleaned)
+```
+
+```{r}
+summary(model_6a)
+par(mfrow=c(2,2))
+plot(model_6a)
+```
+
+```{r}
+summary(model_6b)
+par(mfrow=c(2,2))
+plot(model_6b)
+```
+
+```{r}
+summary(model_6c)
+par(mfrow=c(2,2))
+plot(model_6c)
+```
+
+
+
+* Needs further predictors added to achieve an acceptable R squared
+
+
+
+
+

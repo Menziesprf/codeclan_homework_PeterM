@@ -35,6 +35,8 @@ houses_trim <- houses %>%
 
 * grade and condition are ordinal variables
 
+* (post discussion) - SO make them into factors you dummy!! 
+
 ```{r}
 alias_model <- lm(price ~ ., data = houses_trim)
 alias(alias_model)

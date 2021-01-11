@@ -1,0 +1,84 @@
+---
+title: "predictive model"
+author: "Peter Menzies"
+date: "10/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=FALSE}
+source("data_exploration_cleaning.R")
+```
+```{r}
+library(glmulti)
+```
+```{r}
+nrow <- nrow(avocados_cleaned)
+test_index <- sample(1:nrow, size = 0.1*nrow)
+
+avocado_test <- slice(avocados_cleaned, test_index)
+avocado_train <- slice(avocados_cleaned, -test_index)
+```
+
+
+```{r}
+glmulti_fit <- glmulti(
+  average_price ~ ., 
+  data = avocado_train,
+  level = 2, # 2 = include pairwise interactions, 1 = main effects only (main effect = no pairwise interactions)
+  minsize = 0, # no min size of model
+  maxsize = -1, # -1 = no max size of model
+  marginality = TRUE, # marginality here means the same as 'strongly hierarchical' interactions, i.e. include pairwise interactions only if both predictors present in the model as main effects.
+  method = "g", # the problem is too large for exhaustive search, so search using a genetic algorithm
+  crit = bic, # criteria for model selection is BIC value (lower is better)
+  plotty = FALSE, # don't plot models as function runs
+  report = TRUE, # do produce reports as function runs
+  confsetsize = 100, # return best 100 solutions
+  fitfunction = lm # fit using the `lm` function
+)
+```
+
+```{r}
+best_model <- lm(average_price~1+year+total_volume+region+season+small_hass_percent+large_hass_percent+xl_hass_percent+non_hass_percent+small_bag_percent+organic+region:total_volume+season:total_volume+season:region+large_hass_percent:total_volume+large_hass_percent:region+large_hass_percent:season+xl_hass_percent:large_hass_percent+non_hass_percent:small_hass_percent+non_hass_percent:large_hass_percent+small_bag_percent:non_hass_percent+organic:total_volume+organic:region+organic:large_hass_percent+year:season+year:large_hass_percent+year:non_hass_percent+year:small_bag_percent+year:organic, data = avocado_train)
+```
+
+```{r}
+summary(best_model)
+```
+
+```{r}
+broom::tidy(best_model)
+broom::glance(best_model)
+```
+
+```{r}
+predictions_test <- predict(best_model, newdata = avocado_test)
+predictions_train <- predict(best_model, newdata = avocado_train)
+```
+
+```{r}
+mean((predictions_test - avocado_test$average_price)^2)
+mean((predictions_train - avocado_train$average_price)^2)
+```
+
+* Mean square error is higher on the test data, so model is possibly overfitted.
+* But the mean square error is quite low so perhaps model is still acceptable.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
