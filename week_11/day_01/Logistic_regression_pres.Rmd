@@ -43,5 +43,54 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
+# Neural Networks
+
+* Uses curved & bent lines called *activation functions*
+  -   eg. sigmoidal function
+      * 3 types: - Binary, Linear & Non-linear
+
+* Nodes = inputs
+
+* Supposed to mimic Brains
+
+* Eg used to model dosages of a new drug
+
+Disadvantages - hard to understand decision making process
+
+# Naive Bayes Classification
+
+* What is the probability something will happen given something else has happened. - *conditional probability*
+
+* Naive = Assumes all variables are independent
+
+* Example: 
+
+# Linear Discrimination Analysis
+
+* Maximises seperability between established classes 
+
+
+# Decision Trees/Random forests
+
+* Essentially a flow chart
+
+* Random forests = multiple decision trees, by bootstrapping
+     - better ability to generalise
+
+# Support Vector Machines
+
+* splits the data using vectors
+* Can be difficult to interpret
+
+
+# Hierarchical Clustering
+
+* Unsupervised
+
+* Agglomerative/Additive Clustering vs Divisive clustering
+
+* Outputs Dendrograms
+
+# K Means Clustering
 
 
