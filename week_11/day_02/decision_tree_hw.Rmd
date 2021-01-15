@@ -41,9 +41,10 @@ titanic_clean <- titanic_set %>%
                             labels = c("Lower", "Middle", "Upper")),
          embarked = as.factor(embarked),
          age_status = as.factor(if_else(age >= 16, "adult", "child"))) %>% 
-  drop_na() %>% 
-  select(-X1, -passenger_id, -name, -ticket, -fare, -cabin, -age)
-
+  select(-X1, -passenger_id, -name, -ticket, -fare, -cabin, -age) %>% 
+  drop_na()
+    
+### POST-DISCUSSION: I should have dropped NA's after selecting, this is going to affect the trees significantly
   
 
 summary(titanic_clean)

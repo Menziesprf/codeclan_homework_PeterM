@@ -1,0 +1,243 @@
+---
+title: "Clustering Homework"
+author: "Peter Menzies"
+date: "15/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Clustering weekend
+
+```{r, warning=F, message=F}
+library(tidyverse)
+library(cluster)
+library(factoextra)
+library(dendextend)
+library(broom)
+```
+```{r}
+customers <- read_csv("mall_customers.csv") %>% 
+  janitor::clean_names() %>% 
+  rename(sex = gender)
+```
+
+```{r}
+summary(customers)
+```
+
+* No NA's
+
+##### Age
+
+```{r}
+customers <- customers %>% 
+  select(-customer_id)
+
+age_stats <- customers %>% 
+  summarise(n = n(),
+            mean = mean(age),
+            sd = sd(age))
+
+customers %>% 
+  ggplot() +
+  aes(x = age) +
+  geom_histogram(aes(y = ..density..), colour = "white", bins = 25) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = age_stats$mean,
+      sd = age_stats$sd
+    ),
+    colour = "red"
+  )
+
+customers %>% 
+  select(age) %>% 
+  mutate(under_40 = age < 40) %>% 
+  ggplot() +
+  aes(x = under_40) +
+  geom_bar()
+```
+
+* Age is fairly normally distributed, with more customers under 40
+
+* A small increase at roughly age 65 = recently retired?
+
+
+##### annual_income_k
+
+```{r}
+annual_inc_stats <- customers %>% 
+  summarise(n = n(),
+            mean = mean(annual_income_k),
+            sd = sd(annual_income_k))
+
+customers %>% 
+  ggplot() +
+  aes(x = annual_income_k) +
+  geom_histogram(aes(y = ..density..), colour = "white", bins = 25) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = annual_inc_stats$mean,
+      sd = annual_inc_stats$sd
+    ),
+    colour = "red"
+  ) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10))
+
+customers %>% 
+  mutate(salary_range = case_when(
+    annual_income_k < 50 ~ "A_ under 50k",
+    annual_income_k >= 100 ~ "C_ over 100k",
+    T ~ "B_ 50 to 100k")) %>% 
+  ggplot() +
+  aes(x = salary_range) +
+  geom_bar()
+```
+
+* Normally-ish distributed, most common incomes roughly 55k - 75k 
+
+```{r}
+spending_score_1_100_stats <- customers %>% 
+  summarise(n = n(),
+            mean = mean(spending_score_1_100),
+            sd = sd(spending_score_1_100))
+
+customers %>% 
+  ggplot() +
+  aes(x = spending_score_1_100) +
+  geom_histogram(aes(y = ..density..), colour = "white", bins = 25) +
+  stat_function(
+    fun = dnorm,
+    args = list(
+      mean = spending_score_1_100_stats$mean,
+      sd = spending_score_1_100_stats$sd
+    ),
+    colour = "red"
+  ) +
+  scale_x_continuous(breaks = scales::pretty_breaks(n = 10))
+
+
+```
+
+* Normalish distribution - peaks around 50
+                        -   then rises a bit at the extremes of the scale
+
+
+##### sex
+
+```{r}
+customers %>% 
+  ggplot() +
+  aes(x = sex) +
+  geom_bar()
+```
+
+* More female customers but fairly similar
+
+##### summary
+
+* An average customer may be either sex, aged under 40, earning between 50 and 100k and have a spending score of 50. 
+
+
+### Scaling
+
+```{r}
+customers_scaled <- customers %>% 
+  select(annual_income_k, spending_score_1_100) %>% 
+  mutate(annual_income_k = scale(annual_income_k),
+         spending_score_1_100 = scale(spending_score_1_100))
+```
+
+### Clustering
+
+##### Elbow
+
+```{r}
+fviz_nbclust(customers_scaled, kmeans, method = "wss", nstart = 25)
+```
+
+* Hmm not totally convincing. Maybe 3?
+
+#### sillhouette
+
+```{r}
+fviz_nbclust(customers_scaled, kmeans, method = "silhouette", nstart = 25)
+```
+* No thanks
+
+```{r}
+fviz_nbclust(customers_scaled, kmeans, method = "gap_stat", nstart = 25, k.max = 10)
+```
+
+* This says k = 1
+
+* Hmm beginning to think it is not suited to clustering
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
