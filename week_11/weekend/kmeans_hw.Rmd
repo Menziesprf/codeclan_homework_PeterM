@@ -17,6 +17,7 @@ library(cluster)
 library(factoextra)
 library(dendextend)
 library(broom)
+library(animation)
 ```
 ```{r}
 customers <- read_csv("mall_customers.csv") %>% 
@@ -161,14 +162,14 @@ customers_scaled <- customers %>%
 fviz_nbclust(customers_scaled, kmeans, method = "wss", nstart = 25)
 ```
 
-* Hmm not totally convincing. Maybe 3?
+* Hmm not totally convincing. Maybe 3 or 5?
 
 #### sillhouette
 
 ```{r}
 fviz_nbclust(customers_scaled, kmeans, method = "silhouette", nstart = 25)
 ```
-* No thanks
+* Suggests k = 5
 
 ```{r}
 fviz_nbclust(customers_scaled, kmeans, method = "gap_stat", nstart = 25, k.max = 10)
@@ -176,18 +177,103 @@ fviz_nbclust(customers_scaled, kmeans, method = "gap_stat", nstart = 25, k.max =
 
 * This says k = 1
 
-* Hmm beginning to think it is not suited to clustering
+* Hmm beginning to think the data is not suited to clustering
 
 
+* I'll choose k = 3 from the elbow chart
+
+#### K = 3
+
+```{r}
+customers_3k <- kmeans(customers_scaled, centers = 3, nstart = 25) 
+
+customers_3k
 
 
+```
+
+```{r}
+## repeating this using k = 2, produced very different clusters each time
+## repeating with k = 3 gives the same/similar clusters each time
+
+customers_scaled %>% 
+  kmeans.ani(centers = 3)
+```
+
+```{r}
+customers_with_3k_clusters <- augment(customers_3k, customers)
+```
+```{r}
+customers_with_3k_clusters %>% 
+  ggplot() +
+  aes(x = annual_income_k, y = spending_score_1_100, shape = .cluster, colour = age) +
+  geom_point() +
+  scale_color_continuous(type = "viridis")
+
+customers_with_3k_clusters %>% 
+  ggplot() +
+  aes(x = annual_income_k, y = spending_score_1_100, shape = .cluster, colour = sex) +
+  geom_point()
+```
+
+* The clusters seems to be roughly equal male/female
+
+* Cluster 1 = Higher annual income >= 75k, low spending score < 50, noone over 60
+
+* Cluster 2 = Lower annual income <= 75, range of spending scores, seems to be 3 smaller clusters. Particualrly dense cluster earning between ~ 40 to 70k, with a spending score of 40 - 60 ish. Where most of the people over 65 years old, and also a lot of young people
+
+* Cluster 3 = high earners, high spenders, all under 40
 
 
+* lets try k = 5
 
 
+##### k = 5
+
+```{r}
+customers_5k <- kmeans(customers_scaled, centers = 5, nstart = 25) 
+
+customers_5k
+```
+
+```{r}
+# gets same/similar clusters every time
+
+customers_scaled %>% 
+  kmeans.ani(centers = 5)
+```
+
+```{r}
+customers_with_5k_clusters <- augment(customers_5k, customers)
+```
+```{r}
+customers_with_5k_clusters %>% 
+  ggplot() +
+  aes(x = annual_income_k, y = spending_score_1_100, shape = .cluster, colour = age) +
+  geom_point() +
+  scale_color_continuous(type = "viridis")
+
+customers_with_5k_clusters %>% 
+  ggplot() +
+  aes(x = annual_income_k, y = spending_score_1_100, shape = .cluster, colour = sex) +
+  geom_point()
+```
+
+* Looks like 5 pretty distinct clusters. 
 
 
+* Cluster 1 = low earner low spenders
 
+* Cluster 2 = High earner low spender
+
+* Cluster 3 = High earner high spender
+
+* Cluster 4 = 50/50
+
+* Cluster 5 = Low earner High spender
+
+
+* I'd say the data seems well suited to clustering where k = 5.
 
 
 
