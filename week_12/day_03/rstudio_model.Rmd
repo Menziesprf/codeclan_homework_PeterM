@@ -1,0 +1,76 @@
+---
+title: "car_model"
+author: "Peter Menzies"
+date: "20/01/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, message=F, warning=F}
+library(tidyverse)
+library(tidyverse)
+library(janitor)
+library(readxl)
+library(GGally)
+library(modelr)
+```
+
+```{r}
+car_data <- read_csv("car_dekho_details.csv")
+```
+
+```{r}
+car_data <- car_data %>% 
+  mutate(year = as.factor(year),
+         manufacturer = str_extract(name, "[A-Za-z]+ ")) %>% 
+  select(-name)
+
+
+
+```
+
+```{r}
+n_data <- nrow(car_data)
+```
+
+```{r}
+test_index <- sample(1:n_data, size = 0.1*n_data)
+```
+
+```{r}
+test <- slice(car_data, test_index)
+train <- slice(car_data, -test_index)
+```
+
+```{r}
+model <- lm(selling_price ~ ., data = train)
+model
+```
+
+
+```{r}
+predictions <- predict(model, newdata = test)
+```
+
+
+```{r}
+summary(model)
+```
+
+
+* Similarly large residual standard error. 
+* This hasnt produced a particularly good model
+* Many of te coefficients have high p values
+* The adjusted R squared isn't as high as i would like
+
+ Though I think I find it easier in R because I've made more models using R, things like making the train/test split are quite neat in Python. And although you have to make the dummy variables manually it's not too tricky.
+
+
+
+
+
+
+
+
